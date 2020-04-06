@@ -41,6 +41,10 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This app requires access to your location.</string>
 	
+	<!-- permission to modify calendars -->
+	<key>NSCalendarsUsageDescription</key>
+	<string>This app needs to access the calendars od the device, so the user doesn't need to use one more calendar.</string>
+
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
