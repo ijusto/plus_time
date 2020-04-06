@@ -10,17 +10,19 @@ void main() {
   runApp(MaterialApp(
     title: '+Time',
     theme: ThemeData(
-      // This is the theme of your application.
-      //
-      // Try running your application with "flutter run". You'll see the
-      // application has a blue toolbar. Then, without quitting the app, try
-      // changing the primarySwatch below to Colors.green and then invoke
-      // "hot reload" (press "r" in the console where you ran "flutter run",
-      // or simply save your changes to "hot reload" in a Flutter IDE).
-      // Notice that the counter didn't reset back to zero; the application
-      // is not restarted.
-      primarySwatch: Colors.deepOrange,
-      
+      primarySwatch: Colors.lime,
+      primaryColor: const Color(0xFFcddc39),
+      accentColor: const Color(0xFFcddc39),
+      canvasColor: const Color(0xFFfafafa),
+      fontFamily: 'Merriweather',
+      textTheme: TextTheme(
+        headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+        title: TextStyle(fontSize: 27.0, color: const Color(0xFF000000),
+                fontWeight: FontWeight.w200),
+        subtitle: TextStyle(fontSize: 16.0, color: const Color(0xFF000000),
+                fontWeight: FontWeight.w200),
+        body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+      ),
     ),
     initialRoute: '/',
     routes: {

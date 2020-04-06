@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'utils.dart';
 import 'package:plus_time/load_calendars.dart';
 
 class Home extends StatelessWidget {
@@ -24,12 +25,60 @@ class HomePage extends StatefulWidget {
   // always marked "final".
 
   final String title;
+  final List<Card> projectsOverview = [
+        Card(
+          child: ListTile(
+            leading: Icon(Icons.error, size: 56.0, color: Colors.red,),
+            title: Text('ComputaçãoMóvel'),
+            subtitle: Text('15h'),
+            trailing: Icon(Icons.play_arrow),
+          ),
+        ),
+        Card(
+          child: ListTile(
+            leading: Icon(Icons.warning, size: 56.0, color: Colors.amber,),
+            title: Text('SistemasDistribuidos'),
+            subtitle: Text('35h'),
+            trailing: Icon(Icons.play_arrow),
+          ),
+        ),
+        Card(
+          child: ListTile(
+            leading: Icon(Icons.check_box, size: 56.0, color: Colors.green,),
+            title: Text('ComputaçãoMóvel'),
+            subtitle: Text('55h'),
+            trailing: Icon(Icons.play_arrow),
+          ),
+        ),
+  ];
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+   int _selectedIndex = 0;
+   
+   void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      print("Selected index is $_selectedIndex");
+      switch (_selectedIndex) {
+        case 0:   // Home
+          Navigator.pushNamed(context, '/');
+          break;
+        case 1:   // Import/export
+          Navigator.pushNamed(context, '/qrModule');
+          break;
+        case 2:   // Settings
+          Navigator.pushNamed(context, '/settings');
+          break;
+        case 3:   // Logout
+          Navigator.pushNamed(context, '/login');
+          break;
+      }
+    });
+  } 
 
   void initState(){
     super.initState();
@@ -44,23 +93,25 @@ class _HomePageState extends State<HomePage> {
           projectType: '54h',
     ),];
 
+  // Event Handlers
+
+  // Project card/Floating button
   void _addEvent() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      // TODO 
+      // Add an event
     });
   }
 
-  void _onItemTapped(int index) {
+  // Project details
+  void _seeProjectDetails() {
     setState(() {
-      _selectedIndex = index;
+      // TODO 
+      // Go to details page with info about the chosen project (index)
     });
   }
-
+  
+  // Create the layout
   @override
   Widget build(BuildContext context) {
 
@@ -74,50 +125,87 @@ class _HomePageState extends State<HomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: new AppBar(
-          title: Text(widget.title),
+      appBar:  AppBar(
+        title: Text(widget.title),
       ),
+      
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'What should I do next?',
-            ),
-            Row(children: projectsStats),
-            Text(
-              'Based on your location you should be here'
-            ),
-            Text('My projects'),
-          ],
-        ),
+        child: 
+           Column(
+
+            children: <Widget>[
+               Padding(
+                padding: const EdgeInsets.all(24.0),
+              ),
+    
+               Text(
+              "What should I do next?",
+                style: Theme.of(context).textTheme.title,
+              ),
+
+               Padding(
+                padding: const EdgeInsets.all(10.0),
+              ),
+    
+               Expanded (
+                 child: ListView(
+                   children: widget.projectsOverview,),
+               ),
+
+               Padding(
+                padding: const EdgeInsets.all(24.0),
+              ),
+
+               Text(
+              "Don't forget to go to ... at",
+                 style: Theme.of(context).textTheme.title,
+              ),
+    
+               Text(
+              "You are X km away",
+                 style: Theme.of(context).textTheme.title,
+              ),
+    
+               Padding(
+                padding: const EdgeInsets.all(24.0),
+              ),
+    
+               Text(
+              "My projects",
+                style: Theme.of(context).textTheme.title,
+              ),
+    
+              
+            ]
+    
+          ),
       ),
+
       bottomNavigationBar: BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          title: Text('Home'),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.import_export),
-          title: Text('Import/export'),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          title: Text('Settings'),
-        ),
-        BottomNavigationBarItem(
-        icon: Icon(Icons.exit_to_app),
-        title: Text('Logout'),
-        ),
-      ],
-      currentIndex: _selectedIndex,
-      selectedItemColor: Colors.amber[800],
-      unselectedItemColor: Colors.black,
-      onTap: _onItemTapped,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.import_export),
+            title: Text('Import/export'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            title: Text('Settings'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.exit_to_app),
+            title: Text('Logout'),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Theme.of(context).disabledColor,
+        onTap: _onItemTapped,
       ),
+      
       floatingActionButton: FloatingActionButton(
         onPressed: _addEvent,
         tooltip: 'Add Event',
