@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
+/* Based on a tutorial: https://www.youtube.com/watch?v=siuJhQ9BqsU */
+
 class QRCode extends StatefulWidget {
   @override
   _QRCodeState createState() => _QRCodeState();

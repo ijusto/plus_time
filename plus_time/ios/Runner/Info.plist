@@ -35,6 +35,12 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>Please authenticate to use the app.</string>
 	
+	<!-- uses permission to access the location -->
+	<key>NSLocationWhenInUsageDescription</key>
+	<string>This app requires access to your location.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app requires access to your location.</string>
+	
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

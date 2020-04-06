@@ -8,6 +8,12 @@
     <!-- permission to use the camera -->
     <uses-permission android:name="android.permission.CAMERA"/>
 
+    <!-- permission to biometrics authentication -->
+    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+
+    <!-- permission to access the device location -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
     <application>
         <activity android:name="com.apptreesoftware.barcodescan.BarcodeScannerActivity">
     </aplication>

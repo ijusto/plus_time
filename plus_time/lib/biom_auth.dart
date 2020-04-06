@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart';
 
+/* Based on a tutorial: https://www.youtube.com/watch?v=S1ta90cTxBA */
+
 class BiomAuth extends StatefulWidget {
   @override
   _BiomAuthState createState() => _BiomAuthState();

@@ -30,6 +30,11 @@ dependencies:
   # dependency for face id/fingerprint authentication
   local_auth: ^0.6.1+3
 
+  # for access to the devices location
+  provider:
+  location: ^2.3.5
+
+
 
 dev_dependencies:
   flutter_test:
