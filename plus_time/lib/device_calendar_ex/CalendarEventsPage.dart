@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/material.dart';
-import 'package:plus_time/calendar/event_item.dart';
+import 'event_item.dart';
 
 import 'CalendarEventPage.dart';
 import 'RecurringEventDialog.dart';
