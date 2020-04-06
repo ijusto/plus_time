@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plus_time/load_calendars.dart';
 
 class Home extends StatelessWidget {
   // This widget is the root of your application.
@@ -29,6 +30,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  void initState(){
+    super.initState();
+    retriveCalendars();
+  }
+
   int _counter = 0;
   int _selectedIndex = 0;
   var projectsStats = [const _ProjectCard(
@@ -56,6 +63,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    print(calendars);
+    print(calendarsNames);
+
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
