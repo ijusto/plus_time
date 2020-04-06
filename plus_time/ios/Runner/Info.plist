@@ -31,6 +31,10 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Camera permission is required for QR scanning.</string>
 
+	<!-- uses permission to use biometrics authentication -->
+	<key>NSFaceIDUsageDescription</key>
+	<string>Please authenticate to use the app.</string>
+	
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
