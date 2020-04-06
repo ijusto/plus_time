@@ -4,4 +4,11 @@
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- permission to use the camera -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <application>
+        <activity android:name="com.apptreesoftware.barcodescan.BarcodeScannerActivity">
+    </aplication>
 </manifest>
