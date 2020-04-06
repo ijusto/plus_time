@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'biom_auth.dart';
 import 'details.dart';
 import 'home.dart';
-import 'login.dart';
-import 'qrmodule.dart';
+import 'qrcode.dart';
 import 'settings.dart';
 
 void main() {
@@ -28,8 +28,8 @@ void main() {
     routes: {
       '/'         : (context) => Home(),
       '/details'  : (context) => Details(), 
-      '/login'    : (context) => LoginPage(),
-      '/qrModule' : (context) => QRModule(),
+      '/login'    : (context) => BiomAuth(),
+      '/qrModule' : (context) => QRCode(),
       '/settings' : (context) => Settings(),
     },
     

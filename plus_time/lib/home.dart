@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'utils.dart';
-import 'package:plus_time/load_calendars.dart';
 
 class Home extends StatelessWidget {
   // This widget is the root of your application.
@@ -80,19 +79,6 @@ class _HomePageState extends State<HomePage> {
     });
   } 
 
-  void initState(){
-    super.initState();
-    retriveCalendars();
-  }
-
-  int _counter = 0;
-  int _selectedIndex = 0;
-  var projectsStats = [const _ProjectCard(
-          color: Colors.amber,
-          projectName: 'Mobile Computation',
-          projectType: '54h',
-    ),];
-
   // Event Handlers
 
   // Project card/Floating button
@@ -114,16 +100,6 @@ class _HomePageState extends State<HomePage> {
   // Create the layout
   @override
   Widget build(BuildContext context) {
-
-    print(calendars);
-    print(calendarsNames);
-
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar:  AppBar(
         title: Text(widget.title),
@@ -215,35 +191,3 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-
-class _ProjectCard extends StatefulWidget {
-  _ProjectCard({Key key, this.color, this.name, this.time}) : super(key: key);
-
-  final Color  color;
-  final String name;
-  final String time;
-
-  @override
-  _ProjectCardState createState() => _ProjectCardState();
-
-}
-class _ProjectCardState extends  State<_ProjectCard> {
-  @override
-  Widget build(BuildContext context) {
-    	
-  return Container(
-    decoration: BoxDecoration(
-      color: widget.color,
-    ),
-    child: [
-
-    ]
-          title: Text(widget.name),
-          subtitle: Text(widget.time),
-        ),
-      ],
-    ),
-  );
-  }
-  
-}
