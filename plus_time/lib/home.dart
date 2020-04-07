@@ -120,12 +120,22 @@ class _HomePageState extends State<HomePage> {
   // Create the layout
   @override
   Widget build(BuildContext context) {
+    var userLocation = Provider.of<UserLocation>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
       body: CustomScrollView(
         slivers: <Widget>[
+          SliverList(
+            delegate: SliverChildListDelegate([
+              Text(
+                "Location: Lat: ${userLocation.latitude}, Long: ${userLocation.longitude}",
+                style: Theme.of(context).textTheme.title,
+              ),
+            ]),
+          ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {

@@ -31,7 +31,7 @@ dependencies:
   local_auth: ^0.6.1+3
 
   # for access to the devices location
-  provider:
+  provider: ^4.0.4
   location: ^2.3.5
 
   # This package provides internationalization and localization facilities, 
