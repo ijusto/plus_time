@@ -74,9 +74,7 @@ class _BiomAuthState extends State<BiomAuth> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Biometric Authentication"),
-      ),
+      
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -85,22 +83,19 @@ class _BiomAuthState extends State<BiomAuth> {
             RaisedButton(
               onPressed: _checkBiometric,
               child: Text("Check Biometric"),
-              color: Colors.red,
-              colorBrightness: Brightness.light,
+             
             ),
             Text("List of Biometrics: ${_availableBiometricTypes.toString()}"),
             RaisedButton(
               onPressed: _getListOfBiometricTypes,
               child: Text("List of Biometric Types"),
-              color: Colors.red,
-              colorBrightness: Brightness.light,
+              
             ),
             Text("Authorized: $_authorizedOrNot"),
             RaisedButton(
               onPressed: _authorizeNow,
               child: Text("Authorize Now"),
-              color: Colors.red,
-              colorBrightness: Brightness.light,
+            
             ),
           ],
         ),

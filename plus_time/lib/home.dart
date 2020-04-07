@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'utils.dart';
-
+import 'package:provider/provider.dart';
+import 'package:plus_time/datamodels/user_location.dart';
 class Home extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -58,6 +59,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
    int _selectedIndex = 0;
    
+
    void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -81,18 +83,10 @@ class _HomePageState extends State<HomePage> {
 
   // Event Handlers
 
-  // Project card/Floating button
+  // Project details
   void _addEvent() {
     setState(() {
-      // TODO 
-      // Add an event
-    });
-  }
-
-  // Project details
-  void _seeProjectDetails() {
-    setState(() {
-      // TODO 
+      Navigator.pushNamed(context, '/add_event');
       // Go to details page with info about the chosen project (index)
     });
   }
@@ -100,6 +94,8 @@ class _HomePageState extends State<HomePage> {
   // Create the layout
   @override
   Widget build(BuildContext context) {
+    //var userLocation = Provider.of<UserLocation>(context);
+
     return Scaffold(
       appBar:  AppBar(
         title: Text(widget.title),
@@ -133,13 +129,13 @@ class _HomePageState extends State<HomePage> {
               ),
 
                Text(
-              "Don't forget to go to ... at",
+              "Where should I go next?",
                  style: Theme.of(context).textTheme.title,
               ),
     
                Text(
-              "You are X km away",
-                 style: Theme.of(context).textTheme.title,
+              "Your Location: Lat: userLocation.latitude, Long: userLocation.longitude",
+                 style: Theme.of(context).textTheme.subtitle,
               ),
     
                Padding(

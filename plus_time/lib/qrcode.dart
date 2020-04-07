@@ -11,7 +11,7 @@ class QRCode extends StatefulWidget {
 }
 
 class _QRCodeState extends State<QRCode> {
-  String result = "Hey there";
+  String result = "Import using the camera to scan a QR Code or export by producing a new QR Code";
 
   Future _scanQR() async {
     try {
@@ -42,21 +42,72 @@ class _QRCodeState extends State<QRCode> {
 
   @override
   Widget build(BuildContext context) {
+      int _selectedIndex = 1;
+   
+    void _onItemTapped(int index) {
+      setState(() {
+        _selectedIndex = index;
+        print("Selected index is $_selectedIndex");
+        switch (_selectedIndex) {
+          case 0:   // Home
+            Navigator.pushNamed(context, '/');
+            break;
+          case 1:   // Import/export
+            Navigator.pushNamed(context, '/qrModule');
+            break;
+          case 2:   // Settings
+            Navigator.pushNamed(context, '/settings');
+            break;
+          case 3:   // Logout
+            Navigator.pushNamed(context, '/login');
+            break;
+        }
+      });
+    } 
+      
+      
     return Scaffold(
       appBar: AppBar(
-        title: Text("QR Scanner"),
+        title: Text("Import/export"),
       ),
       body: Center(
         child: Text(
           result,
-          style: new TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.title
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
+      
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.import_export),
+            title: Text('Import/export'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            title: Text('Settings'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.exit_to_app),
+            title: Text('Logout'),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Theme.of(context).disabledColor,
+        onTap: _onItemTapped,
+      ),
+      
+       floatingActionButton: FloatingActionButton.extended(
         icon: Icon(Icons.camera_alt),
         label: Text("Scan"),
         onPressed: _scanQR,
-      ),
+        ),
+     
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
