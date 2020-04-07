@@ -6,12 +6,8 @@ import 'add_event.dart';
 import 'biom_auth.dart';
 import 'home.dart';
 import 'qrcode.dart';
-import 'settings.dart';
-import 'package:flutter/material.dart';
-import 'utils.dart';
-import 'package:provider/provider.dart';
 import 'package:plus_time/datamodels/user_location.dart';
-import 'package:plus_time/load_calendars.dart';
+import 'package:plus_time/settings.dart';
 
 void main() {
   runApp(MyApp());
@@ -49,7 +45,7 @@ class MyApp extends StatelessWidget {
             '/add_event': (context) => AddEvent(),
             '/login': (context) => BiomAuth(),
             '/qrModule': (context) => QRCode(),
-            '/settings': (context) => Settings(),
+            '/settings': (context) => Settings()
           },
         ));
   }

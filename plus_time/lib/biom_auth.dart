@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart';
+import 'dart:async';
 
 /* Based on a tutorial: https://www.youtube.com/watch?v=S1ta90cTxBA */
 
@@ -10,96 +11,94 @@ class BiomAuth extends StatefulWidget {
 }
 
 class _BiomAuthState extends State<BiomAuth> {
-  final LocalAuthentication _localAuthentication = LocalAuthentication();
-  bool _canCheckBiometric = false;
-  String _authorizedOrNot = "Not Authorized.";
-  List<BiometricType> _availableBiometricTypes = List<BiometricType>();
+  final LocalAuthentication auth = LocalAuthentication();
+  bool _canCheckBiometrics;
+  List<BiometricType> _availableBiometrics;
+  String _authorized = 'Not Authorized';
+  bool _isAuthenticating = false;
 
-  Future<void> _checkBiometric() async {
-    bool canCheckBiometric = false;
+  Future<void> _checkBiometrics() async {
+    bool canCheckBiometrics;
     try {
-      canCheckBiometric = await _localAuthentication.canCheckBiometrics;
+      canCheckBiometrics = await auth.canCheckBiometrics;
     } on PlatformException catch (e) {
       print(e);
     }
-
     if (!mounted) return;
 
     setState(() {
-      _canCheckBiometric = canCheckBiometric;
+      _canCheckBiometrics = canCheckBiometrics;
     });
   }
 
-  Future<void> _getListOfBiometricTypes() async {
-    List<BiometricType> lisOfBiometrics;
+  Future<void> _getAvailableBiometrics() async {
+    List<BiometricType> availableBiometrics;
     try {
-      lisOfBiometrics = await _localAuthentication.getAvailableBiometrics();
+      availableBiometrics = await auth.getAvailableBiometrics();
     } on PlatformException catch (e) {
       print(e);
     }
-
     if (!mounted) return;
 
     setState(() {
-      _availableBiometricTypes = lisOfBiometrics;
+      _availableBiometrics = availableBiometrics;
     });
   }
 
-  Future<void> _authorizeNow() async {
-    bool isAuthorized = false;
+  Future<void> _authenticate() async {
+    bool authenticated = false;
     try {
-      isAuthorized = await _localAuthentication.authenticateWithBiometrics(
-        localizedReason:
-            "Please authenticate to so you can enter your favorite app.",
-        //androidAuthStrings: ,
-        //iOSAuthStrings: ,
-        useErrorDialogs: true,
-        stickyAuth: true,
-      );
+      setState(() {
+        _isAuthenticating = true;
+        _authorized = 'Authenticating';
+      });
+      authenticated = await auth.authenticateWithBiometrics(
+          localizedReason: 'Scan your fingerprint to authenticate',
+          useErrorDialogs: true,
+          stickyAuth: true);
+      setState(() {
+        _isAuthenticating = false;
+        _authorized = 'Authenticating';
+      });
     } on PlatformException catch (e) {
       print(e);
     }
-
     if (!mounted) return;
 
+    final String message = authenticated ? 'Authorized' : 'Not Authorized';
     setState(() {
-      if (isAuthorized) {
-        _authorizedOrNot = "Authorized";
-      } else {
-        _authorizedOrNot = "Not authorized";
-      }
+      _authorized = message;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text("Can we check Biometric: $_canCheckBiometric"),
-            RaisedButton(
-              onPressed: _checkBiometric,
-              child: Text("Check Biometric"),
-             
-            ),
-            Text("List of Biometrics: ${_availableBiometricTypes.toString()}"),
-            RaisedButton(
-              onPressed: _getListOfBiometricTypes,
-              child: Text("List of Biometric Types"),
-              
-            ),
-            Text("Authorized: $_authorizedOrNot"),
-            RaisedButton(
-              onPressed: _authorizeNow,
-              child: Text("Authorize Now"),
-            
-            ),
-          ],
-        ),
+    return MaterialApp(
+        home: Scaffold(
+      appBar: AppBar(
+        title: const Text('Plugin example app'),
       ),
-    );
+      body: ConstrainedBox(
+          constraints: const BoxConstraints.expand(),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Text('Can check biometrics: $_canCheckBiometrics\n'),
+                RaisedButton(
+                  child: const Text('Check biometrics'),
+                  onPressed: _checkBiometrics,
+                ),
+                Text('Available biometrics: $_availableBiometrics\n'),
+                RaisedButton(
+                  child: const Text('Get available biometrics'),
+                  onPressed: _getAvailableBiometrics,
+                ),
+                Text('Current State: $_authorized\n'),
+                RaisedButton(
+                  child: Text('Authenticate'),
+                  onPressed: _authenticate,
+                )
+              ])),
+    ));
   }
 }

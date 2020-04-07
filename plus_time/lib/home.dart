@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'utils.dart';
 import 'package:provider/provider.dart';
 import 'package:plus_time/datamodels/user_location.dart';
-import 'package:plus_time/load_calendars.dart';
 
 class Home extends StatelessWidget {
   // This widget is the root of your application.
