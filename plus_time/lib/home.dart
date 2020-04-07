@@ -106,19 +106,16 @@ class _HomePageState extends State<HomePage> {
 
   List<String> litems = [
     "What should I do next?",
-    "2",
-    "2",
-    "2",
-    "2",
-    "Don't forget to go to ... at",
-    "You are X km away",
-    "My projects"
   ];
 
-  void initState() {
-    super.initState();
-    retriveCalendars();
-  }
+  List<String> litems2 = [
+    "Don't forget to go to ... at",
+    "You are X km away",
+    "My projects",
+    "...",
+    "...",
+    "..."
+  ];
 
   // Create the layout
   @override
@@ -149,6 +146,24 @@ class _HomePageState extends State<HomePage> {
           ),
           SliverList(
             delegate: SliverChildListDelegate(widget.projectsOverview),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return Container(
+                  child: new Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Center(
+                      child: Text(
+                        litems2[index],
+                        style: Theme.of(context).textTheme.title,
+                      ),
+                    ),
+                  ),
+                );
+              },
+              childCount: litems2.length,
+            ),
           ),
         ],
       ),
