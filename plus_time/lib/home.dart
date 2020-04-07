@@ -26,42 +26,30 @@ class HomePage extends StatefulWidget {
 
   final String title;
   final List<Card> projectsOverview = [
-    Card(
-      child: ListTile(
-        leading: Icon(
-          Icons.error,
-          size: 56.0,
-          color: Colors.red,
+        Card(
+          child: ListTile(
+            leading: Icon(Icons.error, size: 56.0, color: Colors.red,),
+            title: Text('ComputaçãoMóvel'),
+            subtitle: Text('15h'),
+            trailing: Icon(Icons.play_arrow),
+          ),
         ),
-        title: Text('ComputaçãoMóvel'),
-        subtitle: Text('15h'),
-        trailing: Icon(Icons.play_arrow),
-      ),
-    ),
-    Card(
-      child: ListTile(
-        leading: Icon(
-          Icons.warning,
-          size: 56.0,
-          color: Colors.amber,
+        Card(
+          child: ListTile(
+            leading: Icon(Icons.warning, size: 56.0, color: Colors.amber,),
+            title: Text('SistemasDistribuidos'),
+            subtitle: Text('35h'),
+            trailing: Icon(Icons.play_arrow),
+          ),
         ),
-        title: Text('SistemasDistribuidos'),
-        subtitle: Text('35h'),
-        trailing: Icon(Icons.play_arrow),
-      ),
-    ),
-    Card(
-      child: ListTile(
-        leading: Icon(
-          Icons.check_box,
-          size: 56.0,
-          color: Colors.green,
+        Card(
+          child: ListTile(
+            leading: Icon(Icons.check_box, size: 56.0, color: Colors.green,),
+            title: Text('ComputaçãoMóvel'),
+            subtitle: Text('55h'),
+            trailing: Icon(Icons.play_arrow),
+          ),
         ),
-        title: Text('ComputaçãoMóvel'),
-        subtitle: Text('55h'),
-        trailing: Icon(Icons.play_arrow),
-      ),
-    ),
   ];
 
   @override
@@ -77,21 +65,21 @@ class _HomePageState extends State<HomePage> {
       _selectedIndex = index;
       print("Selected index is $_selectedIndex");
       switch (_selectedIndex) {
-        case 0: // Home
+        case 0:   // Home
           Navigator.pushNamed(context, '/');
           break;
-        case 1: // Import/export
+        case 1:   // Import/export
           Navigator.pushNamed(context, '/qrModule');
           break;
-        case 2: // Settings
+        case 2:   // Settings
           Navigator.pushNamed(context, '/settings');
           break;
-        case 3: // Logout
+        case 3:   // Logout
           Navigator.pushNamed(context, '/login');
           break;
       }
     });
-  }
+  } 
 
   // Event Handlers
 
@@ -102,25 +90,14 @@ class _HomePageState extends State<HomePage> {
       // Go to details page with info about the chosen project (index)
     });
   }
-
-  List<String> litems = [
-    "What should I do next?",
-    "2",
-    "2",
-    "2",
-    "2",
-    "Don't forget to go to ... at",
-    "You are X km away",
-    "My projects"
-  ];
-
+  
   // Create the layout
   @override
   Widget build(BuildContext context) {
     //var userLocation = Provider.of<UserLocation>(context);
 
     return Scaffold(
-      appBar: AppBar(
+      appBar:  AppBar(
         title: Text(widget.title),
       ),
       
@@ -174,11 +151,8 @@ class _HomePageState extends State<HomePage> {
             ]
     
           ),
-          SliverList(
-            delegate: SliverChildListDelegate(widget.projectsOverview),
-          ),
-        ],
       ),
+
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -203,6 +177,7 @@ class _HomePageState extends State<HomePage> {
         unselectedItemColor: Theme.of(context).disabledColor,
         onTap: _onItemTapped,
       ),
+      
       floatingActionButton: FloatingActionButton(
         onPressed: _addEvent,
         tooltip: 'Add Event',
@@ -211,3 +186,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
