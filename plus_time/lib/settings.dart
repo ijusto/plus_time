@@ -63,9 +63,9 @@ class SettingsState extends State<Settings> {
             Text('Select the calendars:'),
             Expanded(
               child: ListView.builder(
-                  itemCount: widget.calendNames.length,
+                  itemCount: calendNames.length,
                   itemBuilder: (BuildContext ctxt, int index) {
-                    return new Text(widget.calendNames[index]);
+                    return new Text(calendNames[index]);
                   }),
             ),
             Text('Number of hours/week:'),
