@@ -1,6 +1,6 @@
 import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/material.dart';
-import 'package:plus_time/load_calendars.dart';
+import 'package:plus_time/services/load_calendars.dart';
 import 'package:plus_time/device_calendar_ex/CalendarEventsPage.dart';
 import 'package:flutter/services.dart';
 

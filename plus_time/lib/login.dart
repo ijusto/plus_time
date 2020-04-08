@@ -5,12 +5,12 @@ import 'dart:async';
 
 /* Based on a tutorial: https://www.youtube.com/watch?v=S1ta90cTxBA */
 
-class BiomAuth extends StatefulWidget {
+class Login extends StatefulWidget {
   @override
-  _BiomAuthState createState() => _BiomAuthState();
+  _LoginState createState() => _LoginState();
 }
 
-class _BiomAuthState extends State<BiomAuth> {
+class _LoginState extends State<Login> {
   final LocalAuthentication auth = LocalAuthentication();
   bool _canCheckBiometrics;
   List<BiometricType> _availableBiometrics;

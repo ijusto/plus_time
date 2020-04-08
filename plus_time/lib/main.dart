@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'services/locationService.dart';
-import 'add_event.dart';
-import 'biom_auth.dart';
-import 'home.dart';
-import 'qrcode.dart';
 import 'package:plus_time/datamodels/user_location.dart';
 import 'package:plus_time/settings.dart';
+import 'services/locationService.dart';
+import 'add_event.dart';
+import 'login.dart';
+import 'home.dart';
+import 'qrcode.dart';
 
 void main() {
   runApp(MyApp());
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
           routes: {
             '/': (context) => Home(),
             '/add_event': (context) => AddEvent(),
-            '/login': (context) => BiomAuth(),
+            '/login': (context) => Login(),
             '/qrModule': (context) => QRCode(),
             '/settings': (context) => Settings()
           },
