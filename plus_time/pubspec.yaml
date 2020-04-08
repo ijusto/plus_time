@@ -37,10 +37,6 @@ dependencies:
   # This package provides internationalization and localization facilities, 
   # including message translation, plurals and genders, date/number formatting 
   # and parsing, and bidirectional text.
-  intl:
-
-  # Simple, fast generation of RFC4122 UUIDs.
-  uuid:
 
   # use device calendar
   device_calendar: ^3.1.0

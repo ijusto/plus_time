@@ -50,7 +50,8 @@ class _SettingsState extends State<Settings> {
       });
     }
 
-    Future _getCalendars() async {
+    void _getCalendars() {
+      print("RETRIEVING CALENDARS");
       _retrieveCalendars();
     }
 
@@ -163,17 +164,23 @@ class _SettingsState extends State<Settings> {
 
   void _retrieveCalendars() async {
     try {
+      print("PHASE 1");
       var permissionsGranted = await _deviceCalendarPlugin.hasPermissions();
+      print("PHASE 2");
       if (permissionsGranted.isSuccess && !permissionsGranted.data) {
+        print("PHASE 3");
         permissionsGranted = await _deviceCalendarPlugin.requestPermissions();
         if (!permissionsGranted.isSuccess || !permissionsGranted.data) {
-          return;
+          print("PHASE 4");
+          //return;
         }
       }
-
+      print("PHASE 5");
       final calendarsResult = await _deviceCalendarPlugin.retrieveCalendars();
+      print("PHASE 6");
       setState(() {
         _calendars = calendarsResult?.data;
+        print("$_calendars");
       });
     } on PlatformException catch (e) {
       print(e);

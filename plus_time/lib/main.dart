@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'datamodels/user_location.dart';
 import 'services/locationService.dart';
 import 'add_event.dart';
 import 'biom_auth.dart';
