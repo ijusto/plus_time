@@ -44,7 +44,11 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
         color: Theme.of(context).primaryColor,
         child: Text('Open Default Lock Screen'),
         onPressed: () {
-          _showLockScreen(context, opaque: false);
+          if (password == null) {
+            _showLockScreenSetUp(context, opaque: false);
+          } else {
+            _showLockScreen(context, opaque: false);
+          }
         },
       );
 
