@@ -7,11 +7,6 @@ import 'package:passcode_screen/keyboard.dart';
 
 class PassCodeScreen extends StatefulWidget {
   PassCodeScreen({Key key}) : super(key: key);
-  String password;
-
-  void set passCode(String passCode) {
-    password = passCode;
-  }
 
   @override
   State<StatefulWidget> createState() => _PassCodeScreenState();
@@ -21,7 +16,13 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
   final StreamController<bool> _verificationNotifier =
       StreamController<bool>.broadcast();
 
+  String password;
+
   bool isAuthenticated = false;
+
+  _setPassCode(String passCode) {
+    password = passCode;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,14 +52,25 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
         color: Theme.of(context).primaryColor,
         child: Text('Open Custom Lock Screen'),
         onPressed: () {
-          _showLockScreen(context,
-              opaque: false,
-              circleUIConfig: CircleUIConfig(
-                  borderColor: Colors.blue,
-                  fillColor: Colors.blue,
-                  circleSize: 30),
-              keyboardUIConfig: KeyboardUIConfig(
-                  digitBorderWidth: 2, primaryColor: Colors.blue));
+          if (password == null) {
+            _showLockScreenSetUp(context,
+                opaque: false,
+                circleUIConfig: CircleUIConfig(
+                    borderColor: Colors.blue,
+                    fillColor: Colors.blue,
+                    circleSize: 30),
+                keyboardUIConfig: KeyboardUIConfig(
+                    digitBorderWidth: 2, primaryColor: Colors.blue));
+          } else {
+            _showLockScreen(context,
+                opaque: false,
+                circleUIConfig: CircleUIConfig(
+                    borderColor: Colors.blue,
+                    fillColor: Colors.blue,
+                    circleSize: 30),
+                keyboardUIConfig: KeyboardUIConfig(
+                    digitBorderWidth: 2, primaryColor: Colors.blue));
+          }
         },
       );
 
@@ -85,8 +97,40 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
         ));
   }
 
+  _showLockScreenSetUp(BuildContext context,
+      {bool opaque,
+      CircleUIConfig circleUIConfig,
+      KeyboardUIConfig keyboardUIConfig}) {
+    Navigator.push(
+        context,
+        PageRouteBuilder(
+          opaque: opaque,
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              PasscodeScreen(
+            title: 'Set up the App Passcode',
+            circleUIConfig: circleUIConfig,
+            keyboardUIConfig: keyboardUIConfig,
+            passwordEnteredCallback: _onNewPassEntered,
+            cancelLocalizedText: 'Cancel',
+            deleteLocalizedText: 'Delete',
+            shouldTriggerVerification: _verificationNotifier.stream,
+            backgroundColor: Colors.black.withOpacity(0.8),
+            cancelCallback: _onPasscodeCancelled,
+          ),
+        ));
+  }
+
+  _onNewPassEntered(String enteredPasscode) {
+    _setPassCode(enteredPasscode);
+    _onPasscodeEntered(enteredPasscode);
+  }
+
   _onPasscodeEntered(String enteredPasscode) {
-    bool isValid = "123456" == enteredPasscode;
+    String pass = "123456";
+    if (password != null && password.length != 0) {
+      pass = password;
+    }
+    bool isValid = pass == enteredPasscode;
     //bool isValid = widget.password == enteredPasscode;
     _verificationNotifier.add(isValid);
     if (isValid) {
