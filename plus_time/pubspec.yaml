@@ -44,6 +44,8 @@ dependencies:
   # used for the settings page
   preferences: ^4.0.0
 
+  flutter_map: any
+
 dev_dependencies:
 
   flutter_test:
