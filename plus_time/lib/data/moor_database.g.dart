@@ -237,27 +237,30 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
   }
 }
 
-class FirstLogin extends DataClass implements Insertable<FirstLogin> {
+class LoginOperation extends DataClass implements Insertable<LoginOperation> {
   final int id;
-  final bool completed;
-  FirstLogin({@required this.id, @required this.completed});
-  factory FirstLogin.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  final int type;
+  final String pass;
+  LoginOperation({@required this.id, @required this.type, @required this.pass});
+  factory LoginOperation.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
-    final boolType = db.typeSystem.forDartType<bool>();
-    return FirstLogin(
+    final stringType = db.typeSystem.forDartType<String>();
+    return LoginOperation(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      completed:
-          boolType.mapFromDatabaseResponse(data['${effectivePrefix}completed']),
+      type: intType.mapFromDatabaseResponse(data['${effectivePrefix}type']),
+      pass: stringType.mapFromDatabaseResponse(data['${effectivePrefix}pass']),
     );
   }
-  factory FirstLogin.fromJson(Map<String, dynamic> json,
+  factory LoginOperation.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return FirstLogin(
+    return LoginOperation(
       id: serializer.fromJson<int>(json['id']),
-      completed: serializer.fromJson<bool>(json['completed']),
+      type: serializer.fromJson<int>(json['type']),
+      pass: serializer.fromJson<String>(json['pass']),
     );
   }
   @override
@@ -265,67 +268,76 @@ class FirstLogin extends DataClass implements Insertable<FirstLogin> {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'completed': serializer.toJson<bool>(completed),
+      'type': serializer.toJson<int>(type),
+      'pass': serializer.toJson<String>(pass),
     };
   }
 
   @override
-  LoginOperationCompanion createCompanion(bool nullToAbsent) {
-    return LoginOperationCompanion(
+  LoginOperationsCompanion createCompanion(bool nullToAbsent) {
+    return LoginOperationsCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      completed: completed == null && nullToAbsent
-          ? const Value.absent()
-          : Value(completed),
+      type: type == null && nullToAbsent ? const Value.absent() : Value(type),
+      pass: pass == null && nullToAbsent ? const Value.absent() : Value(pass),
     );
   }
 
-  FirstLogin copyWith({int id, bool completed}) => FirstLogin(
+  LoginOperation copyWith({int id, int type, String pass}) => LoginOperation(
         id: id ?? this.id,
-        completed: completed ?? this.completed,
+        type: type ?? this.type,
+        pass: pass ?? this.pass,
       );
   @override
   String toString() {
-    return (StringBuffer('FirstLogin(')
+    return (StringBuffer('LoginOperation(')
           ..write('id: $id, ')
-          ..write('completed: $completed')
+          ..write('type: $type, ')
+          ..write('pass: $pass')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode, completed.hashCode));
+  int get hashCode =>
+      $mrjf($mrjc(id.hashCode, $mrjc(type.hashCode, pass.hashCode)));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is FirstLogin &&
+      (other is LoginOperation &&
           other.id == this.id &&
-          other.completed == this.completed);
+          other.type == this.type &&
+          other.pass == this.pass);
 }
 
-class LoginOperationCompanion extends UpdateCompanion<FirstLogin> {
+class LoginOperationsCompanion extends UpdateCompanion<LoginOperation> {
   final Value<int> id;
-  final Value<bool> completed;
-  const LoginOperationCompanion({
+  final Value<int> type;
+  final Value<String> pass;
+  const LoginOperationsCompanion({
     this.id = const Value.absent(),
-    this.completed = const Value.absent(),
+    this.type = const Value.absent(),
+    this.pass = const Value.absent(),
   });
-  LoginOperationCompanion.insert({
+  LoginOperationsCompanion.insert({
     this.id = const Value.absent(),
-    this.completed = const Value.absent(),
-  });
-  LoginOperationCompanion copyWith({Value<int> id, Value<bool> completed}) {
-    return LoginOperationCompanion(
+    this.type = const Value.absent(),
+    @required String pass,
+  }) : pass = Value(pass);
+  LoginOperationsCompanion copyWith(
+      {Value<int> id, Value<int> type, Value<String> pass}) {
+    return LoginOperationsCompanion(
       id: id ?? this.id,
-      completed: completed ?? this.completed,
+      type: type ?? this.type,
+      pass: pass ?? this.pass,
     );
   }
 }
 
-class $LoginOperationTable extends LoginOperation
-    with TableInfo<$LoginOperationTable, FirstLogin> {
+class $LoginOperationsTable extends LoginOperations
+    with TableInfo<$LoginOperationsTable, LoginOperation> {
   final GeneratedDatabase _db;
   final String _alias;
-  $LoginOperationTable(this._db, [this._alias]);
+  $LoginOperationsTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -335,33 +347,48 @@ class $LoginOperationTable extends LoginOperation
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
   }
 
-  final VerificationMeta _completedMeta = const VerificationMeta('completed');
-  GeneratedBoolColumn _completed;
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
+  GeneratedIntColumn _type;
   @override
-  GeneratedBoolColumn get completed => _completed ??= _constructCompleted();
-  GeneratedBoolColumn _constructCompleted() {
-    return GeneratedBoolColumn('completed', $tableName, false,
-        defaultValue: Constant(false));
+  GeneratedIntColumn get type => _type ??= _constructType();
+  GeneratedIntColumn _constructType() {
+    return GeneratedIntColumn('type', $tableName, false,
+        defaultValue: Constant(-1));
+  }
+
+  final VerificationMeta _passMeta = const VerificationMeta('pass');
+  GeneratedTextColumn _pass;
+  @override
+  GeneratedTextColumn get pass => _pass ??= _constructPass();
+  GeneratedTextColumn _constructPass() {
+    return GeneratedTextColumn('pass', $tableName, false,
+        minTextLength: 6, maxTextLength: 6);
   }
 
   @override
-  List<GeneratedColumn> get $columns => [id, completed];
+  List<GeneratedColumn> get $columns => [id, type, pass];
   @override
-  $LoginOperationTable get asDslTable => this;
+  $LoginOperationsTable get asDslTable => this;
   @override
-  String get $tableName => _alias ?? 'login_operation';
+  String get $tableName => _alias ?? 'login_operations';
   @override
-  final String actualTableName = 'login_operation';
+  final String actualTableName = 'login_operations';
   @override
-  VerificationContext validateIntegrity(LoginOperationCompanion d,
+  VerificationContext validateIntegrity(LoginOperationsCompanion d,
       {bool isInserting = false}) {
     final context = VerificationContext();
     if (d.id.present) {
       context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
     }
-    if (d.completed.present) {
-      context.handle(_completedMeta,
-          completed.isAcceptableValue(d.completed.value, _completedMeta));
+    if (d.type.present) {
+      context.handle(
+          _typeMeta, type.isAcceptableValue(d.type.value, _typeMeta));
+    }
+    if (d.pass.present) {
+      context.handle(
+          _passMeta, pass.isAcceptableValue(d.pass.value, _passMeta));
+    } else if (isInserting) {
+      context.missing(_passMeta);
     }
     return context;
   }
@@ -369,26 +396,29 @@ class $LoginOperationTable extends LoginOperation
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  FirstLogin map(Map<String, dynamic> data, {String tablePrefix}) {
+  LoginOperation map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return FirstLogin.fromData(data, _db, prefix: effectivePrefix);
+    return LoginOperation.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  Map<String, Variable> entityToSql(LoginOperationCompanion d) {
+  Map<String, Variable> entityToSql(LoginOperationsCompanion d) {
     final map = <String, Variable>{};
     if (d.id.present) {
       map['id'] = Variable<int, IntType>(d.id.value);
     }
-    if (d.completed.present) {
-      map['completed'] = Variable<bool, BoolType>(d.completed.value);
+    if (d.type.present) {
+      map['type'] = Variable<int, IntType>(d.type.value);
+    }
+    if (d.pass.present) {
+      map['pass'] = Variable<String, StringType>(d.pass.value);
     }
     return map;
   }
 
   @override
-  $LoginOperationTable createAlias(String alias) {
-    return $LoginOperationTable(_db, alias);
+  $LoginOperationsTable createAlias(String alias) {
+    return $LoginOperationsTable(_db, alias);
   }
 }
 
@@ -396,11 +426,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $EventsTable _events;
   $EventsTable get events => _events ??= $EventsTable(this);
-  $LoginOperationTable _loginOperation;
-  $LoginOperationTable get loginOperation =>
-      _loginOperation ??= $LoginOperationTable(this);
+  $LoginOperationsTable _loginOperations;
+  $LoginOperationsTable get loginOperations =>
+      _loginOperations ??= $LoginOperationsTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [events, loginOperation];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [events, loginOperations];
 }

@@ -16,14 +16,15 @@ class Events extends Table {
   BoolColumn get completed => boolean().withDefault(Constant(false))();
 }
 
-@DataClassName('FirstLogin')
-class LoginOperation extends Table {
+class LoginOperations extends Table {
   // autoIncrement automatically sets this to be the primary key
   IntColumn get id => integer().autoIncrement()();
-  BoolColumn get completed => boolean().withDefault(Constant(false))();
+  // 0 - pass, 1 - fingerprint
+  IntColumn get type => integer().withDefault(Constant(-1))();
+  TextColumn get pass => text().withLength(min: 6, max: 6)();
 }
 
-@UseMoor(tables: [Events, LoginOperation])
+@UseMoor(tables: [Events, LoginOperations])
 class AppDatabase extends _$AppDatabase {
   AppDatabase()
       : super(FlutterQueryExecutor.inDatabaseFolder(
@@ -32,14 +33,19 @@ class AppDatabase extends _$AppDatabase {
   @override
   int get schemaVersion => 1;
 
-  Future<List<Event>> getAllEvents() => select(events).get();
-  Stream<List<Event>> watchAllEvents() => select(events).watch();
+  Future<List<LoginOperation>> getAllLoginOperations() =>
+      select(loginOperations).get();
+  Stream<List<LoginOperation>> watchAllLoginOperation() =>
+      select(loginOperations).watch();
 
   // returns the key of the newly added event
   // remove <int> if the return is not usable
-  Future<int> insertEvent(Event event) => into(events).insert(event);
+  Future<int> insertLoginOperation(LoginOperation loginOperation) =>
+      into(loginOperations).insert(loginOperation);
 
-  Future updateEvent(Event event) => update(events).replace(event);
+  Future updateLoginOperation(LoginOperation loginOperation) =>
+      update(loginOperations).replace(loginOperation);
 
-  Future deleteEvent(Event event) => delete(events).delete(event);
+  Future deleteLoginOperation(LoginOperation loginOperation) =>
+      delete(loginOperations).delete(loginOperation);
 }
