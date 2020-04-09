@@ -87,30 +87,39 @@ class _LoginState extends State<Login> {
         }
       });
     }
-    return MaterialApp(
-        home: Scaffold(
-      appBar: AppBar(
-        title: const Text('Plugin example app'),
-      ),
-      body: ConstrainedBox(
-          constraints: const BoxConstraints.expand(),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                if (_availableBiometrics.length != 0) ...[
-                  Text('Login type: '),
+
+    if (_availableBiometrics.length != 0) {
+      return MaterialApp(
+          home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Plugin example app'),
+        ),
+        body: ConstrainedBox(
+            constraints: const BoxConstraints.expand(),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Text(
+                      'Two modes of authentication are available. Choose the one that suits you best.'),
                   RaisedButton(
-                      child: const Text('Biometrics'),
+                      child: Wrap(spacing: 12, children: <Widget>[
+                        Text('Biometrics'),
+                        Icon(Icons.fingerprint),
+                      ]),
                       onPressed: _authenticate),
                   RaisedButton(
-                      child: const Text('Pin'),
+                      child: Wrap(spacing: 12, children: <Widget>[
+                        Text('Pin'),
+                        Icon(Icons.keyboard),
+                      ]),
                       onPressed: () {
                         Navigator.pushNamed(context, "/passCode");
                       }),
                   Text('Current State: $_authorized\n'),
-                ] else
-                  ...[]
-              ])),
-    ));
+                ])),
+      ));
+    } else {
+      Navigator.pushNamed(context, "/passCode");
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plus_time/data/moor_database.dart';
 import 'package:plus_time/passcodeScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:plus_time/datamodels/user_location.dart';
@@ -16,38 +17,41 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<UserLocation>(
-        create: (context) => LocationService().locationStream,
-        child: MaterialApp(
-          title: '+Time',
-          theme: ThemeData(
-            primarySwatch: Colors.lime,
-            primaryColor: const Color(0xFFcddc39),
-            accentColor: const Color(0xFFcddc39),
-            canvasColor: const Color(0xFFfafafa),
-            fontFamily: 'Merriweather',
-            textTheme: TextTheme(
-              headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-              title: TextStyle(
-                  fontSize: 27.0,
-                  color: const Color(0xFF000000),
-                  fontWeight: FontWeight.w200),
-              subtitle: TextStyle(
-                  fontSize: 16.0,
-                  color: const Color(0xFF000000),
-                  fontWeight: FontWeight.w200),
-              body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
-            ),
-          ),
-          initialRoute: '/',
-          routes: {
-            '/': (context) => Home(),
-            '/add_event': (context) => AddEvent(),
-            '/login': (context) => Login(),
-            '/qrModule': (context) => QRCode(),
-            '/settings': (context) => Settings(),
-            '/passCode': (context) => PassCodeScreen()
-          },
-        ));
+    return Provider(
+        create: (_) => AppDatabase(),
+        child: StreamProvider<UserLocation>(
+            create: (context) => LocationService().locationStream,
+            child: MaterialApp(
+              title: '+Time',
+              theme: ThemeData(
+                primarySwatch: Colors.lime,
+                primaryColor: const Color(0xFFcddc39),
+                accentColor: const Color(0xFFcddc39),
+                canvasColor: const Color(0xFFfafafa),
+                fontFamily: 'Merriweather',
+                textTheme: TextTheme(
+                  headline:
+                      TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+                  title: TextStyle(
+                      fontSize: 27.0,
+                      color: const Color(0xFF000000),
+                      fontWeight: FontWeight.w200),
+                  subtitle: TextStyle(
+                      fontSize: 16.0,
+                      color: const Color(0xFF000000),
+                      fontWeight: FontWeight.w200),
+                  body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+                ),
+              ),
+              initialRoute: 'login',
+              routes: {
+                '/': (context) => Home(),
+                '/add_event': (context) => AddEvent(),
+                '/login': (context) => Login(),
+                '/qrModule': (context) => QRCode(),
+                '/settings': (context) => Settings(),
+                '/passCode': (context) => PassCodeScreen()
+              },
+            )));
   }
 }
