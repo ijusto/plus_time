@@ -174,7 +174,18 @@ class _HomePageState extends State<HomePage> {
                     ),
                     title: Text('ComputaçãoMóvel'),
                     subtitle: Text('15h'),
-                    trailing: Icon(Icons.location_on),
+                    trailing: Wrap(
+                      spacing: 30,
+                      children: <Widget>[
+                        Icon(Icons.location_on),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/settings');
+                          },
+                          child: Icon(Icons.play_arrow),
+                        ),
+                      ],
+                    ),
                     children: <Widget>[
                       Container(height: 300, child: MapPage()),
                     ],
