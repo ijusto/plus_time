@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plus_time/map.dart';
 import 'package:provider/provider.dart';
 import 'package:plus_time/datamodels/user_location.dart';
 
@@ -159,6 +160,29 @@ class _HomePageState extends State<HomePage> {
           SliverList(
             delegate: SliverChildListDelegate(widget.projectsOverview),
           ),
+          SliverList(
+              delegate: SliverChildListDelegate([
+            Card(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  ExpansionTile(
+                    leading: Icon(
+                      Icons.error,
+                      size: 56.0,
+                      color: Colors.red,
+                    ),
+                    title: Text('ComputaçãoMóvel'),
+                    subtitle: Text('15h'),
+                    trailing: Icon(Icons.location_on),
+                    children: <Widget>[
+                      Container(height: 300, child: MapPage()),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ])),
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
