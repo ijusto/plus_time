@@ -83,11 +83,7 @@ class _LoginState extends State<Login> {
     if (_canCheckBiometrics == null) {
       _checkBiometrics().then((_) {
         if (_canCheckBiometrics) {
-          _getAvailableBiometrics().then((_) {
-            if (_availableBiometrics.length != 0) {
-              _authenticate().then((_) {});
-            }
-          });
+          _getAvailableBiometrics().then((_) {});
         }
       });
     }
