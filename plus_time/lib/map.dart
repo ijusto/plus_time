@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
+import 'package:plus_time/datamodels/user_location.dart';
+import 'package:provider/provider.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -10,9 +12,10 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
+    var userLocation = Provider.of<UserLocation>(context);
     return new FlutterMap(
       options: new MapOptions(
-        center: new LatLng(51.5, -0.09),
+        center: new LatLng(userLocation.latitude, userLocation.longitude),
         zoom: 13.0,
       ),
       layers: [
@@ -24,10 +27,8 @@ class _MapPageState extends State<MapPage> {
             new Marker(
               width: 80.0,
               height: 80.0,
-              point: new LatLng(51.5, -0.09),
-              builder: (ctx) => new Container(
-                child: new FlutterLogo(),
-              ),
+              point: new LatLng(userLocation.latitude, userLocation.longitude),
+              builder: (ctx) => new Container(child: Icon(Icons.location_on)),
             ),
           ],
         ),
