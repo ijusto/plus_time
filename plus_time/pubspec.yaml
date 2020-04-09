@@ -42,14 +42,18 @@ dependencies:
   device_calendar: ^3.1.0
 
   # used for the settings page
-  preferences: ^4.0.0
+  preferences: ^5.2.0
 
   flutter_map: any
+
+  moor_flutter: ^2.1.1
 
 dev_dependencies:
 
   flutter_test:
     sdk: flutter
+
+  moor_generator: ^2.4.0
 
   test:
 
