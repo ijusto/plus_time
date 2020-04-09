@@ -127,6 +127,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: CustomScrollView(
         slivers: <Widget>[
+          /*
           if (userLocation != null &&
               userLocation.latitude != null &&
               userLocation.longitude != null) ...[
@@ -138,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ]),
             ),
-          ],
+          ],*/
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {

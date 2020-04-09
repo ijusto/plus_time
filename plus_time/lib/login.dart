@@ -3,6 +3,8 @@ import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 
+import 'package:plus_time/passcodeScreen.dart';
+
 /* Based on a tutorial: https://www.youtube.com/watch?v=S1ta90cTxBA */
 
 class Login extends StatefulWidget {
@@ -16,7 +18,10 @@ class _LoginState extends State<Login> {
   List<BiometricType> _availableBiometrics;
   String _authorized = 'Not Authorized';
   bool _isAuthenticating = false;
+  bool _hasBiometricsAuthent;
+  String _passcode;
 
+  // Returns true if device is capable of checking biometrics
   Future<void> _checkBiometrics() async {
     bool canCheckBiometrics;
     try {
@@ -31,6 +36,7 @@ class _LoginState extends State<Login> {
     });
   }
 
+  // Returns a list of enrolled biometrics
   Future<void> _getAvailableBiometrics() async {
     List<BiometricType> availableBiometrics;
     try {
@@ -73,6 +79,18 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    _hasBiometricsAuthent = false;
+    if (_canCheckBiometrics == null) {
+      _checkBiometrics().then((_) {
+        if (_canCheckBiometrics) {
+          _getAvailableBiometrics().then((_) {
+            if (_availableBiometrics.length != 0) {
+              _authenticate().then((_) {});
+            }
+          });
+        }
+      });
+    }
     return MaterialApp(
         home: Scaffold(
       appBar: AppBar(
@@ -83,21 +101,19 @@ class _LoginState extends State<Login> {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                Text('Can check biometrics: $_canCheckBiometrics\n'),
-                RaisedButton(
-                  child: const Text('Check biometrics'),
-                  onPressed: _checkBiometrics,
-                ),
-                Text('Available biometrics: $_availableBiometrics\n'),
-                RaisedButton(
-                  child: const Text('Get available biometrics'),
-                  onPressed: _getAvailableBiometrics,
-                ),
-                Text('Current State: $_authorized\n'),
-                RaisedButton(
-                  child: Text('Authenticate'),
-                  onPressed: _authenticate,
-                )
+                if (_availableBiometrics.length != 0) ...[
+                  Text('Login type: '),
+                  RaisedButton(
+                      child: const Text('Biometrics'),
+                      onPressed: _authenticate),
+                  RaisedButton(
+                      child: const Text('Pin'),
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/passCode");
+                      }),
+                  Text('Current State: $_authorized\n'),
+                ] else
+                  ...[]
               ])),
     ));
   }

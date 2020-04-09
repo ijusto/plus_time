@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plus_time/passcodeScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:plus_time/datamodels/user_location.dart';
 import 'package:plus_time/settings.dart';
@@ -44,7 +45,8 @@ class MyApp extends StatelessWidget {
             '/add_event': (context) => AddEvent(),
             '/login': (context) => Login(),
             '/qrModule': (context) => QRCode(),
-            '/settings': (context) => Settings()
+            '/settings': (context) => Settings(),
+            '/passCode': (context) => PassCodeScreen()
           },
         ));
   }
