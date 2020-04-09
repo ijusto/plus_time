@@ -20,7 +20,7 @@ class _LoginState extends State<Login> {
   String _authorized = 'Not Authorized';
   bool _isAuthenticating = false;
   bool _hasBiometricsAuthent;
-  bool beforeLogin = true;
+  bool passSetUp = false;
 
   final StreamController<bool> _verificationNotifier =
       StreamController<bool>.broadcast();
@@ -88,6 +88,7 @@ class _LoginState extends State<Login> {
       _authorized = message;
       if (authenticated) {
         _onAuthenticationSuccessful();
+        Navigator.pushNamed(context, '/');
       }
     });
   }
@@ -149,31 +150,6 @@ class _LoginState extends State<Login> {
                                         Colors.black.withOpacity(0.8),
                                     cancelCallback: _onPasscodeCancelled,
                                   )));
-                    } else {
-                      Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            opaque: false,
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) =>
-                                    PasscodeScreen(
-                              title: 'Enter App Passcode',
-                              circleUIConfig: CircleUIConfig(
-                                  borderColor: Colors.blue,
-                                  fillColor: Colors.blue,
-                                  circleSize: 30),
-                              keyboardUIConfig: KeyboardUIConfig(
-                                  digitBorderWidth: 2,
-                                  primaryColor: Colors.blue),
-                              passwordEnteredCallback: _onPasscodeEntered,
-                              cancelLocalizedText: 'Cancel',
-                              deleteLocalizedText: 'Delete',
-                              shouldTriggerVerification:
-                                  _verificationNotifier.stream,
-                              backgroundColor: Colors.black.withOpacity(0.8),
-                              cancelCallback: _onPasscodeCancelled,
-                            ),
-                          ));
                     }
                   });
                 })
@@ -243,28 +219,33 @@ class _LoginState extends State<Login> {
   }
 
   _onNewPassEntered(String enteredPasscode) {
-    _setPassCode(enteredPasscode);
-    _onPasscodeEntered(enteredPasscode);
-    Navigator.push(
-        context,
-        PageRouteBuilder(
+    if (!passSetUp) {
+      _setPassCode(enteredPasscode);
+      _onPasscodeEntered(enteredPasscode);
+      passSetUp = true;
+      Navigator.of(context).pop();
+      Navigator.push(
+          context,
+          PageRouteBuilder(
             opaque: false,
             pageBuilder: (context, animation, secondaryAnimation) =>
                 PasscodeScreen(
-                  title: 'Enter App Passcode',
-                  circleUIConfig: CircleUIConfig(
-                      borderColor: Colors.blue,
-                      fillColor: Colors.blue,
-                      circleSize: 30),
-                  keyboardUIConfig: KeyboardUIConfig(
-                      digitBorderWidth: 2, primaryColor: Colors.blue),
-                  passwordEnteredCallback: _onPasscodeEntered,
-                  cancelLocalizedText: 'Cancel',
-                  deleteLocalizedText: 'Delete',
-                  shouldTriggerVerification: _verificationNotifier.stream,
-                  backgroundColor: Colors.black.withOpacity(0.8),
-                  cancelCallback: _onPasscodeCancelled,
-                )));
+              title: 'Enter App Passcode',
+              circleUIConfig: CircleUIConfig(
+                  borderColor: Colors.blue,
+                  fillColor: Colors.blue,
+                  circleSize: 30),
+              keyboardUIConfig: KeyboardUIConfig(
+                  digitBorderWidth: 2, primaryColor: Colors.blue),
+              passwordEnteredCallback: _onPasscodeEntered,
+              cancelLocalizedText: 'Cancel',
+              deleteLocalizedText: 'Delete',
+              shouldTriggerVerification: _verificationNotifier.stream,
+              backgroundColor: Colors.black.withOpacity(0.8),
+              cancelCallback: _onPasscodeCancelled,
+            ),
+          ));
+    }
   }
 
   _onPasscodeEntered(String enteredPasscode) {
@@ -279,6 +260,9 @@ class _LoginState extends State<Login> {
       setState(() {
         this.isAuthenticated = isValid;
         _onAuthenticationSuccessful();
+        if (passSetUp) {
+          Navigator.pushNamed(context, '/');
+        }
       });
     }
   }
