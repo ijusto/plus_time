@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
                   body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
                 ),
               ),
-              initialRoute: 'login',
+              initialRoute: '/', //'/login',
               routes: {
                 '/': (context) => Home(),
                 '/add_event': (context) => AddEvent(),

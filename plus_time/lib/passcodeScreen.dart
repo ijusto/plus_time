@@ -20,24 +20,24 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
 
   bool isAuthenticated = false;
 
-  _setPassCode(String passCode) {
+  void _setPassCode(String passCode) {
     password = passCode;
   }
 
   @override
   Widget build(BuildContext context) {
-    //return Scaffold(
-    //body: Center(
-    //child: Column(
-    //mainAxisAlignment: MainAxisAlignment.center,
-    //children: <Widget>[
-    //Text('You are ${isAuthenticated ? '' : 'NOT'} authenticated'),
-    //_defaultLockScreenButton(context),
-    _customColorsLockScreenButton(context);
-    //],
-    //),
-    //),
-    //);
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text('You are ${isAuthenticated ? '' : 'NOT'} authenticated'),
+            //_defaultLockScreenButton(context),
+            _customColorsLockScreenButton(context) //;
+          ],
+        ),
+      ),
+    );
   }
 
   _defaultLockScreenButton(BuildContext context) => MaterialButton(
@@ -52,29 +52,35 @@ class _PassCodeScreenState extends State<PassCodeScreen> {
         },
       );
 
-  _customColorsLockScreenButton(BuildContext context) {
-    //BuildContext context) => MaterialButton(
-    //color: Theme.of(context).primaryColor,
-    //child: Text('Open Custom Lock Screen'),
-    //onPressed: () {
-    if (password == null) {
-      _showLockScreenSetUp(context,
-          opaque: false,
-          circleUIConfig: CircleUIConfig(
-              borderColor: Colors.blue, fillColor: Colors.blue, circleSize: 30),
-          keyboardUIConfig:
-              KeyboardUIConfig(digitBorderWidth: 2, primaryColor: Colors.blue));
-    } else {
-      _showLockScreen(context,
-          opaque: false,
-          circleUIConfig: CircleUIConfig(
-              borderColor: Colors.blue, fillColor: Colors.blue, circleSize: 30),
-          keyboardUIConfig:
-              KeyboardUIConfig(digitBorderWidth: 2, primaryColor: Colors.blue));
-    }
-    //},
-    //);
-  }
+  _customColorsLockScreenButton(
+          //BuildContext context) {
+          BuildContext context) =>
+      MaterialButton(
+        color: Theme.of(context).primaryColor,
+        child: Text('Open Custom Lock Screen'),
+        onPressed: () {
+          if (password == null) {
+            _showLockScreenSetUp(context,
+                opaque: false,
+                circleUIConfig: CircleUIConfig(
+                    borderColor: Colors.blue,
+                    fillColor: Colors.blue,
+                    circleSize: 30),
+                keyboardUIConfig: KeyboardUIConfig(
+                    digitBorderWidth: 2, primaryColor: Colors.blue));
+          } else {
+            _showLockScreen(context,
+                opaque: false,
+                circleUIConfig: CircleUIConfig(
+                    borderColor: Colors.blue,
+                    fillColor: Colors.blue,
+                    circleSize: 30),
+                keyboardUIConfig: KeyboardUIConfig(
+                    digitBorderWidth: 2, primaryColor: Colors.blue));
+          }
+        },
+      );
+  //}
 
   _showLockScreen(BuildContext context,
       {bool opaque,
