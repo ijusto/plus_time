@@ -146,10 +146,6 @@ class _LoginState extends State<Login> {
 
   bool isAuthenticated = false;
 
-  void _setPassCode(String passCode) {
-    password = passCode;
-  }
-
   // Returns true if device is capable of checking biometrics
   Future<void> _checkBiometrics() async {
     bool canCheckBiometrics;
@@ -183,18 +179,18 @@ class _LoginState extends State<Login> {
   Future<void> _authenticate() async {
     bool authenticated = false;
     try {
-      setState(() {
-        _isAuthenticating = true;
-        _authorized = 'Authenticating';
-      });
+      //setState(() {
+      //  _isAuthenticating = true;
+      //  _authorized = 'Authenticating';
+      //});
       authenticated = await auth.authenticateWithBiometrics(
           localizedReason: 'Scan your fingerprint to authenticate',
           useErrorDialogs: true,
           stickyAuth: true);
-      setState(() {
-        _isAuthenticating = false;
-        _authorized = 'Authenticating';
-      });
+      //setState(() {
+      //  _isAuthenticating = false;
+      //  _authorized = 'Authenticating';
+      //});
     } on PlatformException catch (e) {
       print(e);
     }
@@ -255,7 +251,7 @@ class _LoginState extends State<Login> {
               SetPinButton()
             ]
           ])));
-    } else {
+    } else if (_authorized != 'Not Authorized') {
       rt = Scaffold(
           body: Center(
               child: Column(
