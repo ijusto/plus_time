@@ -11,7 +11,7 @@ class ProjectsInfo {
   int _selectedCalendarIndex;
   Calendar _selectedCalendar;
 
-  Map<String, int> projects = Map<String, int>();
+  Map<String, double> projects = Map<String, double>();
   List<Card> projectCards = List<Card>();
 
   List<Card> get getProjectCards => projectCards;
@@ -89,6 +89,7 @@ class ProjectsInfo {
   /* Projects Logic */
   Future _parseEventsIntoProjects() async {
     if (!isLoading) {
+      projects.clear();
       for (int i = 0; i < _calendarEvents.length; i++) {
         Event calendarEvent = _calendarEvents[i];
 
@@ -127,7 +128,8 @@ class ProjectsInfo {
     average /= projects.keys.length;
 
     /* create list of cards */
-
+    projectCards.clear();
+    
     for (var project in projects.keys) {
       if (projects[project] < 0.2 * average) {
         // YELLOW
