@@ -3,6 +3,7 @@ import 'package:plus_time/data/moor_database.dart';
 import 'package:provider/provider.dart';
 import 'package:plus_time/datamodels/user_location.dart';
 import 'package:plus_time/settings.dart';
+import 'services/load_calendars.dart';
 import 'services/locationService.dart';
 import 'add_event.dart';
 import 'login.dart';
@@ -16,8 +17,12 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Provider(
-        create: (_) => AppDatabase(),
+ 
+    return MultiProvider(
+      providers: [
+        Provider(create: (_) => AppDatabase()),
+        Provider(create: (_) => ProjectsInfo()),
+      ],
         child: StreamProvider<UserLocation>(
             create: (context) => LocationService().locationStream,
             child: MaterialApp(

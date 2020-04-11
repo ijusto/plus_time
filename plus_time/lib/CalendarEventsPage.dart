@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/material.dart';
-import 'event_item.dart';
+import 'device_calendar_ex/event_item.dart';
 
 import 'CalendarEventPage.dart';
-import 'RecurringEventDialog.dart';
+import 'device_calendar_ex/RecurringEventDialog.dart';
 
 class CalendarEventsPage extends StatefulWidget {
   final Calendar _calendar;
