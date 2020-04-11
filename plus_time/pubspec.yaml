@@ -25,9 +25,13 @@ dependencies:
   cupertino_icons: ^0.1.2
 
   # dependency for qrcode scanner
-  # path_provider: ^1.6.5
   barcode_scan: 
+
+  # dependency for qrcode generator
   qr_flutter: ^3.2.0
+
+  # dependency for sharing info
+  share_extend:
 
   # dependency for face id/fingerprint authentication
   local_auth: ^0.6.1+3

@@ -45,6 +45,10 @@
 	<key>NSCalendarsUsageDescription</key>
 	<string>This app needs to access the calendars od the device, so the user doesn't need to use one more calendar.</string>
 
+	<!-- -->
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This app needs access to write photo library for sharing events purposes.</string>
+
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

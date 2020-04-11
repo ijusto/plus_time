@@ -7,6 +7,7 @@ import 'dart:ui';
 import 'dart:io';
 import 'package:flutter/rendering.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:share_extend/share_extend.dart';
 
 class GenerateScreen extends StatefulWidget {
   final String eventData;
@@ -52,17 +53,23 @@ class GenerateScreenState extends State<GenerateScreen> {
           globalKey.currentContext.findRenderObject();
       var image = await boundary.toImage();
       ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
-      Uint8List pngBytes = byteData.buffer.asUint8List();
-
-      final tempDir = await getTemporaryDirectory();
-      final file = await new File('${tempDir.path}/image.png').create();
-      await file.writeAsBytes(pngBytes);
-
-      final channel = const MethodChannel('channel:me.alfian.share/share');
-      channel.invokeMethod('shareFile', 'image.png');
+      //Uint8List pngBytes = byteData.buffer.asUint8List();
+      String fp = await _writeByteToImageFile(byteData);
+      ShareExtend.share(fp, "image");
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  Future<String> _writeByteToImageFile(ByteData byteData) async {
+    Directory dir = Platform.isAndroid
+        ? await getExternalStorageDirectory()
+        : await getApplicationDocumentsDirectory();
+    File imageFile = new File(
+        "${dir.path}/flutter/${DateTime.now().millisecondsSinceEpoch}.png");
+    imageFile.createSync(recursive: true);
+    imageFile.writeAsBytesSync(byteData.buffer.asUint8List(0));
+    return imageFile.path;
   }
 
   _contentWidget() {
@@ -118,6 +125,7 @@ class GenerateScreenState extends State<GenerateScreen> {
                 child: QrImage(
                   data: _dataString,
                   size: 0.5 * bodyHeight,
+                  backgroundColor: Colors.white,
                   //onError: (ex) {
                   //  print("[QR] ERROR - $ex");
                   //  setState(() {
