@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pie_chart/pie_chart.dart';
 import 'package:plus_time/generate.dart';
 import 'package:plus_time/map.dart';
 import 'package:provider/provider.dart';
@@ -200,6 +201,59 @@ class _HomePageState extends State<HomePage> {
                       child: Text(
                         litems2[index],
                         style: Theme.of(context).textTheme.title,
+                      ),
+                    ),
+                  ),
+                );
+              },
+              childCount: litems2.length,
+            ),
+          ),
+          if (widget.projectCards != null && widget.projectCards.length != 0) 
+            SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return Container(
+                  child: new Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Center(
+                      child: PieChart(
+                        dataMap: widget.projectsInfo.projects,
+                        animationDuration: Duration(milliseconds: 800),
+                        chartLegendSpacing: 32.0,
+                        chartRadius: MediaQuery.of(context).size.width / 2.7,
+                        showChartValuesInPercentage: true,
+                        showChartValues: true,
+                        showChartValuesOutside: false,
+                        chartValueBackgroundColor: Colors.grey[200],
+                        showLegends: true,
+                        legendPosition: LegendPosition.right,
+                        decimalPlaces: 1,
+                        showChartValueLabel: true,
+                        initialAngle: 0,
+                        chartValueStyle: defaultChartValueStyle.copyWith(
+                          color: Colors.blueGrey[900].withOpacity(0.9),
+                        ),
+                            chartType: ChartType.ring,
+                        ),
+                    ),
+                  ),
+                );
+              },
+              childCount: litems2.length,
+            ),
+          ),
+          if (widget.projectCards == null || widget.projectCards.length == 0)  
+            SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return Container(
+                  child: new Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Center(
+                      child: Text(
+                        "Statistics not available",
+                        style: Theme.of(context).textTheme.subtitle,
                       ),
                     ),
                   ),
