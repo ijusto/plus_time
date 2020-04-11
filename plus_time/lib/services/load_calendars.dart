@@ -6,7 +6,7 @@ class ProjectsInfo {
 
   List<Calendar> calendars = List<Calendar>();
   List<Event> _calendarEvents = List<Event>();
-  bool _isLoading;
+  bool isLoading;
 
   int _selectedCalendarIndex;
   Calendar _selectedCalendar;
@@ -15,9 +15,9 @@ class ProjectsInfo {
   List<Card> projectCards = List<Card>();
 
   ProjectsInfo() {
-    _isLoading = true;
+    isLoading = true;
     _deviceCalendarPlugin = new DeviceCalendarPlugin();
-    _selectedCalendarIndex = 1;
+    _selectedCalendarIndex = 0;
   }
 
   /* Calendar Logic */
@@ -71,7 +71,7 @@ class ProjectsInfo {
     var calendarEventsResult = await _deviceCalendarPlugin.retrieveEvents(
         _selectedCalendar.id,
         RetrieveEventsParams(startDate: startDate, endDate: endDate));
-    _isLoading = false;
+    isLoading = false;
     print("events : " + calendarEventsResult?.data.toString());
     for (Event ev in calendarEventsResult?.data) {
       _calendarEvents.add(ev);
@@ -86,36 +86,38 @@ class ProjectsInfo {
 
   /* Projects Logic */
   Future _parseEventsIntoProjects() async {
-    if (!_isLoading) {
+    if (!isLoading) {
       for (int i = 0; i < _calendarEvents.length; i++) {
         Event calendarEvent = _calendarEvents[i];
 
         /* Obtain project name */
         String calendarEventName = calendarEvent.title;
-        List<String> splittedName = calendarEventName.split("\s");
-        if (!splittedName[0].startsWith("#")) {
-          break; // ignores event
-        }
+        List<String> splittedName = calendarEventName.split(" ");
+        
+        if (splittedName[0].startsWith("#")) {
+            String projectName = splittedName[0];
 
-        String projectName = splittedName[0];
+            /* Compute duration */
+            Duration duration = calendarEvent.end.difference(calendarEvent.start);
+            int durationHours = duration.inHours;
 
-        /* Compute duration */
-        Duration duration = calendarEvent.end.difference(calendarEvent.start);
-        int durationHours = duration.inHours;
-
-        /* Update project info */
-        if (projects.containsKey(projectName)) {
-          int currentValue = projects.remove(projectName);
-          projects[projectName] = currentValue + durationHours;
-        } else {
-          projects[projectName] = durationHours;
+            /* Update project info */
+            if (projects.containsKey(projectName)) {
+              int currentValue = projects.remove(projectName);
+              projects[projectName] = currentValue + durationHours;
+            } else {
+              projects[projectName] = durationHours;
+            }
         }
       }
+      print(projects);
     }
   }
 
   Future<List<Card>> obtainProjectCards() async {
+    print("Going to parse");
     await _parseEventsIntoProjects();
+    print("Parsed");
 
     /* compute average value */
     double average = 0;
@@ -169,6 +171,8 @@ class ProjectsInfo {
         ));
       }
     }
+    print(projectCards);
+    projectCards.forEach((card) => print(card.child));
     return projectCards;
   }
 }

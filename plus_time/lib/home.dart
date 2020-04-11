@@ -20,11 +20,14 @@ class Home extends StatelessWidget {
     projectInfo.retriveCalendars().then((selected_calendar) {
       print("Selected calendar: " + selected_calendar.name);
       projectInfo.obtainProjectCards().then((pcards) {
+        print("PCARDS: $pcards");
         projectCards = pcards;
       });
     });
+    //while (projectInfo.isLoading) print("."); // BUSY WAITING; WONT WORK
     print("--- $projectInfo");
     print("BYE $projectCards");
+    print("");
     return Scaffold(
       body: HomePage(
           projectsInfo: projectInfo, projectCards: projectInfo.projectCards),
