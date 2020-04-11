@@ -14,6 +14,8 @@ class ProjectsInfo {
   Map<String, int> projects = Map<String, int>();
   List<Card> projectCards = List<Card>();
 
+  List<Card> get getProjectCards => projectCards;
+
   ProjectsInfo() {
     isLoading = true;
     _deviceCalendarPlugin = new DeviceCalendarPlugin();

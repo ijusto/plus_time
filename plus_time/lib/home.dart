@@ -26,11 +26,11 @@ class Home extends StatelessWidget {
     });
     //while (projectInfo.isLoading) print("."); // BUSY WAITING; WONT WORK
     print("--- $projectInfo");
-    print("BYE $projectCards");
+    print("BYE ${projectInfo.getProjectCards}");
     print("");
     return Scaffold(
       body: HomePage(
-          projectsInfo: projectInfo, projectCards: projectInfo.projectCards),
+          projectsInfo: projectInfo, projectCards: projectInfo.getProjectCards),
     );
   }
 }
