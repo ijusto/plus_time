@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plus_time/generate.dart';
 import 'package:plus_time/map.dart';
 import 'package:provider/provider.dart';
 import 'package:plus_time/datamodels/user_location.dart';
@@ -181,6 +182,12 @@ class _HomePageState extends State<HomePage> {
                         Icon(Icons.location_on),
                         GestureDetector(
                           onTap: () {
+                            createAlertDialog(context);
+                          },
+                          child: Icon(Icons.share),
+                        ),
+                        GestureDetector(
+                          onTap: () {
                             Navigator.pushNamed(context, '/settings');
                           },
                           child: Icon(Icons.play_arrow),
@@ -245,5 +252,33 @@ class _HomePageState extends State<HomePage> {
         child: Icon(Icons.event),
       ),
     );
+  }
+
+  Future createAlertDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              title: Text("Do you want to share this event?"),
+              actions: <Widget>[
+                MaterialButton(
+                    elevation: 5.0,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                GenerateScreen(eventData: "eventData")),
+                      );
+                    },
+                    child: Text("Yes")),
+                MaterialButton(
+                    elevation: 5.0,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text("Cancel"))
+              ]);
+        });
   }
 }

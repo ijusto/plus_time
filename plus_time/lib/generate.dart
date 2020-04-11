@@ -9,22 +9,29 @@ import 'package:flutter/rendering.dart';
 import 'package:path_provider/path_provider.dart';
 
 class GenerateScreen extends StatefulWidget {
+  final String eventData;
+
+  GenerateScreen({Key key, @required this.eventData}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => GenerateScreenState();
 }
 
 class GenerateScreenState extends State<GenerateScreen> {
+  /*
   static const double _topSectionTopPadding = 50.0;
   static const double _topSectionBottomPadding = 20.0;
   static const double _topSectionHeight = 50.0;
-
+  */
   GlobalKey globalKey = new GlobalKey();
   String _dataString = "Hello from this QR";
-  String _inputErrorText;
-  final TextEditingController _textController = TextEditingController();
+
+  // String _inputErrorText;
+  // final TextEditingController _textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    _dataString = widget.eventData;
     return Scaffold(
       appBar: AppBar(
         title: Text('QR Code Generator'),
@@ -65,6 +72,7 @@ class GenerateScreenState extends State<GenerateScreen> {
       color: const Color(0xFFFFFFFF),
       child: Column(
         children: <Widget>[
+          /*
           Padding(
             padding: const EdgeInsets.only(
               top: _topSectionTopPadding,
@@ -102,7 +110,7 @@ class GenerateScreenState extends State<GenerateScreen> {
                 ],
               ),
             ),
-          ),
+          ),*/
           Expanded(
             child: Center(
               child: RepaintBoundary(

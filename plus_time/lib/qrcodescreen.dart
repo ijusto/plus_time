@@ -37,15 +37,36 @@ class HomeScreen extends StatelessWidget {
                 textColor: Colors.white,
                 splashColor: Colors.blueGrey,
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => GenerateScreen()),
-                  );
+                  createAlertDialog(context);
                 },
                 child: const Text('GENERATE QR CODE')),
           ),
         ],
       )),
     );
+  }
+
+  Future createAlertDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              title: Text("Do you want to share this event?"),
+              actions: <Widget>[
+                MaterialButton(
+                    elevation: 5.0,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                GenerateScreen(eventData: "eventData")),
+                      );
+                    },
+                    child: Text("Yes")),
+                MaterialButton(
+                    elevation: 5.0, onPressed: () {}, child: Text("Cancel"))
+              ]);
+        });
   }
 }
