@@ -102,11 +102,11 @@ class ProjectsInfo {
 
             /* Compute duration */
             Duration duration = calendarEvent.end.difference(calendarEvent.start);
-            int durationHours = duration.inHours;
+            double durationHours = duration.inHours.toDouble();
 
             /* Update project info */
             if (projects.containsKey(projectName)) {
-              int currentValue = projects.remove(projectName);
+              double currentValue = projects.remove(projectName);
               projects[projectName] = currentValue + durationHours;
             } else {
               projects[projectName] = durationHours;
@@ -141,7 +141,7 @@ class ProjectsInfo {
               color: Colors.red,
             ),
             title: Text(project),
-            subtitle: Text(projects[project].toString()),
+            subtitle: Text(projects[project].toString() + " hours"),
             trailing: Icon(Icons.play_arrow),
           ),
         ));
@@ -155,7 +155,7 @@ class ProjectsInfo {
               color: Colors.amber,
             ),
             title: Text(project),
-            subtitle: Text(projects[project].toString()),
+            subtitle: Text(projects[project].toString() + " hours"),
             trailing: Icon(Icons.play_arrow),
           ),
         ));
@@ -169,7 +169,7 @@ class ProjectsInfo {
               color: Colors.green,
             ),
             title: Text(project),
-            subtitle: Text(projects[project].toString()),
+            subtitle: Text(projects[project].toString() + " hours"),
             trailing: Icon(Icons.play_arrow),
           ),
         ));
