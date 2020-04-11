@@ -14,35 +14,37 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ProjectsInfo projectInfo;
-     List<Card> projectCards;
-      projectInfo = Provider.of<ProjectsInfo>(context);
-          print("HELLO?");
-          projectInfo.updateCalendarInfo().then((_) {});
-          print("HELLO 2");
-          projectInfo.obtainProjectCards().then((_) {});
-          print("--- $projectInfo");
-          projectCards = projectInfo.projectCards;
-          print("BYE $projectCards");
+    List<Card> projectCards;
+    projectInfo = Provider.of<ProjectsInfo>(context);
+    print("HELLO?");
+    projectInfo.retriveCalendars().then((selected_calendar) {
+      print("Selected calendar: " + selected_calendar.name);
+      projectInfo.obtainProjectCards().then((pcards) {
+        projectCards = pcards;
+      });
+    });
+    print("--- $projectInfo");
+    print("BYE $projectCards");
     return Scaffold(
-      body: HomePage(),
+      body: HomePage(
+          projectsInfo: projectInfo, projectCards: projectInfo.projectCards),
     );
-  } 
+  }
 }
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.projectsInfo, this.projectCards}) : super(key: key);
-  
+
   final ProjectsInfo projectsInfo;
   final List<Card> projectCards;
-  
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  
-  
+
   List<String> litems = [
     "What should I do next?",
   ];
@@ -51,13 +53,10 @@ class _HomePageState extends State<HomePage> {
   ];
 
   /* Events Handlers */
-  void _addEvent() {
-    
-  }
+  void _addEvent() {}
 
   void _onItemTapped(int index) {
     setState(() {
-      
       _selectedIndex = index;
       print("Selected index is $_selectedIndex");
       switch (_selectedIndex) {
@@ -81,7 +80,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var userLocation = Provider.of<UserLocation>(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text('+Time'),
@@ -119,9 +118,11 @@ class _HomePageState extends State<HomePage> {
               childCount: litems.length,
             ),
           ),
-          SliverList(
-            delegate: SliverChildListDelegate(widget.projectCards),
-          ),
+          if (widget.projectCards != null) ...[
+            SliverList(
+              delegate: SliverChildListDelegate(widget.projectCards),
+            )
+          ],
           /*
           SliverList(
               delegate: SliverChildListDelegate([
