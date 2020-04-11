@@ -25,7 +25,7 @@ dependencies:
   cupertino_icons: ^0.1.2
 
   # dependency for qrcode scanner
-  path_provider: ^1.6.5
+  # path_provider: ^1.6.5
   barcode_scan: 
   qr_flutter: ^3.2.0
 
