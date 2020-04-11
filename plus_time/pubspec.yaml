@@ -52,6 +52,8 @@ dependencies:
 
   flutter_map: 0.8.0
 
+  geocoder: ^0.2.1
+
   moor_flutter: ^2.1.1
 
   passcode_screen: ^1.0.2

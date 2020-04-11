@@ -19,7 +19,7 @@ class Home extends StatelessWidget {
     print("HELLO?");
     projectInfo.retriveCalendars().then((selected_calendar) {
       print("Selected calendar: " + selected_calendar.name);
-      projectInfo.obtainProjectCards().then((pcards) {
+      projectInfo.obtainProjectCards(context).then((pcards) {
         print("PCARDS: $pcards");
         projectCards = pcards;
       });
@@ -263,7 +263,7 @@ class _HomePageState extends State<HomePage> {
                 MaterialButton(
                     elevation: 5.0,
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.of(context).pop();
                     },
                     child: Text("Cancel"))
               ]);
