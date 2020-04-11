@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:collection/collection.dart';
 
-import 'RecurringEventDialog.dart';
-import 'event_attendee.dart';
-import 'event_reminders.dart';
-import 'date_time_picker.dart';
+import 'device_calendar_ex/RecurringEventDialog.dart';
+import 'device_calendar_ex/event_attendee.dart';
+import 'device_calendar_ex/event_reminders.dart';
+import 'device_calendar_ex/date_time_picker.dart';
 
 enum RecurrenceRuleEndType { Indefinite, MaxOccurrences, SpecifiedEndDate }
 
