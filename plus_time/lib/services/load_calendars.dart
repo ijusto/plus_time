@@ -15,7 +15,7 @@ class ProjectsInfo {
   int _selectedCalendarIndex;
   Calendar _selectedCalendar;
 
-  Map<String, int> projects = Map<String, int>();
+  Map<String, double> projects = Map<String, double>();
   List<Card> projectCards = List<Card>();
   Map<int, List<Location>> projectLocations = Map<int, List<Location>>();
 
@@ -94,6 +94,7 @@ class ProjectsInfo {
   /* Projects Logic */
   Future _parseEventsIntoProjects() async {
     if (!isLoading) {
+      projects.clear();
       for (int i = 0; i < _calendarEvents.length; i++) {
         Event calendarEvent = _calendarEvents[i];
 
@@ -106,11 +107,12 @@ class ProjectsInfo {
 
           /* Compute duration */
           Duration duration = calendarEvent.end.difference(calendarEvent.start);
-          int durationHours = duration.inHours;
+          double durationHours = duration.inHours.toDouble();
+          ;
 
           /* Update project info */
           if (projects.containsKey(projectName)) {
-            int currentValue = projects.remove(projectName);
+            double currentValue = projects.remove(projectName);
             projects[projectName] = currentValue + durationHours;
           } else {
             projects[projectName] = durationHours;
@@ -132,7 +134,10 @@ class ProjectsInfo {
     average /= projects.keys.length;
 
     /* create list of cards */
+
     int projectIndex = -1;
+    projectCards.clear();
+
     for (var project in projects.keys) {
       projectIndex++;
       List<Location> locations = List<Location>();
@@ -165,11 +170,7 @@ class ProjectsInfo {
       projectLocations[projectIndex] = locations;
       Icon ic;
       if (projects[project] < 0.2 * average) {
-        ic = Icon(
-          Icons.error,
-          size: 56.0,
-          color: Colors.red,
-        );
+        ic = Icon(Icons.error, size: 56.0, color: Colors.red);
       } else if (projects[project] < 0.5 * average) {
         ic = Icon(
           Icons.warning,

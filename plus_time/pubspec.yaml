@@ -50,13 +50,17 @@ dependencies:
   # used for the settings page
   preferences: ^5.2.0
 
+  # use map 
   flutter_map: 0.8.0
 
   geocoder: ^0.2.1
 
   moor_flutter: ^2.1.1
-
+  
+  # used for login page
   passcode_screen: ^1.0.2
+
+  pie_chart: 
 
 dev_dependencies:
 
