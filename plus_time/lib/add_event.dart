@@ -9,6 +9,7 @@ import 'device_calendar_ex/RecurringEventDialog.dart';
 import 'device_calendar_ex/event_attendee.dart';
 import 'device_calendar_ex/event_reminders.dart';
 import 'device_calendar_ex/date_time_picker.dart';
+import 'home.dart';
 import 'services/load_calendars.dart';
 
 enum RecurrenceRuleEndType { Indefinite, MaxOccurrences, SpecifiedEndDate }
@@ -19,18 +20,9 @@ class AddEvent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ProjectsInfo projectInfo = Provider.of<ProjectsInfo>(context);
-    print("HELLO FROM ADD EVENT?");
-    projectInfo.retriveCalendars().then((selected_calendar) {
-      print("Selected calendar: " + selected_calendar.name);
-    });
-    //while (projectInfo.isLoading) print("."); // BUSY WAITING; WONT WORK
-    print("--- $projectInfo");
-    print("BYE ${projectInfo.getProjectCards}");
-    print("");
+    print("HELLO FROM ADD EVENT? CALENDAR IS " + projectInfo.selectedCalendar.name);
     return Scaffold(
-      body: AddEventPage(
-          projectInfo: projectInfo),
-    );
+      body: AddEventPage(projectInfo: projectInfo), );
   }
 }
 
@@ -40,7 +32,7 @@ class AddEventPage extends StatefulWidget {
   final ProjectsInfo projectInfo;
 
   @override
-  _AddEventState createState() => _AddEventState();
+  _AddEventState createState() => _AddEventState(projectInfo);
 }
 
 class _AddEventState extends State<AddEventPage> {
@@ -78,9 +70,9 @@ class _AddEventState extends State<AddEventPage> {
   List<Attendee> _attendees = List<Attendee>();
   List<Reminder> _reminders = List<Reminder>();
 
-  _AddEventState() {
+  _AddEventState(ProjectsInfo projectInfo) {
     _deviceCalendarPlugin = DeviceCalendarPlugin();
-    _calendar = widget.projectInfo.selectedCalendar;
+    _calendar = projectInfo.selectedCalendar;
     _recurringEventDialog = this._recurringEventDialog;
     _attendees = List<Attendee>();
     _reminders = List<Reminder>();
@@ -154,10 +146,8 @@ class _AddEventState extends State<AddEventPage> {
 
   @override
   Widget build(BuildContext context) {
-
-    ProjectsInfo projectInfo = Provider.of<ProjectsInfo>(context);
-    _calendar = projectInfo.selectedCalendar;
-
+    _calendar = widget.projectInfo.selectedCalendar;
+    int _selectedIndex = 1;
 
     return Scaffold(
         key: _scaffoldKey,
@@ -769,7 +759,52 @@ class _AddEventState extends State<AddEventPage> {
             },
             child: Icon(Icons.check),
           ),
-        ));
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            title: Text('Add Event'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.import_export),
+            title: Text('Import/export'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.exit_to_app),
+            title: Text('Logout'),
+          ),
+          
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Theme.of(context).disabledColor,
+        onTap: (int index) {
+          setState(() {
+            _selectedIndex = index;
+            print("Selected index is $_selectedIndex");
+            switch (_selectedIndex) {
+              case 0: // Home
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Home(Provider.of<ProjectsInfo>(context))));
+                break;
+              case 1: // Add Event
+                Navigator.pushNamed(context, '/add_event');
+                break;
+              case 2: // Import/export
+                Navigator.pushNamed(context, '/qrModule');
+                break;
+              case 3: // Logout
+                Navigator.pushNamed(context, '/login');
+                break;
+            }
+          });
+        },
+      ),
+    );
   }
 
   Text _recurrenceFrequencyToText(RecurrenceFrequency recurrenceFrequency) {

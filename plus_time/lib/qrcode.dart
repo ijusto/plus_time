@@ -2,6 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+
+import 'home.dart';
+import 'services/load_calendars.dart';
 
 /* Based on a tutorial: https://www.youtube.com/watch?v=siuJhQ9BqsU */
 
@@ -84,7 +88,7 @@ class _QRCodeState extends State<QRCode> {
             print("Selected index is $_selectedIndex");
             switch (_selectedIndex) {
               case 0: // Home
-                Navigator.pushNamed(context, '/');
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Home(Provider.of<ProjectsInfo>(context))));
                 break;
               case 1: // Add Event
                 Navigator.pushNamed(context, '/add_event');
