@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:plus_time/generate.dart';
 import 'package:plus_time/map.dart';
+import 'package:plus_time/services/locationService.dart';
 import 'package:provider/provider.dart';
 import 'package:plus_time/datamodels/user_location.dart';
 import 'package:device_calendar/device_calendar.dart';
@@ -16,9 +17,11 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: HomePage(projectsInfo: projectInfo),
-    );
+    return StreamProvider(
+        create: (_) => Provider.of<LocationService>(context).locationStream,
+        child: Scaffold(
+          body: HomePage(projectsInfo: projectInfo),
+        ));
   }
 }
 
