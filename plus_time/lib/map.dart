@@ -44,7 +44,8 @@ class _MapPageState extends State<MapPage> {
         }
       }
     });
-    var userLocation = Provider.of<UserLocation>(context);
+    UserLocation userLocation = Provider.of<UserLocation>(context);
+    print("User loc: " + userLocation.latitude.toString());
     return Scaffold(
         floatingActionButton: Row(children: <Widget>[
           FloatingActionButton(

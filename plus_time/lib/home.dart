@@ -17,11 +17,9 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider(
-        create: (_) => Provider.of<LocationService>(context).locationStream,
-        child: Scaffold(
-          body: HomePage(projectsInfo: projectInfo),
-        ));
+    return Scaffold(
+      body: HomePage(projectsInfo: projectInfo),
+    );
   }
 }
 
@@ -215,7 +213,11 @@ class _HomePageState extends State<HomePage> {
             switch (_selectedIndex) {
               case 0: // Home
                 //Navigator.pushNamed(context, '/home');
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Home(Provider.of<ProjectsInfo>(context))));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            Home(Provider.of<ProjectsInfo>(context))));
                 break;
               case 1: // Add Event
                 Navigator.pushNamed(context, '/add_event');
