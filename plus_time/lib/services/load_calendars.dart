@@ -9,12 +9,13 @@ import 'package:geocoder/geocoder.dart';
 class ProjectsInfo {
   DeviceCalendarPlugin _deviceCalendarPlugin;
 
+  List<CalendarItem> _calendarNames = List<CalendarItem>();
   List<Calendar> calendars = List<Calendar>();
   List<Event> _calendarEvents = List<Event>();
   bool isLoading;
 
   int _selectedCalendarIndex;
-  Calendar _selectedCalendar;
+  Calendar selectedCalendar;
 
   bool pGranted = false;
 
@@ -32,8 +33,6 @@ class ProjectsInfo {
 
   /* Calendar Logic */
   Future<Calendar> retriveCalendars() async {
-    List<String> calendarsNames = List<String>();
-
     try {
       if (!pGranted) {
         var permissionsGranted = await _deviceCalendarPlugin.hasPermissions();
@@ -51,16 +50,18 @@ class ProjectsInfo {
       final calendarsResult = await _deviceCalendarPlugin.retrieveCalendars();
       calendars = calendarsResult?.data;
 
+      _calendarNames.clear();
       for (int c = 0; c < calendars.length; c++) {
-        calendarsNames.add(calendars[c].name);
+        _calendarNames.add(new CalendarItem(c, calendars[c].name));
       }
-      _selectedCalendar = calendars[_selectedCalendarIndex];
-      await retrieveCalendarEvents();
-      return _selectedCalendar;
-      print(calendarsNames);
+      print(_calendarNames);
     } catch (e) {
       print(e);
     }
+    return selectedCalendar;
+    await retrieveCalendarEvents();
+    selectedCalendar = calendars[_selectedCalendarIndex];
+
     /*
     for (int calendarIndex = 0;
         calendarIndex == calendars.length;
@@ -81,7 +82,7 @@ class ProjectsInfo {
     final startDate = DateTime.now().add(Duration(days: -30));
     final endDate = DateTime.now().add(Duration(days: 30));
     var calendarEventsResult = await _deviceCalendarPlugin.retrieveEvents(
-        _selectedCalendar.id,
+        selectedCalendar.id,
         RetrieveEventsParams(startDate: startDate, endDate: endDate));
     isLoading = false;
     print("events : " + calendarEventsResult?.data.toString());
@@ -93,7 +94,7 @@ class ProjectsInfo {
 
   void setSelectedCalendar(int index) {
     _selectedCalendarIndex = index;
-    _selectedCalendar = calendars[_selectedCalendarIndex];
+    selectedCalendar = calendars[_selectedCalendarIndex];
   }
 
   /* Projects Logic */
@@ -155,8 +156,13 @@ class ProjectsInfo {
             projEvents.add(ev);
             if (ev.location != null) {
               try {
-                var addresses =
-                    await Geocoder.local.findAddressesFromQuery(ev.location);
+                var addresses;
+                    try {
+                      addresses = await Geocoder.local.findAddressesFromQuery(ev.location).catchError((onError) => {
+       print('error caught. location not valid')});
+                    } catch (e) {
+                      print('error caught. location not valid');
+                    }
                 var first = addresses.first;
                 Location loc = Location(
                     latitude: addresses.first.coordinates.latitude,
@@ -166,7 +172,9 @@ class ProjectsInfo {
                   recentLoc = loc;
                 }
 
-                locations.add(loc);
+                if (loc.latitude != null && loc.longitude != null) 
+                  locations.add(loc);
+                  
               } catch (e) {
                 print(e); // TODO: handle this later
               }
@@ -211,7 +219,7 @@ class ProjectsInfo {
               onTap: () async {
                 await Navigator.push(context,
                     MaterialPageRoute(builder: (BuildContext context) {
-                  return CalendarEventsPage(projEvents, _selectedCalendar,
+                  return CalendarEventsPage(projEvents, selectedCalendar,
                       key: Key('calendarEventsPage'));
                 }));
               },
@@ -260,4 +268,40 @@ class ProjectsInfo {
               ]);
         });
   }
+
+
+  List<DropdownMenuItem<CalendarItem>> obtainDropDownItems () {
+    List<DropdownMenuItem<CalendarItem>> items = List<DropdownMenuItem<CalendarItem>>();
+    items.clear();
+    for (CalendarItem calendarItem in _calendarNames) {
+      items.add(
+        DropdownMenuItem<CalendarItem>(
+          value: calendarItem,
+          child: Row(
+            children: <Widget>[
+              SizedBox(width: 10,),
+              Text(
+                calendarItem.index.toString() + " - " + calendarItem.calendarName,
+                style:  TextStyle(color: Colors.black),
+              ),
+            ]
+          )
+        ));
+    }
+    print(_calendarNames);
+    print(items);
+    return items;
+  }
+}
+
+class CalendarItem {
+  const CalendarItem(this.index, this.calendarName);
+  final int index;
+  final String calendarName;
+  @override
+  String toString() {
+  return "CalendarItem index $index name $calendarName";
+   }
+  
+  
 }

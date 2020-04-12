@@ -1,4 +1,4 @@
-import 'package:device_calendar/device_calendar.dart';
+/*import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:plus_time/CalendarEventsPage.dart';
 import 'package:provider/provider.dart';
@@ -9,15 +9,20 @@ class Settings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ProjectsInfo projectInfo;
+    projectInfo = Provider.of<ProjectsInfo>(context);
+
     return Scaffold(
-      body: SettingsPage(),
+      body: SettingsPage(projectInfo: projectInfo),
     );
   }
 }
 
 class SettingsPage extends StatefulWidget {
-  SettingsPage({Key key}) : super(key: key);
+  SettingsPage({Key key, this.projectInfo}) : super(key: key);
 
+  final ProjectsInfo projectInfo;
+  
   @override
   _SettingsState createState() => _SettingsState();
 }
@@ -32,31 +37,11 @@ class _SettingsState extends State<SettingsPage> {
     ProjectsInfo projectInfo = Provider.of<ProjectsInfo>(context);
     _calendars = projectInfo.calendars;
   }
+  
 
   @override
   Widget build(BuildContext context) {
     int _selectedIndex = 2;
-
-    void _onItemTapped(int index) {
-      setState(() {
-        _selectedIndex = index;
-        print("Selected index is $_selectedIndex");
-        switch (_selectedIndex) {
-          case 0: // Home
-            Navigator.pushNamed(context, '/');
-            break;
-          case 1: // Import/export
-            Navigator.pushNamed(context, '/qrModule');
-            break;
-          case 2: // Settings
-            Navigator.pushNamed(context, '/settings');
-            break;
-          case 3: // Logout
-            Navigator.pushNamed(context, '/login');
-            break;
-        }
-      });
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -78,12 +63,10 @@ class _SettingsState extends State<SettingsPage> {
                     key: Key(_calendars[index].isReadOnly
                         ? 'readOnlyCalendar${_calendars?.where((c) => !c.isReadOnly)?.toList() ?? List<Calendar>().indexWhere((c) => c.id == _calendars[index].id)}'
                         : 'writableCalendar${_calendars?.where((c) => c.isReadOnly)?.toList() ?? List<Calendar>().indexWhere((c) => c.id == _calendars[index].id)}'),
-                    onTap: () async {
-                      await Navigator.push(context,
-                          MaterialPageRoute(builder: (BuildContext context) {
-                        return CalendarEventsPage(null, _calendars[index],
-                            key: Key('calendarEventsPage'));
-                      }));
+                    onTap: () {
+                      print("Changed calendar to");
+                      print(index);
+                      // TODO
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -130,6 +113,9 @@ class _SettingsState extends State<SettingsPage> {
                 child: Text('Submit'),
               ),
             ),
+            RaisedButton(
+               onPressed: () {Navigator.pushNamed(context, '/login');},
+               child: Text('Logout')),
           ],
         ),
       )),
@@ -140,6 +126,10 @@ class _SettingsState extends State<SettingsPage> {
             title: Text('Home'),
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            title: Text('Add Event'),
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.import_export),
             title: Text('Import/export'),
           ),
@@ -147,16 +137,33 @@ class _SettingsState extends State<SettingsPage> {
             icon: Icon(Icons.settings),
             title: Text('Settings'),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
-          ),
+          
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).primaryColor,
         unselectedItemColor: Theme.of(context).disabledColor,
-        onTap: _onItemTapped,
+        onTap: (int index) {
+          setState(() {
+            _selectedIndex = index;
+            print("Selected index is $_selectedIndex");
+            switch (_selectedIndex) {
+              case 0: // Home
+                Navigator.pushNamed(context, '/');
+                break;
+              case 1: // Add Event
+                Navigator.pushNamed(context, '/add_event');
+                break;
+              case 2: // Import/export
+                Navigator.pushNamed(context, '/qrModule');
+                break;
+              case 3: // Settings
+                Navigator.pushNamed(context, '/settings');
+                break;
+            }
+          });
+        },
       ),
     );
   }
 }
+*/
