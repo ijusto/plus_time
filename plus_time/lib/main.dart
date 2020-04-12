@@ -2,14 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:plus_time/afterInstallPanel.dart';
 import 'package:plus_time/data/moor_database.dart';
 import 'package:provider/provider.dart';
-import 'package:plus_time/datamodels/user_location.dart';
-import 'package:plus_time/settings.dart';
 import 'generate.dart';
 import 'services/load_calendars.dart';
 import 'services/locationService.dart';
 import 'add_event.dart';
-import 'login.dart';
-import 'home.dart';
 import 'qrcode.dart';
 
 void main() {
@@ -52,7 +48,6 @@ class MyApp extends StatelessWidget {
             '/add_event': (context) => AddEvent(),
             '/login': (context) => GenerateScreen(eventData: "eventData"),
             '/qrModule': (context) => QRCode(),
-            '/settings': (context) => Settings(),
           },
         ));
   }
