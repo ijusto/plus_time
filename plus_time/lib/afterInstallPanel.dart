@@ -18,6 +18,7 @@ class _InstalationPanelState extends State<InstalationPanel> {
   LocationService locServ;
   int pageIndex = 0;
   AccessesGivenDao permDao;
+  bool _loading = true;
   bool firstTime = true;
   var _pages = [
     GettingStartedPage(),
@@ -71,9 +72,12 @@ class _InstalationPanelState extends State<InstalationPanel> {
     List<AccessGivenEntry> perms = await permDao.getAllAccessesGivens();
     if (!(perms == null || perms.isEmpty) && firstTime) {
       firstTime = false;
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Home(projectsInfo)));
+      Navigator.of(context).pop();
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
     }
+    setState(() {
+      _loading = false;
+    });
   }
 
   @override
@@ -81,36 +85,37 @@ class _InstalationPanelState extends State<InstalationPanel> {
     projectsInfo = Provider.of<ProjectsInfo>(context);
     permDao = Provider.of<AppDatabase>(context).accessesGivenDao;
     locServ = Provider.of<LocationService>(context);
-    //if (!firstTime) {
-    //} else {
-    return Scaffold(
-        body: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Center(
-          child: Column(
-            children: <Widget>[
-              _pages[pageIndex],
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  RaisedButton(
-                      child: Text(_buttonText[pageIndex]),
-                      onPressed: (() async {
-                        await _nextImage();
-                      }),
-                      elevation: 5.0,
-                      color: Colors.green),
-                ],
-              ),
-              Padding(padding: const EdgeInsets.all(50.0)),
-              SelectedPage(numberOfDots: _pages.length, pageIndex: pageIndex),
-            ],
+    if (_loading) {
+      return Scaffold();
+    } else {
+      return Scaffold(
+          body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+            child: Column(
+              children: <Widget>[
+                _pages[pageIndex],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    RaisedButton(
+                        child: Text(_buttonText[pageIndex]),
+                        onPressed: (() async {
+                          await _nextImage();
+                        }),
+                        elevation: 5.0,
+                        color: Colors.green),
+                  ],
+                ),
+                Padding(padding: const EdgeInsets.all(50.0)),
+                SelectedPage(numberOfDots: _pages.length, pageIndex: pageIndex),
+              ],
+            ),
           ),
-        ),
-      ],
-    ));
-    //}
+        ],
+      ));
+    }
   }
 }
 
