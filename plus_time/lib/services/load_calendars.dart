@@ -152,7 +152,8 @@ class ProjectsInfo {
             if (ev.location != null) {
               try {
                 var addresses =
-                    await Geocoder.local.findAddressesFromQuery(ev.location);
+                    await Geocoder.local.findAddressesFromQuery(ev.location).catchError((onError) => {
+       print('error caught. location not valid')});
                 var first = addresses.first;
                 Location loc = Location(
                     latitude: addresses.first.coordinates.latitude,
@@ -207,7 +208,7 @@ class ProjectsInfo {
               onTap: () async {
                 await Navigator.push(context,
                     MaterialPageRoute(builder: (BuildContext context) {
-                  return CalendarEventsPage(projEvents, _selectedCalendar,
+                  return CalendarEventsPage(projEvents, selectedCalendar,
                       key: Key('calendarEventsPage'));
                 }));
               },
