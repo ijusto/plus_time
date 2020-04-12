@@ -16,6 +16,8 @@ class ProjectsInfo {
   int _selectedCalendarIndex;
   Calendar _selectedCalendar;
 
+  bool pGranted = false;
+
   Map<String, double> projects = Map<String, double>();
   List<Card> projectCards = List<Card>();
   Map<int, List<Location>> projectLocations = Map<int, List<Location>>();
@@ -33,13 +35,16 @@ class ProjectsInfo {
     List<String> calendarsNames = List<String>();
 
     try {
-      var permissionsGranted = await _deviceCalendarPlugin.hasPermissions();
+      if (!pGranted) {
+        var permissionsGranted = await _deviceCalendarPlugin.hasPermissions();
 
-      if (permissionsGranted.isSuccess && !permissionsGranted.data) {
-        permissionsGranted = await _deviceCalendarPlugin.requestPermissions();
+        if (permissionsGranted.isSuccess && !permissionsGranted.data) {
+          permissionsGranted = await _deviceCalendarPlugin.requestPermissions();
 
-        if (!permissionsGranted.isSuccess || !permissionsGranted.data) {
-          return null;
+          if (!permissionsGranted.isSuccess || !permissionsGranted.data) {
+            return null;
+          }
+          pGranted = permissionsGranted.isSuccess;
         }
       }
 
@@ -49,14 +54,13 @@ class ProjectsInfo {
       for (int c = 0; c < calendars.length; c++) {
         calendarsNames.add(calendars[c].name);
       }
+      _selectedCalendar = calendars[_selectedCalendarIndex];
+      await retrieveCalendarEvents();
+      return _selectedCalendar;
       print(calendarsNames);
     } catch (e) {
       print(e);
     }
-
-    _selectedCalendar = calendars[_selectedCalendarIndex];
-    await retrieveCalendarEvents();
-    return _selectedCalendar;
     /*
     for (int calendarIndex = 0;
         calendarIndex == calendars.length;

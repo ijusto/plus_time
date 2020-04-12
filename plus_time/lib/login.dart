@@ -18,7 +18,7 @@ class SetPinButton extends StatefulWidget {
 class _SetPinButtonState extends State<SetPinButton> {
   String password;
   bool passSetUp = false;
-  AppDatabase database;
+  LoginOperationDao loginDao;
   bool isAuthenticated = false;
   final StreamController<bool> _verificationNotifier =
       StreamController<bool>.broadcast();
@@ -29,7 +29,7 @@ class _SetPinButtonState extends State<SetPinButton> {
     //bool isValid = widget.password == enteredPasscode;
     _verificationNotifier.add(isValid);
     final loginOp = LoginOperation(id: 1, type: 0, pass: enteredPasscode);
-    database.insertLoginOperation(loginOp).then((_) {});
+    loginDao.insertLoginOperation(loginOp).then((_) {});
     setState(() {
       password = enteredPasscode;
       loginoplst.add(loginOp);
@@ -79,9 +79,9 @@ class _SetPinButtonState extends State<SetPinButton> {
 
   @override
   Widget build(BuildContext context) {
-    database = Provider.of<AppDatabase>(context);
+    loginDao = Provider.of<AppDatabase>(context).loginOperationDao;
 
-    database.getAllLoginOperations().then((lst) {
+    loginDao.getAllLoginOperations().then((lst) {
       loginoplst = lst;
     });
     if (loginoplst == null || loginoplst.isEmpty) {
@@ -137,7 +137,7 @@ class _LoginState extends State<Login> {
   bool _isAuthenticating = false;
   bool _hasBiometricsAuthent;
   bool passSetUp = false;
-  AppDatabase database;
+  LoginOperationDao loginDao;
   final StreamController<bool> _verificationNotifier =
       StreamController<bool>.broadcast();
 
@@ -202,7 +202,7 @@ class _LoginState extends State<Login> {
     if (authenticated) {
       if (loginoplst.isEmpty) {
         final loginOp = LoginOperation(id: 1, type: 1, pass: "000000");
-        database.insertLoginOperation(loginOp).then((_) {});
+        loginDao.insertLoginOperation(loginOp).then((_) {});
         setState(() {
           _authorized = message;
           loginoplst.add(loginOp);
@@ -214,9 +214,9 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    database = Provider.of<AppDatabase>(context);
+    loginDao = Provider.of<AppDatabase>(context).loginOperationDao;
 
-    database.getAllLoginOperations().then((lst) {
+    loginDao.getAllLoginOperations().then((lst) {
       loginoplst = lst;
     });
 

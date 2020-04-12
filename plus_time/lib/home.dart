@@ -10,13 +10,14 @@ import 'device_calendar_ex/event_item.dart';
 import 'services/load_calendars.dart';
 
 class Home extends StatelessWidget {
-  Home();
+  final ProjectsInfo projectInfo;
 
-  ProjectsInfo projectInfo;
+  Home(this.projectInfo);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: HomePage(projectsInfo: Provider.of<ProjectsInfo>(context)),
+      body: HomePage(projectsInfo: projectInfo),
     );
   }
 }
@@ -42,7 +43,7 @@ class _HomePageState extends State<HomePage> {
     "Statistics",
   ];
 
-  _HomePageState(this.projectsInfo) {}
+  _HomePageState(this.projectsInfo);
 
   /* Events Handlers */
   void _addEvent() {}

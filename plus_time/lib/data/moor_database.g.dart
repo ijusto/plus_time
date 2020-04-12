@@ -7,236 +7,6 @@ part of 'moor_database.dart';
 // **************************************************************************
 
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
-class Event extends DataClass implements Insertable<Event> {
-  final int id;
-  final String name;
-  final DateTime dueDate;
-  final bool completed;
-  Event(
-      {@required this.id,
-      @required this.name,
-      this.dueDate,
-      @required this.completed});
-  factory Event.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String prefix}) {
-    final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    final boolType = db.typeSystem.forDartType<bool>();
-    return Event(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
-      dueDate: dateTimeType
-          .mapFromDatabaseResponse(data['${effectivePrefix}due_date']),
-      completed:
-          boolType.mapFromDatabaseResponse(data['${effectivePrefix}completed']),
-    );
-  }
-  factory Event.fromJson(Map<String, dynamic> json,
-      {ValueSerializer serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Event(
-      id: serializer.fromJson<int>(json['id']),
-      name: serializer.fromJson<String>(json['name']),
-      dueDate: serializer.fromJson<DateTime>(json['dueDate']),
-      completed: serializer.fromJson<bool>(json['completed']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'name': serializer.toJson<String>(name),
-      'dueDate': serializer.toJson<DateTime>(dueDate),
-      'completed': serializer.toJson<bool>(completed),
-    };
-  }
-
-  @override
-  EventsCompanion createCompanion(bool nullToAbsent) {
-    return EventsCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
-      dueDate: dueDate == null && nullToAbsent
-          ? const Value.absent()
-          : Value(dueDate),
-      completed: completed == null && nullToAbsent
-          ? const Value.absent()
-          : Value(completed),
-    );
-  }
-
-  Event copyWith({int id, String name, DateTime dueDate, bool completed}) =>
-      Event(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        dueDate: dueDate ?? this.dueDate,
-        completed: completed ?? this.completed,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('Event(')
-          ..write('id: $id, ')
-          ..write('name: $name, ')
-          ..write('dueDate: $dueDate, ')
-          ..write('completed: $completed')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => $mrjf($mrjc(id.hashCode,
-      $mrjc(name.hashCode, $mrjc(dueDate.hashCode, completed.hashCode))));
-  @override
-  bool operator ==(dynamic other) =>
-      identical(this, other) ||
-      (other is Event &&
-          other.id == this.id &&
-          other.name == this.name &&
-          other.dueDate == this.dueDate &&
-          other.completed == this.completed);
-}
-
-class EventsCompanion extends UpdateCompanion<Event> {
-  final Value<int> id;
-  final Value<String> name;
-  final Value<DateTime> dueDate;
-  final Value<bool> completed;
-  const EventsCompanion({
-    this.id = const Value.absent(),
-    this.name = const Value.absent(),
-    this.dueDate = const Value.absent(),
-    this.completed = const Value.absent(),
-  });
-  EventsCompanion.insert({
-    this.id = const Value.absent(),
-    @required String name,
-    this.dueDate = const Value.absent(),
-    this.completed = const Value.absent(),
-  }) : name = Value(name);
-  EventsCompanion copyWith(
-      {Value<int> id,
-      Value<String> name,
-      Value<DateTime> dueDate,
-      Value<bool> completed}) {
-    return EventsCompanion(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      dueDate: dueDate ?? this.dueDate,
-      completed: completed ?? this.completed,
-    );
-  }
-}
-
-class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
-  final GeneratedDatabase _db;
-  final String _alias;
-  $EventsTable(this._db, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn _id;
-  @override
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
-        hasAutoIncrement: true, declaredAsPrimaryKey: true);
-  }
-
-  final VerificationMeta _nameMeta = const VerificationMeta('name');
-  GeneratedTextColumn _name;
-  @override
-  GeneratedTextColumn get name => _name ??= _constructName();
-  GeneratedTextColumn _constructName() {
-    return GeneratedTextColumn('name', $tableName, false,
-        minTextLength: 1, maxTextLength: 50);
-  }
-
-  final VerificationMeta _dueDateMeta = const VerificationMeta('dueDate');
-  GeneratedDateTimeColumn _dueDate;
-  @override
-  GeneratedDateTimeColumn get dueDate => _dueDate ??= _constructDueDate();
-  GeneratedDateTimeColumn _constructDueDate() {
-    return GeneratedDateTimeColumn(
-      'due_date',
-      $tableName,
-      true,
-    );
-  }
-
-  final VerificationMeta _completedMeta = const VerificationMeta('completed');
-  GeneratedBoolColumn _completed;
-  @override
-  GeneratedBoolColumn get completed => _completed ??= _constructCompleted();
-  GeneratedBoolColumn _constructCompleted() {
-    return GeneratedBoolColumn('completed', $tableName, false,
-        defaultValue: Constant(false));
-  }
-
-  @override
-  List<GeneratedColumn> get $columns => [id, name, dueDate, completed];
-  @override
-  $EventsTable get asDslTable => this;
-  @override
-  String get $tableName => _alias ?? 'events';
-  @override
-  final String actualTableName = 'events';
-  @override
-  VerificationContext validateIntegrity(EventsCompanion d,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
-    }
-    if (d.name.present) {
-      context.handle(
-          _nameMeta, name.isAcceptableValue(d.name.value, _nameMeta));
-    } else if (isInserting) {
-      context.missing(_nameMeta);
-    }
-    if (d.dueDate.present) {
-      context.handle(_dueDateMeta,
-          dueDate.isAcceptableValue(d.dueDate.value, _dueDateMeta));
-    }
-    if (d.completed.present) {
-      context.handle(_completedMeta,
-          completed.isAcceptableValue(d.completed.value, _completedMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  Event map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Event.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(EventsCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.name.present) {
-      map['name'] = Variable<String, StringType>(d.name.value);
-    }
-    if (d.dueDate.present) {
-      map['due_date'] = Variable<DateTime, DateTimeType>(d.dueDate.value);
-    }
-    if (d.completed.present) {
-      map['completed'] = Variable<bool, BoolType>(d.completed.value);
-    }
-    return map;
-  }
-
-  @override
-  $EventsTable createAlias(String alias) {
-    return $EventsTable(_db, alias);
-  }
-}
-
 class LoginOperation extends DataClass implements Insertable<LoginOperation> {
   final int id;
   final int type;
@@ -422,15 +192,234 @@ class $LoginOperationsTable extends LoginOperations
   }
 }
 
+class AccessGivenEntry extends DataClass
+    implements Insertable<AccessGivenEntry> {
+  final int id;
+  final String typeOfAccess;
+  final bool granted;
+  AccessGivenEntry(
+      {@required this.id, @required this.typeOfAccess, @required this.granted});
+  factory AccessGivenEntry.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    final boolType = db.typeSystem.forDartType<bool>();
+    return AccessGivenEntry(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      typeOfAccess: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}type_of_access']),
+      granted:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}granted']),
+    );
+  }
+  factory AccessGivenEntry.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return AccessGivenEntry(
+      id: serializer.fromJson<int>(json['id']),
+      typeOfAccess: serializer.fromJson<String>(json['typeOfAccess']),
+      granted: serializer.fromJson<bool>(json['granted']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'typeOfAccess': serializer.toJson<String>(typeOfAccess),
+      'granted': serializer.toJson<bool>(granted),
+    };
+  }
+
+  @override
+  AccessesGivenCompanion createCompanion(bool nullToAbsent) {
+    return AccessesGivenCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      typeOfAccess: typeOfAccess == null && nullToAbsent
+          ? const Value.absent()
+          : Value(typeOfAccess),
+      granted: granted == null && nullToAbsent
+          ? const Value.absent()
+          : Value(granted),
+    );
+  }
+
+  AccessGivenEntry copyWith({int id, String typeOfAccess, bool granted}) =>
+      AccessGivenEntry(
+        id: id ?? this.id,
+        typeOfAccess: typeOfAccess ?? this.typeOfAccess,
+        granted: granted ?? this.granted,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('AccessGivenEntry(')
+          ..write('id: $id, ')
+          ..write('typeOfAccess: $typeOfAccess, ')
+          ..write('granted: $granted')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      $mrjf($mrjc(id.hashCode, $mrjc(typeOfAccess.hashCode, granted.hashCode)));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is AccessGivenEntry &&
+          other.id == this.id &&
+          other.typeOfAccess == this.typeOfAccess &&
+          other.granted == this.granted);
+}
+
+class AccessesGivenCompanion extends UpdateCompanion<AccessGivenEntry> {
+  final Value<int> id;
+  final Value<String> typeOfAccess;
+  final Value<bool> granted;
+  const AccessesGivenCompanion({
+    this.id = const Value.absent(),
+    this.typeOfAccess = const Value.absent(),
+    this.granted = const Value.absent(),
+  });
+  AccessesGivenCompanion.insert({
+    this.id = const Value.absent(),
+    @required String typeOfAccess,
+    this.granted = const Value.absent(),
+  }) : typeOfAccess = Value(typeOfAccess);
+  AccessesGivenCompanion copyWith(
+      {Value<int> id, Value<String> typeOfAccess, Value<bool> granted}) {
+    return AccessesGivenCompanion(
+      id: id ?? this.id,
+      typeOfAccess: typeOfAccess ?? this.typeOfAccess,
+      granted: granted ?? this.granted,
+    );
+  }
+}
+
+class $AccessesGivenTable extends AccessesGiven
+    with TableInfo<$AccessesGivenTable, AccessGivenEntry> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $AccessesGivenTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _typeOfAccessMeta =
+      const VerificationMeta('typeOfAccess');
+  GeneratedTextColumn _typeOfAccess;
+  @override
+  GeneratedTextColumn get typeOfAccess =>
+      _typeOfAccess ??= _constructTypeOfAccess();
+  GeneratedTextColumn _constructTypeOfAccess() {
+    return GeneratedTextColumn('type_of_access', $tableName, false,
+        minTextLength: 1, maxTextLength: 50);
+  }
+
+  final VerificationMeta _grantedMeta = const VerificationMeta('granted');
+  GeneratedBoolColumn _granted;
+  @override
+  GeneratedBoolColumn get granted => _granted ??= _constructGranted();
+  GeneratedBoolColumn _constructGranted() {
+    return GeneratedBoolColumn('granted', $tableName, false,
+        defaultValue: Constant(false));
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, typeOfAccess, granted];
+  @override
+  $AccessesGivenTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'accesses_given';
+  @override
+  final String actualTableName = 'accesses_given';
+  @override
+  VerificationContext validateIntegrity(AccessesGivenCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    }
+    if (d.typeOfAccess.present) {
+      context.handle(
+          _typeOfAccessMeta,
+          typeOfAccess.isAcceptableValue(
+              d.typeOfAccess.value, _typeOfAccessMeta));
+    } else if (isInserting) {
+      context.missing(_typeOfAccessMeta);
+    }
+    if (d.granted.present) {
+      context.handle(_grantedMeta,
+          granted.isAcceptableValue(d.granted.value, _grantedMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  AccessGivenEntry map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return AccessGivenEntry.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(AccessesGivenCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.typeOfAccess.present) {
+      map['type_of_access'] =
+          Variable<String, StringType>(d.typeOfAccess.value);
+    }
+    if (d.granted.present) {
+      map['granted'] = Variable<bool, BoolType>(d.granted.value);
+    }
+    return map;
+  }
+
+  @override
+  $AccessesGivenTable createAlias(String alias) {
+    return $AccessesGivenTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
-  $EventsTable _events;
-  $EventsTable get events => _events ??= $EventsTable(this);
   $LoginOperationsTable _loginOperations;
   $LoginOperationsTable get loginOperations =>
       _loginOperations ??= $LoginOperationsTable(this);
+  $AccessesGivenTable _accessesGiven;
+  $AccessesGivenTable get accessesGiven =>
+      _accessesGiven ??= $AccessesGivenTable(this);
+  LoginOperationDao _loginOperationDao;
+  LoginOperationDao get loginOperationDao =>
+      _loginOperationDao ??= LoginOperationDao(this as AppDatabase);
+  AccessesGivenDao _accessesGivenDao;
+  AccessesGivenDao get accessesGivenDao =>
+      _accessesGivenDao ??= AccessesGivenDao(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [events, loginOperations];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [loginOperations, accessesGiven];
+}
+
+// **************************************************************************
+// DaoGenerator
+// **************************************************************************
+
+mixin _$LoginOperationDaoMixin on DatabaseAccessor<AppDatabase> {
+  $LoginOperationsTable get loginOperations => db.loginOperations;
+}
+mixin _$AccessesGivenDaoMixin on DatabaseAccessor<AppDatabase> {
+  $AccessesGivenTable get accessesGiven => db.accessesGiven;
 }
