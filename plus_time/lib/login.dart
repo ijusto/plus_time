@@ -6,6 +6,8 @@ import 'package:passcode_screen/passcode_screen.dart';
 import 'package:passcode_screen/circle.dart';
 import 'package:passcode_screen/keyboard.dart';
 import 'package:plus_time/data/moor_database.dart';
+import 'package:plus_time/home.dart';
+import 'package:plus_time/services/load_calendars.dart';
 import 'package:provider/provider.dart';
 
 /* Based on a tutorial: https://www.youtube.com/watch?v=S1ta90cTxBA */
@@ -207,7 +209,11 @@ class _LoginState extends State<Login> {
           _authorized = message;
           loginoplst.add(loginOp);
         });
-        Navigator.pushNamed(context, '/');
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    Home(Provider.of<ProjectsInfo>(context))));
       }
     }
   }
@@ -220,7 +226,7 @@ class _LoginState extends State<Login> {
       loginoplst = lst;
     });
 
-    Widget rt;
+    Widget rt = Scaffold();
     if (loginoplst == null || loginoplst.isEmpty) {
       _hasBiometricsAuthent = false;
       if (_canCheckBiometrics == null) {
@@ -251,7 +257,7 @@ class _LoginState extends State<Login> {
               SetPinButton()
             ]
           ])));
-    } else if (_authorized != 'Not Authorized') {
+    } else if (_authorized == 'Not Authorized') {
       rt = Scaffold(
           body: Center(
               child: Column(
@@ -265,8 +271,12 @@ class _LoginState extends State<Login> {
       // 0 - pass, 1 - fingerprint
       if (loginoplst[0].type == 1) {
         _authenticate().then((_) {
-          if (_authorized == 'Not Authorized') {
-            Navigator.pushNamed(context, '/');
+          if (_authorized != 'Not Authorized') {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        Home(Provider.of<ProjectsInfo>(context))));
           }
         });
       }

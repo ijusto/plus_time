@@ -16,7 +16,7 @@ class _InstalationPanelState extends State<InstalationPanel> {
   ProjectsInfo projectsInfo;
   int pageIndex = 0;
   AccessesGivenDao permDao;
-  bool firstTime = true;
+  bool firstTime;
   var _pages = [
     GettingStartedPage(),
     CalendarAccessPage(),
@@ -35,18 +35,43 @@ class _InstalationPanelState extends State<InstalationPanel> {
 
   void _nextImage() {
     setState(() {
-      pageIndex = pageIndex < _pages.length - 1 ? pageIndex + 1 : pageIndex;
+      if (pageIndex < _pages.length - 1) {
+        pageIndex = pageIndex + 1;
+      } else {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Login()));
+      }
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    firstTime = true;
+  }
+
+  Future afterInstall() async {
+    List<AccessGivenEntry> perms = await permDao.getAllAccessesGivens();
+    if (perms == null || perms.isEmpty) {
+      setState(() {
+        firstTime = true;
+      });
+    } else {
+      setState(() {
+        firstTime = false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     projectsInfo = Provider.of<ProjectsInfo>(context);
+    permDao = Provider.of<AppDatabase>(context).accessesGivenDao;
+    afterInstall();
     if (!firstTime) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => Home(projectsInfo)));
     } else {
-      permDao = Provider.of<AppDatabase>(context).accessesGivenDao;
       return Scaffold(
           body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

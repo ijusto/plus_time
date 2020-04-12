@@ -45,7 +45,8 @@ class MyApp extends StatelessWidget {
           ),
           initialRoute: '/', //'/login',
           routes: {
-            '/': (context) => Home(Provider.of<ProjectsInfo>(context)),
+            '/': (context) =>
+                InstalationPanel(), //Home(Provider.of<ProjectsInfo>(context)),
             '/add_event': (context) => AddEvent(),
             '/login': (context) => GenerateScreen(eventData: "eventData"),
             '/qrModule': (context) => QRCode(),
