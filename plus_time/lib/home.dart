@@ -97,179 +97,191 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('+Time'),
       ),
-      body: CustomScrollView(
-        slivers: <Widget>[
-          /*
-          if (userLocation != null &&
-              userLocation.latitude != null &&
-              userLocation.longitude != null) ...[
-            SliverList(
-              delegate: SliverChildListDelegate([
-                Text(
-                  "Location: Lat: ${userLocation.latitude}, Long: ${userLocation.longitude}",
-                  style: Theme.of(context).textTheme.title,
-                ),
-              ]),
-            ),
-          ],*/
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return Container(
-                  child: new Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: Center(
-                      child: Text(
-                        litems[index],
-                        style: Theme.of(context).textTheme.title,
-                      ),
-                    ),
+      body: Stack(
+        children: [
+          CustomScrollView(
+            slivers: <Widget>[
+              /*
+            if (userLocation != null &&
+                userLocation.latitude != null &&
+                userLocation.longitude != null) ...[
+              SliverList(
+                delegate: SliverChildListDelegate([
+                  Text(
+                    "Location: Lat: ${userLocation.latitude}, Long: ${userLocation.longitude}",
+                    style: Theme.of(context).textTheme.title,
                   ),
-                );
-              },
-              childCount: litems.length,
-            ),
-          ),
-          if (!_isLoading && projectCards != null) ...[
+                ]),
+              ),
+            ],*/
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return Container(
+                      child: new Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Center(
+                          child: Text(
+                            litems[index],
+                            style: Theme.of(context).textTheme.title,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  childCount: litems.length,
+                ),
+              ),
+              if (!_isLoading && projectCards != null) ...[
+                SliverList(
+                  delegate: SliverChildListDelegate(projectCards),
+                )
+              ],
+              /*
             SliverList(
-              delegate: SliverChildListDelegate(projectCards),
-            )
-          ],
-          /*
-          SliverList(
-              delegate: SliverChildListDelegate([
-            Card(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ExpansionTile(
-                    leading: Icon(
-                      Icons.error,
-                      size: 56.0,
-                      color: Colors.red,
-                    ),
-                    title: Text('ComputaçãoMóvel'),
-                    subtitle: Text('15h'),
-                    trailing: Wrap(
-                      spacing: 30,
+                delegate: SliverChildListDelegate([
+              Card(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ExpansionTile(
+                      leading: Icon(
+                        Icons.error,
+                        size: 56.0,
+                        color: Colors.red,
+                      ),
+                      title: Text('ComputaçãoMóvel'),
+                      subtitle: Text('15h'),
+                      trailing: Wrap(
+                        spacing: 30,
+                        children: <Widget>[
+                          Icon(Icons.location_on),
+                          GestureDetector(
+                            onTap: () {
+                              createAlertDialog(context);
+                            },
+                            child: Icon(Icons.share),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/settings');
+                            },
+                            child: Icon(Icons.play_arrow),
+                          ),
+                        ],
+                      ),
                       children: <Widget>[
-                        Icon(Icons.location_on),
-                        GestureDetector(
-                          onTap: () {
-                            createAlertDialog(context);
-                          },
-                          child: Icon(Icons.share),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, '/settings');
-                          },
-                          child: Icon(Icons.play_arrow),
-                        ),
+                        Container(height: 300, child: MapPage()),
                       ],
                     ),
-                    children: <Widget>[
-                      Container(height: 300, child: MapPage()),
-                    ],
-                  ),
-                  (_calendarEvents?.isNotEmpty ?? false)
-                      ? Stack(
-                          children: [
-                            ListView.builder(
-                              itemCount: _calendarEvents?.length ?? 0,
-                              itemBuilder: (BuildContext context, int index) {
-                                return EventItem(
-                                    _calendarEvents[index],
-                                    _deviceCalendarPlugin,
-                                    _onLoading,
-                                    _onDeletedFinished,
-                                    _onTapped,
-                                    _calendar.isReadOnly);
-                              },
-                            ),
-                            if (_isLoading)
-                              Center(
-                                child: CircularProgressIndicator(),
-                              )
-                          ],
-                        )
-                      : Center(child: Text('No events found')),
-                ],
+                    (_calendarEvents?.isNotEmpty ?? false)
+                        ? Stack(
+                            children: [
+                              ListView.builder(
+                                itemCount: _calendarEvents?.length ?? 0,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return EventItem(
+                                      _calendarEvents[index],
+                                      _deviceCalendarPlugin,
+                                      _onLoading,
+                                      _onDeletedFinished,
+                                      _onTapped,
+                                      _calendar.isReadOnly);
+                                },
+                              ),
+                              if (_isLoading)
+                                Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                            ],
+                          )
+                        : Center(child: Text('No events found')),
+                  ],
+                ),
               ),
-            ),
-          ])),
-          */
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return Container(
-                  child: new Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: Center(
-                      child: Text(
-                        litems2[index],
-                        style: Theme.of(context).textTheme.title,
-                      ),
-                    ),
-                  ),
-                );
-              },
-              childCount: litems2.length,
-            ),
-          ),
-          if (!_isLoading && projectCards != null && projectCards.length != 0)
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return Container(
-                    child: new Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: Center(
-                        child: PieChart(
-                          dataMap: widget.projectsInfo.projects,
-                          animationDuration: Duration(milliseconds: 800),
-                          chartLegendSpacing: 32.0,
-                          chartRadius: MediaQuery.of(context).size.width / 2.7,
-                          showChartValuesInPercentage: true,
-                          showChartValues: true,
-                          showChartValuesOutside: false,
-                          chartValueBackgroundColor: Colors.grey[200],
-                          showLegends: true,
-                          legendPosition: LegendPosition.right,
-                          decimalPlaces: 1,
-                          showChartValueLabel: true,
-                          initialAngle: 0,
-                          chartValueStyle: defaultChartValueStyle.copyWith(
-                            color: Colors.blueGrey[900].withOpacity(0.9),
+            ])),
+            */
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return Container(
+                      child: new Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Center(
+                          child: Text(
+                            litems2[index],
+                            style: Theme.of(context).textTheme.title,
                           ),
-                          chartType: ChartType.ring,
                         ),
                       ),
-                    ),
-                  );
-                },
-                childCount: litems2.length,
+                    );
+                  },
+                  childCount: litems2.length,
+                ),
               ),
-            ),
-          if (!_isLoading && (projectCards == null || projectCards.length == 0))
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return Container(
-                    child: new Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: Center(
-                        child: Text(
-                          "Statistics not available",
-                          style: Theme.of(context).textTheme.subtitle,
+              if (!_isLoading &&
+                  projectCards != null &&
+                  projectCards.length != 0)
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                      return Container(
+                        child: new Padding(
+                          padding: const EdgeInsets.all(24.0),
+                          child: Center(
+                            child: PieChart(
+                              dataMap: widget.projectsInfo.projects,
+                              animationDuration: Duration(milliseconds: 800),
+                              chartLegendSpacing: 32.0,
+                              chartRadius:
+                                  MediaQuery.of(context).size.width / 2.7,
+                              showChartValuesInPercentage: true,
+                              showChartValues: true,
+                              showChartValuesOutside: false,
+                              chartValueBackgroundColor: Colors.grey[200],
+                              showLegends: true,
+                              legendPosition: LegendPosition.right,
+                              decimalPlaces: 1,
+                              showChartValueLabel: true,
+                              initialAngle: 0,
+                              chartValueStyle: defaultChartValueStyle.copyWith(
+                                color: Colors.blueGrey[900].withOpacity(0.9),
+                              ),
+                              chartType: ChartType.ring,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  );
-                },
-                childCount: litems2.length,
-              ),
-            ),
+                      );
+                    },
+                    childCount: litems2.length,
+                  ),
+                ),
+              if (!_isLoading &&
+                  (projectCards == null || projectCards.length == 0))
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                      return Container(
+                        child: new Padding(
+                          padding: const EdgeInsets.all(24.0),
+                          child: Center(
+                            child: Text(
+                              "Statistics not available",
+                              style: Theme.of(context).textTheme.subtitle,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    childCount: litems2.length,
+                  ),
+                ),
+            ],
+          ),
+          if (_isLoading)
+            Center(
+              child: CircularProgressIndicator(),
+            )
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
