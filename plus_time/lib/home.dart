@@ -211,7 +211,8 @@ class _HomePageState extends State<HomePage> {
             print("Selected index is $_selectedIndex");
             switch (_selectedIndex) {
               case 0: // Home
-                Navigator.pushNamed(context, '/');
+                //Navigator.pushNamed(context, '/home');
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Home(Provider.of<ProjectsInfo>(context))));
                 break;
               case 1: // Add Event
                 Navigator.pushNamed(context, '/add_event');

@@ -67,7 +67,7 @@ class _SetPinButtonState extends State<SetPinButton> {
       setState(() {
         this.isAuthenticated = isValid;
       });
-      Navigator.pushNamed(context, '/');
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Home(Provider.of<ProjectsInfo>(context))));
     }
   }
 
