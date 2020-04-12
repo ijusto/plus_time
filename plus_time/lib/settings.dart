@@ -9,15 +9,20 @@ class Settings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ProjectsInfo projectInfo;
+    projectInfo = Provider.of<ProjectsInfo>(context);
+
     return Scaffold(
-      body: SettingsPage(),
+      body: SettingsPage(projectInfo: projectInfo),
     );
   }
 }
 
 class SettingsPage extends StatefulWidget {
-  SettingsPage({Key key}) : super(key: key);
+  SettingsPage({Key key, this.projectInfo}) : super(key: key);
 
+  final ProjectsInfo projectInfo;
+  
   @override
   _SettingsState createState() => _SettingsState();
 }
@@ -32,6 +37,7 @@ class _SettingsState extends State<SettingsPage> {
     ProjectsInfo projectInfo = Provider.of<ProjectsInfo>(context);
     _calendars = projectInfo.calendars;
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -78,12 +84,10 @@ class _SettingsState extends State<SettingsPage> {
                     key: Key(_calendars[index].isReadOnly
                         ? 'readOnlyCalendar${_calendars?.where((c) => !c.isReadOnly)?.toList() ?? List<Calendar>().indexWhere((c) => c.id == _calendars[index].id)}'
                         : 'writableCalendar${_calendars?.where((c) => c.isReadOnly)?.toList() ?? List<Calendar>().indexWhere((c) => c.id == _calendars[index].id)}'),
-                    onTap: () async {
-                      await Navigator.push(context,
-                          MaterialPageRoute(builder: (BuildContext context) {
-                        return CalendarEventsPage(null, _calendars[index],
-                            key: Key('calendarEventsPage'));
-                      }));
+                    onTap: () {
+                      print("Changed calendar to");
+                      print(index);
+                      // TODO
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),

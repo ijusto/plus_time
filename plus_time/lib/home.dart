@@ -55,14 +55,14 @@ class _HomePageState extends State<HomePage> {
         case 0: // Home
           Navigator.pushNamed(context, '/');
           break;
-        case 1: // Import/export
+        case 1: // Add Event
+          Navigator.pushNamed(context, '/add_event');
+          break;
+        case 2: // Import/export
           Navigator.pushNamed(context, '/qrModule');
           break;
-        case 2: // Settings
+        case 3: // Settings
           Navigator.pushNamed(context, '/settings');
-          break;
-        case 3: // Logout
-          Navigator.pushNamed(context, '/login');
           break;
       }
     });
@@ -291,6 +291,10 @@ class _HomePageState extends State<HomePage> {
             title: Text('Home'),
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            title: Text('Add Event'),
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.import_export),
             title: Text('Import/export'),
           ),
@@ -298,10 +302,7 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.settings),
             title: Text('Settings'),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
-          ),
+          
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).primaryColor,

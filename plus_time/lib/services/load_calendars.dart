@@ -14,7 +14,7 @@ class ProjectsInfo {
   bool isLoading;
 
   int _selectedCalendarIndex;
-  Calendar _selectedCalendar;
+  Calendar selectedCalendar;
 
   Map<String, double> projects = Map<String, double>();
   List<Card> projectCards = List<Card>();
@@ -54,9 +54,9 @@ class ProjectsInfo {
       print(e);
     }
 
-    _selectedCalendar = calendars[_selectedCalendarIndex];
+    selectedCalendar = calendars[_selectedCalendarIndex];
     await retrieveCalendarEvents();
-    return _selectedCalendar;
+    return selectedCalendar;
     /*
     for (int calendarIndex = 0;
         calendarIndex == calendars.length;
@@ -77,7 +77,7 @@ class ProjectsInfo {
     final startDate = DateTime.now().add(Duration(days: -30));
     final endDate = DateTime.now().add(Duration(days: 30));
     var calendarEventsResult = await _deviceCalendarPlugin.retrieveEvents(
-        _selectedCalendar.id,
+        selectedCalendar.id,
         RetrieveEventsParams(startDate: startDate, endDate: endDate));
     isLoading = false;
     print("events : " + calendarEventsResult?.data.toString());
@@ -89,7 +89,7 @@ class ProjectsInfo {
 
   void setSelectedCalendar(int index) {
     _selectedCalendarIndex = index;
-    _selectedCalendar = calendars[_selectedCalendarIndex];
+    selectedCalendar = calendars[_selectedCalendarIndex];
   }
 
   /* Projects Logic */
