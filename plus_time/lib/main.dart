@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
         child: StreamProvider<UserLocation>(
             create: (context) => LocationService().locationStream,
             child: MaterialApp(
+              debugShowCheckedModeBanner: false, 
               title: '+Time',
               theme: ThemeData(
                 primarySwatch: Colors.lime,

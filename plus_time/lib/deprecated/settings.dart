@@ -1,4 +1,4 @@
-import 'package:device_calendar/device_calendar.dart';
+/*import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:plus_time/CalendarEventsPage.dart';
 import 'package:provider/provider.dart';
@@ -42,27 +42,6 @@ class _SettingsState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     int _selectedIndex = 2;
-
-    void _onItemTapped(int index) {
-      setState(() {
-        _selectedIndex = index;
-        print("Selected index is $_selectedIndex");
-        switch (_selectedIndex) {
-          case 0: // Home
-            Navigator.pushNamed(context, '/');
-            break;
-          case 1: // Import/export
-            Navigator.pushNamed(context, '/qrModule');
-            break;
-          case 2: // Settings
-            Navigator.pushNamed(context, '/settings');
-            break;
-          case 3: // Logout
-            Navigator.pushNamed(context, '/login');
-            break;
-        }
-      });
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -134,6 +113,9 @@ class _SettingsState extends State<SettingsPage> {
                 child: Text('Submit'),
               ),
             ),
+            RaisedButton(
+               onPressed: () {Navigator.pushNamed(context, '/login');},
+               child: Text('Logout')),
           ],
         ),
       )),
@@ -144,6 +126,10 @@ class _SettingsState extends State<SettingsPage> {
             title: Text('Home'),
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            title: Text('Add Event'),
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.import_export),
             title: Text('Import/export'),
           ),
@@ -151,16 +137,33 @@ class _SettingsState extends State<SettingsPage> {
             icon: Icon(Icons.settings),
             title: Text('Settings'),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
-          ),
+          
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).primaryColor,
         unselectedItemColor: Theme.of(context).disabledColor,
-        onTap: _onItemTapped,
+        onTap: (int index) {
+          setState(() {
+            _selectedIndex = index;
+            print("Selected index is $_selectedIndex");
+            switch (_selectedIndex) {
+              case 0: // Home
+                Navigator.pushNamed(context, '/');
+                break;
+              case 1: // Add Event
+                Navigator.pushNamed(context, '/add_event');
+                break;
+              case 2: // Import/export
+                Navigator.pushNamed(context, '/qrModule');
+                break;
+              case 3: // Settings
+                Navigator.pushNamed(context, '/settings');
+                break;
+            }
+          });
+        },
       ),
     );
   }
 }
+*/
