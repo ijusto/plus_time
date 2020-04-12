@@ -8,39 +8,34 @@ import 'CalendarEventPage.dart';
 import 'device_calendar_ex/RecurringEventDialog.dart';
 
 class CalendarEventsPage extends StatefulWidget {
-  final Calendar _calendar;
+  final List<Event> _events;
+  final Calendar _selectedCalendar;
 
-  CalendarEventsPage(this._calendar, {Key key}) : super(key: key);
+  CalendarEventsPage(this._events, this._selectedCalendar, {Key key})
+      : super(key: key);
 
   @override
   _CalendarEventsPageState createState() {
-    return _CalendarEventsPageState(_calendar);
+    return _CalendarEventsPageState(_events, _selectedCalendar);
   }
 }
 
 class _CalendarEventsPageState extends State<CalendarEventsPage> {
+  final List<Event> _calendarEvents;
   final Calendar _calendar;
   final GlobalKey<ScaffoldState> _scaffoldstate = GlobalKey<ScaffoldState>();
 
   DeviceCalendarPlugin _deviceCalendarPlugin;
-  List<Event> _calendarEvents;
   bool _isLoading = true;
 
-  _CalendarEventsPageState(this._calendar) {
+  _CalendarEventsPageState(this._calendarEvents, this._calendar) {
     _deviceCalendarPlugin = DeviceCalendarPlugin();
-  }
-
-  @override
-  initState() {
-    super.initState();
-    _retrieveCalendarEvents();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldstate,
-        appBar: AppBar(title: Text('${_calendar.name} events')),
         body: (_calendarEvents?.isNotEmpty ?? false)
             ? Stack(
                 children: [
@@ -75,9 +70,9 @@ class _CalendarEventsPageState extends State<CalendarEventsPage> {
               MaterialPageRoute(builder: (BuildContext context) {
             return CalendarEventPage(_calendar);
           }));
-          if (refreshEvents == true) {
-            await _retrieveCalendarEvents();
-          }
+          //if (refreshEvents == true) {
+          //  await _retrieveCalendarEvents();
+          //}
         },
         child: Icon(Icons.add),
       );
@@ -94,7 +89,7 @@ class _CalendarEventsPageState extends State<CalendarEventsPage> {
 
   Future _onDeletedFinished(bool deleteSucceeded) async {
     if (deleteSucceeded) {
-      await _retrieveCalendarEvents();
+      //await _retrieveCalendarEvents();
     } else {
       _scaffoldstate.currentState.showSnackBar(SnackBar(
         content: Text('Oops, we ran into an issue deleting the event'),
@@ -107,34 +102,5 @@ class _CalendarEventsPageState extends State<CalendarEventsPage> {
     }
   }
 
-  Future _onTapped(Event event) async {
-    final refreshEvents = await Navigator.push(context,
-        MaterialPageRoute(builder: (BuildContext context) {
-      return CalendarEventPage(
-        _calendar,
-        event,
-        RecurringEventDialog(
-          _deviceCalendarPlugin,
-          event,
-          _onLoading,
-          _onDeletedFinished,
-        ),
-      );
-    }));
-    if (refreshEvents != null && refreshEvents) {
-      await _retrieveCalendarEvents();
-    }
-  }
-
-  Future _retrieveCalendarEvents() async {
-    final startDate = DateTime.now().add(Duration(days: -30));
-    final endDate = DateTime.now().add(Duration(days: 30));
-    var calendarEventsResult = await _deviceCalendarPlugin.retrieveEvents(
-        _calendar.id,
-        RetrieveEventsParams(startDate: startDate, endDate: endDate));
-    setState(() {
-      _calendarEvents = calendarEventsResult?.data;
-      _isLoading = false;
-    });
-  }
+  Future _onTapped(Event event) async {}
 }

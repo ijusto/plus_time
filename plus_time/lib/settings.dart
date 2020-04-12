@@ -1,20 +1,18 @@
-
-
 import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/material.dart';
+import 'package:plus_time/CalendarEventsPage.dart';
 import 'package:provider/provider.dart';
-import 'CalendarEventsPage.dart';
 import 'services/load_calendars.dart';
 
 class Settings extends StatelessWidget {
   Settings();
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SettingsPage(),
     );
-  } 
+  }
 }
 
 class SettingsPage extends StatefulWidget {
@@ -27,12 +25,14 @@ class SettingsPage extends StatefulWidget {
 class _SettingsState extends State<SettingsPage> {
   final _formKey = GlobalKey<FormState>();
   List<Calendar> _calendars;
-  
-  @override void initState() {
+
+  @override
+  void initState() {
     super.initState();
     ProjectsInfo projectInfo = Provider.of<ProjectsInfo>(context);
     _calendars = projectInfo.calendars;
   }
+
   @override
   Widget build(BuildContext context) {
     int _selectedIndex = 2;
@@ -57,6 +57,7 @@ class _SettingsState extends State<SettingsPage> {
         }
       });
     }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Settings"),
@@ -68,7 +69,6 @@ class _SettingsState extends State<SettingsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text('Select the calendars:'),
-          
             Expanded(
               flex: 1,
               child: ListView.builder(
@@ -81,7 +81,7 @@ class _SettingsState extends State<SettingsPage> {
                     onTap: () async {
                       await Navigator.push(context,
                           MaterialPageRoute(builder: (BuildContext context) {
-                        return CalendarEventsPage(_calendars[index],
+                        return CalendarEventsPage(null, _calendars[index],
                             key: Key('calendarEventsPage'));
                       }));
                     },

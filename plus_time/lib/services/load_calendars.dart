@@ -1,5 +1,6 @@
 import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/material.dart';
+import 'package:plus_time/CalendarEventsPage.dart';
 
 import '../generate.dart';
 import '../map.dart';
@@ -138,14 +139,16 @@ class ProjectsInfo {
     int projectIndex = -1;
     projectCards.clear();
 
+    List<Event> projEvents = List<Event>();
     for (var project in projects.keys) {
       projectIndex++;
       List<Location> locations = List<Location>();
       Location recentLoc;
-
+      projEvents.clear();
       for (Event ev in _calendarEvents) {
         if (ev.title.split(" ")[0].startsWith("#")) {
           if (ev.title.split(" ")[0] == project) {
+            projEvents.add(ev);
             if (ev.location != null) {
               try {
                 var addresses =
@@ -201,8 +204,12 @@ class ProjectsInfo {
               child: Icon(Icons.share),
             ),
             GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, '/settings');
+              onTap: () async {
+                await Navigator.push(context,
+                    MaterialPageRoute(builder: (BuildContext context) {
+                  return CalendarEventsPage(projEvents, _selectedCalendar,
+                      key: Key('calendarEventsPage'));
+                }));
               },
               child: Icon(Icons.play_arrow),
             )
