@@ -58,9 +58,9 @@ class ProjectsInfo {
     } catch (e) {
       print(e);
     }
-    return selectedCalendar;
-    await retrieveCalendarEvents();
     selectedCalendar = calendars[_selectedCalendarIndex];
+    await retrieveCalendarEvents();
+    return selectedCalendar;
 
     /*
     for (int calendarIndex = 0;
@@ -157,12 +157,14 @@ class ProjectsInfo {
             if (ev.location != null) {
               try {
                 var addresses;
-                    try {
-                      addresses = await Geocoder.local.findAddressesFromQuery(ev.location).catchError((onError) => {
-       print('error caught. location not valid')});
-                    } catch (e) {
-                      print('error caught. location not valid');
-                    }
+                try {
+                  addresses = await Geocoder.local
+                      .findAddressesFromQuery(ev.location)
+                      .catchError((onError) =>
+                          {print('error caught. location not valid')});
+                } catch (e) {
+                  print('error caught. location not valid');
+                }
                 var first = addresses.first;
                 Location loc = Location(
                     latitude: addresses.first.coordinates.latitude,
@@ -172,9 +174,8 @@ class ProjectsInfo {
                   recentLoc = loc;
                 }
 
-                if (loc.latitude != null && loc.longitude != null) 
+                if (loc.latitude != null && loc.longitude != null)
                   locations.add(loc);
-                  
               } catch (e) {
                 print(e); // TODO: handle this later
               }
@@ -269,24 +270,22 @@ class ProjectsInfo {
         });
   }
 
-
-  List<DropdownMenuItem<CalendarItem>> obtainDropDownItems () {
-    List<DropdownMenuItem<CalendarItem>> items = List<DropdownMenuItem<CalendarItem>>();
+  List<DropdownMenuItem<CalendarItem>> obtainDropDownItems() {
+    List<DropdownMenuItem<CalendarItem>> items =
+        List<DropdownMenuItem<CalendarItem>>();
     items.clear();
     for (CalendarItem calendarItem in _calendarNames) {
-      items.add(
-        DropdownMenuItem<CalendarItem>(
+      items.add(DropdownMenuItem<CalendarItem>(
           value: calendarItem,
-          child: Row(
-            children: <Widget>[
-              SizedBox(width: 10,),
-              Text(
-                calendarItem.index.toString() + " - " + calendarItem.calendarName,
-                style:  TextStyle(color: Colors.black),
-              ),
-            ]
-          )
-        ));
+          child: Row(children: <Widget>[
+            SizedBox(
+              width: 10,
+            ),
+            Text(
+              calendarItem.index.toString() + " - " + calendarItem.calendarName,
+              style: TextStyle(color: Colors.black),
+            ),
+          ])));
     }
     print(_calendarNames);
     print(items);
@@ -300,8 +299,6 @@ class CalendarItem {
   final String calendarName;
   @override
   String toString() {
-  return "CalendarItem index $index name $calendarName";
-   }
-  
-  
+    return "CalendarItem index $index name $calendarName";
+  }
 }

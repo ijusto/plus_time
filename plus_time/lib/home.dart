@@ -280,7 +280,6 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.exit_to_app),
             title: Text('Logout'),
           ),
-          
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).primaryColor,
@@ -309,7 +308,8 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           final snackBar = SnackBar(
-            content: Text('You are using calendar ' + projectsInfo.selectedCalendar.name),
+            content: Text(
+                'You are using calendar ' + projectsInfo.selectedCalendar.name),
             action: SnackBarAction(
               label: 'Change',
               onPressed: () {
@@ -317,42 +317,44 @@ class _HomePageState extends State<HomePage> {
                 showDialog(
                     context: context,
                     builder: (_) => new SimpleDialog(
-                        title: Text(
-                          "Change Calendar",
-                          textAlign: TextAlign.center,
-                          textScaleFactor: 1.0,
-                        ),
-                        children: <Widget>[ 
-                          Text(
-                          "You are using calendar " + projectsInfo.selectedCalendar.name,
-                          textAlign: TextAlign.center,
-                          textScaleFactor: 0.9,
+                          title: Text(
+                            "Change Calendar",
+                            textAlign: TextAlign.center,
+                            textScaleFactor: 1.0,
                           ),
-                          new SimpleDialogOption(
-                            onPressed: () {
-                              // Navigator.of(context).pop();
-                            },
-                            child: new Center(
-                              child: DropdownButton<CalendarItem> (
-                              hint: Text("Select calendar"),
-                              
-                              onChanged: (CalendarItem value) {
-                                setState(() {
-                                  print("Selected calendar $value.calendarName on index $value.index ");
-                                  projectsInfo.setSelectedCalendar(value.index);
-                                  SnackBar(
-                                   content: Text('Changed calendar to ' + value.calendarName));
-                                  
-                                  Navigator.of(context).pop();
-                                });
-                              },
-                              items: projectsInfo.obtainDropDownItems(),
+                          children: <Widget>[
+                            Text(
+                              "You are using calendar " +
+                                  projectsInfo.selectedCalendar.name,
+                              textAlign: TextAlign.center,
+                              textScaleFactor: 0.9,
                             ),
-                          )
-                          )
-                         ],
-                    )
-                );
+                            new SimpleDialogOption(
+                                onPressed: () {
+                                  // Navigator.of(context).pop();
+                                },
+                                child: new Center(
+                                  child: DropdownButton<CalendarItem>(
+                                    hint: Text("Select calendar"),
+                                    onChanged: (CalendarItem value) {
+                                      setState(() {
+                                        print(
+                                            "Selected calendar $value.calendarName on index $value.index ");
+                                        projectsInfo
+                                            .setSelectedCalendar(value.index);
+                                        SnackBar(
+                                            content: Text(
+                                                'Changed calendar to ' +
+                                                    value.calendarName));
+
+                                        Navigator.of(context).pop();
+                                      });
+                                    },
+                                    items: projectsInfo.obtainDropDownItems(),
+                                  ),
+                                ))
+                          ],
+                        ));
               },
             ),
           );
@@ -368,8 +370,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future getProjects() async {
-    Calendar selectedCalendar = await projectsInfo.retriveCalendars();
-    print("Selected calendar: " + selectedCalendar.name);
+    Calendar _selectedCalendar = await projectsInfo.retriveCalendars();
+    print("Selected calendar: " + _selectedCalendar.name);
     projectCards = await projectsInfo.obtainProjectCards(context);
     setState(() {
       _isLoading = false;
