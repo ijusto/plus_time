@@ -18,12 +18,10 @@ class Events extends Table {
 
 @DataClassName('AccessGivenEntry')
 class AccessesGiven extends Table {
-  // autoIncrement automatically sets this to be the primary key
-  IntColumn get id => integer().autoIncrement()();
-
   // calendar, location, storage, camera, biometrics
   TextColumn get typeOfAccess => text().withLength(min: 1, max: 50)();
-
+  @override
+  Set<Column> get primaryKey => {typeOfAccess};
   BoolColumn get granted => boolean().withDefault(Constant(false))();
 }
 

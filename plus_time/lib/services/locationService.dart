@@ -9,14 +9,21 @@ class LocationService {
   // keep track of the current location
   UserLocation _currentLocation;
   Location location = Location();
+  bool perm;
 
   // Continuously emit location updates
   StreamController<UserLocation> _locationController =
       StreamController<UserLocation>.broadcast();
 
   LocationService() {
-    location.requestPermission().then((granted) {
+    perm = false;
+  }
+
+  Future<bool> requestPerm() async {
+    if (!perm) {
+      PermissionStatus granted = await location.requestPermission();
       if (granted == PermissionStatus.GRANTED) {
+        perm = true;
         location.onLocationChanged().listen((locationData) {
           if (locationData != null) {
             _locationController.add(UserLocation(
@@ -26,7 +33,8 @@ class LocationService {
           }
         });
       }
-    });
+    }
+    return perm;
   }
 
   Stream<UserLocation> get locationStream => _locationController.stream;

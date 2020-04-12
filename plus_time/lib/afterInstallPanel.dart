@@ -3,6 +3,7 @@ import 'package:plus_time/data/moor_database.dart';
 import 'package:plus_time/home.dart';
 import 'package:plus_time/login.dart';
 import 'package:plus_time/services/load_calendars.dart';
+import 'package:plus_time/services/locationService.dart';
 import 'package:provider/provider.dart';
 
 class InstalationPanel extends StatefulWidget {
@@ -14,9 +15,10 @@ class InstalationPanel extends StatefulWidget {
 
 class _InstalationPanelState extends State<InstalationPanel> {
   ProjectsInfo projectsInfo;
+  LocationService locServ;
   int pageIndex = 0;
   AccessesGivenDao permDao;
-  bool firstTime;
+  bool firstTime = true;
   var _pages = [
     GettingStartedPage(),
     CalendarAccessPage(),
@@ -33,7 +35,20 @@ class _InstalationPanelState extends State<InstalationPanel> {
     "Give Camera Access",
   ];
 
-  void _nextImage() {
+  Future _nextImage() async {
+    if (_buttonText[pageIndex] == "Give Calendar Access") {
+      bool calperm = await projectsInfo.requestCalPerm();
+      AccessGivenEntry calAccess =
+          new AccessGivenEntry(typeOfAccess: "calendar", granted: calperm);
+      await permDao.insertAccessesGiven(calAccess);
+    } else if (_buttonText[pageIndex] == "Give Location Access") {
+      bool calperm = await locServ.requestPerm();
+      AccessGivenEntry calAccess =
+          new AccessGivenEntry(typeOfAccess: "location", granted: calperm);
+      await permDao.insertAccessesGiven(calAccess);
+    } else if (_buttonText[pageIndex] == "Give Storage Access") {
+    } else if (_buttonText[pageIndex] == "Give Camera Access") {}
+
     setState(() {
       if (pageIndex < _pages.length - 1) {
         pageIndex = pageIndex + 1;
@@ -47,19 +62,17 @@ class _InstalationPanelState extends State<InstalationPanel> {
   @override
   void initState() {
     super.initState();
-    firstTime = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      afterInstall();
+    });
   }
 
   Future afterInstall() async {
     List<AccessGivenEntry> perms = await permDao.getAllAccessesGivens();
-    if (perms == null || perms.isEmpty) {
-      setState(() {
-        firstTime = true;
-      });
-    } else {
-      setState(() {
-        firstTime = false;
-      });
+    if (!(perms == null || perms.isEmpty) && firstTime) {
+      firstTime = false;
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Home(projectsInfo)));
     }
   }
 
@@ -67,37 +80,37 @@ class _InstalationPanelState extends State<InstalationPanel> {
   Widget build(BuildContext context) {
     projectsInfo = Provider.of<ProjectsInfo>(context);
     permDao = Provider.of<AppDatabase>(context).accessesGivenDao;
-    afterInstall();
-    if (!firstTime) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Home(projectsInfo)));
-    } else {
-      return Scaffold(
-          body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Center(
-            child: Column(
-              children: <Widget>[
-                _pages[pageIndex],
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    RaisedButton(
-                        child: Text(_buttonText[pageIndex]),
-                        onPressed: _nextImage,
-                        elevation: 5.0,
-                        color: Colors.green),
-                  ],
-                ),
-                Padding(padding: const EdgeInsets.all(50.0)),
-                SelectedPage(numberOfDots: _pages.length, pageIndex: pageIndex),
-              ],
-            ),
+    locServ = Provider.of<LocationService>(context);
+    //if (!firstTime) {
+    //} else {
+    return Scaffold(
+        body: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Center(
+          child: Column(
+            children: <Widget>[
+              _pages[pageIndex],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  RaisedButton(
+                      child: Text(_buttonText[pageIndex]),
+                      onPressed: (() async {
+                        await _nextImage();
+                      }),
+                      elevation: 5.0,
+                      color: Colors.green),
+                ],
+              ),
+              Padding(padding: const EdgeInsets.all(50.0)),
+              SelectedPage(numberOfDots: _pages.length, pageIndex: pageIndex),
+            ],
           ),
-        ],
-      ));
-    }
+        ),
+      ],
+    ));
+    //}
   }
 }
 

@@ -31,11 +31,11 @@ class ProjectsInfo {
     _selectedCalendarIndex = 1;
   }
 
-  /* Calendar Logic */
-  Future<Calendar> retriveCalendars() async {
+  Future<bool> requestCalPerm() async {
+    Result<bool> permissionsGranted;
     try {
       if (!pGranted) {
-        var permissionsGranted = await _deviceCalendarPlugin.hasPermissions();
+        permissionsGranted = await _deviceCalendarPlugin.hasPermissions();
 
         if (permissionsGranted.isSuccess && !permissionsGranted.data) {
           permissionsGranted = await _deviceCalendarPlugin.requestPermissions();
@@ -46,6 +46,16 @@ class ProjectsInfo {
           pGranted = permissionsGranted.isSuccess;
         }
       }
+    } catch (e) {
+      print(e);
+    }
+    return permissionsGranted.isSuccess;
+  }
+
+  /* Calendar Logic */
+  Future<Calendar> retriveCalendars() async {
+    try {
+      await requestCalPerm();
 
       final calendarsResult = await _deviceCalendarPlugin.retrieveCalendars();
       calendars = calendarsResult?.data;

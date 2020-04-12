@@ -69,8 +69,6 @@ class _HomePageState extends State<HomePage> {
     }
     print("HELLO?");
 
-    var userLocation = Provider.of<UserLocation>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text('+Time'),
@@ -79,19 +77,6 @@ class _HomePageState extends State<HomePage> {
         children: [
           CustomScrollView(
             slivers: <Widget>[
-              /*
-            if (userLocation != null &&
-                userLocation.latitude != null &&
-                userLocation.longitude != null) ...[
-              SliverList(
-                delegate: SliverChildListDelegate([
-                  Text(
-                    "Location: Lat: ${userLocation.latitude}, Long: ${userLocation.longitude}",
-                    style: Theme.of(context).textTheme.title,
-                  ),
-                ]),
-              ),
-            ],*/
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
@@ -115,70 +100,6 @@ class _HomePageState extends State<HomePage> {
                   delegate: SliverChildListDelegate(projectCards),
                 )
               ],
-              /*
-            SliverList(
-                delegate: SliverChildListDelegate([
-              Card(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    ExpansionTile(
-                      leading: Icon(
-                        Icons.error,
-                        size: 56.0,
-                        color: Colors.red,
-                      ),
-                      title: Text('ComputaçãoMóvel'),
-                      subtitle: Text('15h'),
-                      trailing: Wrap(
-                        spacing: 30,
-                        children: <Widget>[
-                          Icon(Icons.location_on),
-                          GestureDetector(
-                            onTap: () {
-                              createAlertDialog(context);
-                            },
-                            child: Icon(Icons.share),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, '/settings');
-                            },
-                            child: Icon(Icons.play_arrow),
-                          ),
-                        ],
-                      ),
-                      children: <Widget>[
-                        Container(height: 300, child: MapPage()),
-                      ],
-                    ),
-                    (_calendarEvents?.isNotEmpty ?? false)
-                        ? Stack(
-                            children: [
-                              ListView.builder(
-                                itemCount: _calendarEvents?.length ?? 0,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return EventItem(
-                                      _calendarEvents[index],
-                                      _deviceCalendarPlugin,
-                                      _onLoading,
-                                      _onDeletedFinished,
-                                      _onTapped,
-                                      _calendar.isReadOnly);
-                                },
-                              ),
-                              if (_isLoading)
-                                Center(
-                                  child: CircularProgressIndicator(),
-                                )
-                            ],
-                          )
-                        : Center(child: Text('No events found')),
-                  ],
-                ),
-              ),
-            ])),
-            */
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {

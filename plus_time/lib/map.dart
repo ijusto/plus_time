@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
+import 'package:plus_time/data/moor_database.dart';
 import 'package:plus_time/datamodels/user_location.dart';
+import 'package:plus_time/services/locationService.dart';
 import 'package:provider/provider.dart';
 
 class Location {
@@ -22,6 +24,8 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   MapController _mapController;
+  LocationService locServ;
+  AccessesGivenDao permAccess;
 
   @override
   void initState() {
@@ -31,6 +35,15 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
+    permAccess = Provider.of<AppDatabase>(context).accessesGivenDao;
+    locServ = Provider.of<LocationService>(context);
+    permAccess.getAllAccessesGivens().then((perms) {
+      for (AccessGivenEntry perm in perms) {
+        if (perm.typeOfAccess == "location" && !perm.granted) {
+          locServ.requestPerm();
+        }
+      }
+    });
     var userLocation = Provider.of<UserLocation>(context);
     return Scaffold(
         floatingActionButton: Row(children: <Widget>[

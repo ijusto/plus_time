@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
         providers: [
           Provider(create: (_) => AppDatabase()),
           Provider(create: (_) => ProjectsInfo()),
+          Provider(create: (_) => LocationService()),
           StreamProvider(create: (_) => LocationService().locationStream)
         ],
         child: MaterialApp(

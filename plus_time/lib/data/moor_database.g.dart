@@ -194,20 +194,16 @@ class $LoginOperationsTable extends LoginOperations
 
 class AccessGivenEntry extends DataClass
     implements Insertable<AccessGivenEntry> {
-  final int id;
   final String typeOfAccess;
   final bool granted;
-  AccessGivenEntry(
-      {@required this.id, @required this.typeOfAccess, @required this.granted});
+  AccessGivenEntry({@required this.typeOfAccess, @required this.granted});
   factory AccessGivenEntry.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
     final boolType = db.typeSystem.forDartType<bool>();
     return AccessGivenEntry(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       typeOfAccess: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}type_of_access']),
       granted:
@@ -218,7 +214,6 @@ class AccessGivenEntry extends DataClass
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return AccessGivenEntry(
-      id: serializer.fromJson<int>(json['id']),
       typeOfAccess: serializer.fromJson<String>(json['typeOfAccess']),
       granted: serializer.fromJson<bool>(json['granted']),
     );
@@ -227,7 +222,6 @@ class AccessGivenEntry extends DataClass
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
       'typeOfAccess': serializer.toJson<String>(typeOfAccess),
       'granted': serializer.toJson<bool>(granted),
     };
@@ -236,7 +230,6 @@ class AccessGivenEntry extends DataClass
   @override
   AccessesGivenCompanion createCompanion(bool nullToAbsent) {
     return AccessesGivenCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       typeOfAccess: typeOfAccess == null && nullToAbsent
           ? const Value.absent()
           : Value(typeOfAccess),
@@ -246,16 +239,14 @@ class AccessGivenEntry extends DataClass
     );
   }
 
-  AccessGivenEntry copyWith({int id, String typeOfAccess, bool granted}) =>
+  AccessGivenEntry copyWith({String typeOfAccess, bool granted}) =>
       AccessGivenEntry(
-        id: id ?? this.id,
         typeOfAccess: typeOfAccess ?? this.typeOfAccess,
         granted: granted ?? this.granted,
       );
   @override
   String toString() {
     return (StringBuffer('AccessGivenEntry(')
-          ..write('id: $id, ')
           ..write('typeOfAccess: $typeOfAccess, ')
           ..write('granted: $granted')
           ..write(')'))
@@ -263,35 +254,29 @@ class AccessGivenEntry extends DataClass
   }
 
   @override
-  int get hashCode =>
-      $mrjf($mrjc(id.hashCode, $mrjc(typeOfAccess.hashCode, granted.hashCode)));
+  int get hashCode => $mrjf($mrjc(typeOfAccess.hashCode, granted.hashCode));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is AccessGivenEntry &&
-          other.id == this.id &&
           other.typeOfAccess == this.typeOfAccess &&
           other.granted == this.granted);
 }
 
 class AccessesGivenCompanion extends UpdateCompanion<AccessGivenEntry> {
-  final Value<int> id;
   final Value<String> typeOfAccess;
   final Value<bool> granted;
   const AccessesGivenCompanion({
-    this.id = const Value.absent(),
     this.typeOfAccess = const Value.absent(),
     this.granted = const Value.absent(),
   });
   AccessesGivenCompanion.insert({
-    this.id = const Value.absent(),
     @required String typeOfAccess,
     this.granted = const Value.absent(),
   }) : typeOfAccess = Value(typeOfAccess);
   AccessesGivenCompanion copyWith(
-      {Value<int> id, Value<String> typeOfAccess, Value<bool> granted}) {
+      {Value<String> typeOfAccess, Value<bool> granted}) {
     return AccessesGivenCompanion(
-      id: id ?? this.id,
       typeOfAccess: typeOfAccess ?? this.typeOfAccess,
       granted: granted ?? this.granted,
     );
@@ -303,15 +288,6 @@ class $AccessesGivenTable extends AccessesGiven
   final GeneratedDatabase _db;
   final String _alias;
   $AccessesGivenTable(this._db, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn _id;
-  @override
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
-        hasAutoIncrement: true, declaredAsPrimaryKey: true);
-  }
-
   final VerificationMeta _typeOfAccessMeta =
       const VerificationMeta('typeOfAccess');
   GeneratedTextColumn _typeOfAccess;
@@ -333,7 +309,7 @@ class $AccessesGivenTable extends AccessesGiven
   }
 
   @override
-  List<GeneratedColumn> get $columns => [id, typeOfAccess, granted];
+  List<GeneratedColumn> get $columns => [typeOfAccess, granted];
   @override
   $AccessesGivenTable get asDslTable => this;
   @override
@@ -344,9 +320,6 @@ class $AccessesGivenTable extends AccessesGiven
   VerificationContext validateIntegrity(AccessesGivenCompanion d,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
-    }
     if (d.typeOfAccess.present) {
       context.handle(
           _typeOfAccessMeta,
@@ -363,7 +336,7 @@ class $AccessesGivenTable extends AccessesGiven
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => {typeOfAccess};
   @override
   AccessGivenEntry map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -373,9 +346,6 @@ class $AccessesGivenTable extends AccessesGiven
   @override
   Map<String, Variable> entityToSql(AccessesGivenCompanion d) {
     final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
     if (d.typeOfAccess.present) {
       map['type_of_access'] =
           Variable<String, StringType>(d.typeOfAccess.value);
