@@ -18,12 +18,11 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
- 
     return MultiProvider(
-      providers: [
-        Provider(create: (_) => AppDatabase()),
-        Provider(create: (_) => ProjectsInfo()),
-      ],
+        providers: [
+          Provider(create: (_) => AppDatabase()),
+          Provider(create: (_) => ProjectsInfo()),
+        ],
         child: StreamProvider<UserLocation>(
             create: (context) => LocationService().locationStream,
             child: MaterialApp(

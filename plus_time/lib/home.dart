@@ -12,41 +12,27 @@ import 'services/load_calendars.dart';
 class Home extends StatelessWidget {
   Home();
 
+  ProjectsInfo projectInfo;
   @override
   Widget build(BuildContext context) {
-    ProjectsInfo projectInfo;
-    List<Card> projectCards;
-    projectInfo = Provider.of<ProjectsInfo>(context);
-    print("HELLO?");
-    projectInfo.retriveCalendars().then((selected_calendar) {
-      print("Selected calendar: " + selected_calendar.name);
-      projectInfo.obtainProjectCards(context).then((pcards) {
-        print("PCARDS: $pcards");
-        projectCards = pcards;
-      });
-    });
-    //while (projectInfo.isLoading) print("."); // BUSY WAITING; WONT WORK
-    print("--- $projectInfo");
-    print("BYE ${projectInfo.getProjectCards}");
-    print("");
     return Scaffold(
-      body: HomePage(
-          projectsInfo: projectInfo, projectCards: projectInfo.getProjectCards),
+      body: HomePage(projectsInfo: Provider.of<ProjectsInfo>(context)),
     );
   }
 }
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key, this.projectsInfo, this.projectCards}) : super(key: key);
+  HomePage({Key key, this.projectsInfo}) : super(key: key);
 
   final ProjectsInfo projectsInfo;
-  final List<Card> projectCards;
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState(projectsInfo);
 }
 
 class _HomePageState extends State<HomePage> {
+  final ProjectsInfo projectsInfo;
+  List<Card> projectCards;
   int _selectedIndex = 0;
 
   List<String> litems = [
@@ -55,6 +41,8 @@ class _HomePageState extends State<HomePage> {
   List<String> litems2 = [
     "Statistics",
   ];
+
+  _HomePageState(this.projectsInfo) {}
 
   /* Events Handlers */
   void _addEvent() {}
@@ -80,9 +68,29 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  bool _isLoading = true;
+  void _onLoading() {
+    setState(() {
+      _isLoading = true;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _onLoading();
+  }
+
   /* Create the layout */
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      getProjects();
+    }
+    print("HELLO?");
+
     var userLocation = Provider.of<UserLocation>(context);
 
     return Scaffold(
@@ -122,9 +130,9 @@ class _HomePageState extends State<HomePage> {
               childCount: litems.length,
             ),
           ),
-          if (widget.projectCards != null) ...[
+          if (!_isLoading && projectCards != null) ...[
             SliverList(
-              delegate: SliverChildListDelegate(widget.projectCards),
+              delegate: SliverChildListDelegate(projectCards),
             )
           ],
           /*
@@ -209,59 +217,59 @@ class _HomePageState extends State<HomePage> {
               childCount: litems2.length,
             ),
           ),
-          if (widget.projectCards != null && widget.projectCards.length != 0) 
+          if (!_isLoading && projectCards != null && projectCards.length != 0)
             SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return Container(
-                  child: new Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: Center(
-                      child: PieChart(
-                        dataMap: widget.projectsInfo.projects,
-                        animationDuration: Duration(milliseconds: 800),
-                        chartLegendSpacing: 32.0,
-                        chartRadius: MediaQuery.of(context).size.width / 2.7,
-                        showChartValuesInPercentage: true,
-                        showChartValues: true,
-                        showChartValuesOutside: false,
-                        chartValueBackgroundColor: Colors.grey[200],
-                        showLegends: true,
-                        legendPosition: LegendPosition.right,
-                        decimalPlaces: 1,
-                        showChartValueLabel: true,
-                        initialAngle: 0,
-                        chartValueStyle: defaultChartValueStyle.copyWith(
-                          color: Colors.blueGrey[900].withOpacity(0.9),
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  return Container(
+                    child: new Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Center(
+                        child: PieChart(
+                          dataMap: widget.projectsInfo.projects,
+                          animationDuration: Duration(milliseconds: 800),
+                          chartLegendSpacing: 32.0,
+                          chartRadius: MediaQuery.of(context).size.width / 2.7,
+                          showChartValuesInPercentage: true,
+                          showChartValues: true,
+                          showChartValuesOutside: false,
+                          chartValueBackgroundColor: Colors.grey[200],
+                          showLegends: true,
+                          legendPosition: LegendPosition.right,
+                          decimalPlaces: 1,
+                          showChartValueLabel: true,
+                          initialAngle: 0,
+                          chartValueStyle: defaultChartValueStyle.copyWith(
+                            color: Colors.blueGrey[900].withOpacity(0.9),
+                          ),
+                          chartType: ChartType.ring,
                         ),
-                            chartType: ChartType.ring,
-                        ),
-                    ),
-                  ),
-                );
-              },
-              childCount: litems2.length,
-            ),
-          ),
-          if (widget.projectCards == null || widget.projectCards.length == 0)  
-            SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return Container(
-                  child: new Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: Center(
-                      child: Text(
-                        "Statistics not available",
-                        style: Theme.of(context).textTheme.subtitle,
                       ),
                     ),
-                  ),
-                );
-              },
-              childCount: litems2.length,
+                  );
+                },
+                childCount: litems2.length,
+              ),
             ),
-          ),
+          if (!_isLoading && (projectCards == null || projectCards.length == 0))
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  return Container(
+                    child: new Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Center(
+                        child: Text(
+                          "Statistics not available",
+                          style: Theme.of(context).textTheme.subtitle,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                childCount: litems2.length,
+              ),
+            ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -294,6 +302,15 @@ class _HomePageState extends State<HomePage> {
         child: Icon(Icons.event),
       ),
     );
+  }
+
+  Future getProjects() async {
+    Calendar selectedCalendar = await projectsInfo.retriveCalendars();
+    print("Selected calendar: " + selectedCalendar.name);
+    projectCards = await projectsInfo.obtainProjectCards(context);
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   Future createAlertDialog(BuildContext context) {

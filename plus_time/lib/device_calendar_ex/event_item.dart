@@ -1,6 +1,7 @@
 import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:plus_time/generate.dart';
 
 import 'RecurringEventDialog.dart';
 
@@ -166,6 +167,11 @@ class EventItem extends StatelessWidget {
             ),
             ButtonBar(
               children: [
+                IconButton(
+                    onPressed: () {
+                      createAlertDialog(context);
+                    },
+                    icon: Icon(Icons.share)),
                 if (!_isReadOnly) ...[
                   IconButton(
                     onPressed: () {
@@ -232,5 +238,33 @@ class EventItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future createAlertDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              title: Text("Do you want to share this event?"),
+              actions: <Widget>[
+                MaterialButton(
+                    elevation: 5.0,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                GenerateScreen(eventData: "eventData")),
+                      );
+                    },
+                    child: Text("Yes")),
+                MaterialButton(
+                    elevation: 5.0,
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("Cancel"))
+              ]);
+        });
   }
 }
