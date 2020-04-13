@@ -72,17 +72,18 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-          title: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                  Image.asset(
-                 'assets/logo_small_white.png',
-                  fit: BoxFit.scaleDown,
-                  height: 32,
-              ),
-            ],
-          ),
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/logo_small_white.png',
+              fit: BoxFit.scaleDown,
+              height: 32,
+            ),
+          ],
+        ),
+        automaticallyImplyLeading: false,
       ),
       body: Stack(
         children: [

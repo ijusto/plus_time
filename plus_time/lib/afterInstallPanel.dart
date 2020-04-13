@@ -99,33 +99,48 @@ class _InstalationPanelState extends State<InstalationPanel> {
       return Scaffold();
     } else {
       return Scaffold(
-          body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Center(
-            child: Column(
-              children: <Widget>[
-                _pages[pageIndex],
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    FloatingActionButton.extended(
-                      icon: Icon(Icons.arrow_forward),
-                      label: Text(_buttonText[pageIndex]),
-                      onPressed: (() async {
-                        await _nextImage();
-                      }),
-                      elevation: 5.0,
-                    ),
-                  ],
-                ),
-                Padding(padding: const EdgeInsets.all(50.0)),
-                SelectedPage(numberOfDots: _pages.length, pageIndex: pageIndex),
-              ],
+        bottomNavigationBar: Stack(
+          children: [
+            new Container(
+              height: 50.0,
+              color: Colors.transparent,
             ),
-          ),
-        ],
-      ));
+            Positioned(
+              left: 0.0,
+              right: 0.0,
+              top: 0.0,
+              bottom: 0.0,
+              child: SelectedPage(
+                  numberOfDots: _pages.length, pageIndex: pageIndex),
+            ),
+          ],
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Center(
+              child: Column(
+                children: <Widget>[
+                  _pages[pageIndex],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      FloatingActionButton.extended(
+                        icon: Icon(Icons.arrow_forward),
+                        label: Text(_buttonText[pageIndex]),
+                        onPressed: (() async {
+                          await _nextImage();
+                        }),
+                        elevation: 5.0,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
     }
   }
 }
@@ -311,15 +326,17 @@ class CameraAccessPage extends StatelessWidget {
       ),
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Text("Camera Access",
-        style: Theme.of(context).textTheme.headline,
+        child: Text(
+          "Camera Access",
+          style: Theme.of(context).textTheme.headline,
         ),
       ),
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Text("To use this app sharing features, we'll need access to your camera",
-        style: Theme.of(context).textTheme.title,
-        textAlign: TextAlign.center,
+        child: Text(
+          "To use this app sharing features, we'll need access to your camera",
+          style: Theme.of(context).textTheme.title,
+          textAlign: TextAlign.center,
         ),
       ),
       Padding(padding: const EdgeInsets.all(50.0)),
