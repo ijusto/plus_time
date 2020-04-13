@@ -72,7 +72,17 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('+Time'),
+          title: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                  Image.asset(
+                 'assets/logo_small_white.png',
+                  fit: BoxFit.scaleDown,
+                  height: 32,
+              ),
+            ],
+          ),
       ),
       body: Stack(
         children: [
@@ -198,10 +208,6 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.import_export),
             title: Text('Import/export'),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
-          ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).primaryColor,
@@ -291,7 +297,7 @@ class _HomePageState extends State<HomePage> {
           Scaffold.of(context).showSnackBar(snackBar);
         },
         tooltip: 'Calendar',
-        child: Icon(Icons.info),
+        child: Icon(Icons.event_note),
       ),
     );
   }

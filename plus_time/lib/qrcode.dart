@@ -53,9 +53,13 @@ class _QRCodeState extends State<QRCode> {
         title: Text("Import/export"),
       ),
       body: Center(
-        child: Text(
-          result,
-          style: Theme.of(context).textTheme.title
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+                  result,
+                  style: Theme.of(context).textTheme.title,
+                  textAlign: TextAlign.center,
+                ),
         ),
       ),
       
@@ -73,10 +77,7 @@ class _QRCodeState extends State<QRCode> {
             icon: Icon(Icons.import_export),
             title: Text('Import/export'),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
-          ),
+         
           
         ],
         currentIndex: _selectedIndex,

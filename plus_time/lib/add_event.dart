@@ -752,6 +752,11 @@ class _AddEventState extends State<AddEventPage> {
                     await _deviceCalendarPlugin.createOrUpdateEvent(_event);
                 if (createEventResult.isSuccess) {
                   Navigator.pop(context, true);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            Home(Provider.of<ProjectsInfo>(context))));
                 } else {
                   showInSnackBar(createEventResult.errorMessages.join(' | '));
                 }
@@ -774,10 +779,7 @@ class _AddEventState extends State<AddEventPage> {
             icon: Icon(Icons.import_export),
             title: Text('Import/export'),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
-          ),
+         
           
         ],
         currentIndex: _selectedIndex,
