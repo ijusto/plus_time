@@ -174,7 +174,7 @@ class EventItem extends StatelessWidget {
                       createAlertDialog(context);
                     },
                     icon: Icon(Icons.share)),
-                if (!_isReadOnly) ...[
+                /*if (!_isReadOnly) ...[
                   IconButton(
                     onPressed: () {
                       _onTapped(_calendarEvent);
@@ -233,7 +233,7 @@ class EventItem extends StatelessWidget {
                     },
                     icon: Icon(Icons.remove_red_eye),
                   ),
-                ]
+                ]*/
               ],
             )
           ],

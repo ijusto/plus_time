@@ -35,30 +35,32 @@ class _CalendarEventsPageState extends State<CalendarEventsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldstate,
-        body: (_calendarEvents?.isNotEmpty ?? false)
-            ? Stack(
-                children: [
-                  ListView.builder(
-                    itemCount: _calendarEvents?.length ?? 0,
-                    itemBuilder: (BuildContext context, int index) {
-                      return EventItem(
-                          _calendarEvents[index],
-                          _deviceCalendarPlugin,
-                          _onLoading,
-                          _onDeletedFinished,
-                          _onTapped,
-                          _calendar.isReadOnly);
-                    },
-                  ),
+      key: _scaffoldstate,
+      body: (_calendarEvents?.isNotEmpty ?? false)
+          ? Stack(
+              children: [
+                ListView.builder(
+                  itemCount: _calendarEvents?.length ?? 0,
+                  itemBuilder: (BuildContext context, int index) {
+                    return EventItem(
+                        _calendarEvents[index],
+                        _deviceCalendarPlugin,
+                        _onLoading,
+                        _onDeletedFinished,
+                        _onTapped,
+                        _calendar.isReadOnly);
+                  },
+                ),
+                /*
                   if (_isLoading)
                     Center(
                       child: CircularProgressIndicator(),
-                    )
-                ],
-              )
-            : Center(child: Text('No events found')),
-        floatingActionButton: _getAddEventButton(context));
+                    )*/
+              ],
+            )
+          : Center(child: Text('No events found')),
+      /*floatingActionButton: _getAddEventButton(context)*/
+    );
   }
 
   Widget _getAddEventButton(BuildContext context) {
