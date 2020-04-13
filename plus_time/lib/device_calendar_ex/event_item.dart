@@ -276,12 +276,14 @@ class EventItem extends StatelessWidget {
           GlobalKey globalKey = new GlobalKey();
           return AlertDialog(
               title: Text("Do you want to share this event?"),
-              content: _contentWidget(context, globalKey, jsonEventData),
+              content: Center(
+                  child: _contentWidget(context, globalKey, jsonEventData)),
               actions: <Widget>[
                 MaterialButton(
                   elevation: 5.0,
                   onPressed: () async {
                     await _captureAndSharePng(globalKey);
+                    Navigator.of(context).pop();
                   },
                   child: Text("Yes"),
                 ),
@@ -298,17 +300,27 @@ class EventItem extends StatelessWidget {
   //------------------------------------------------------------------------
 
   Future<void> _captureAndSharePng(GlobalKey globalKey) async {
+    print("1");
     try {
+      print("2");
       RenderRepaintBoundary boundary =
           globalKey.currentContext.findRenderObject();
+      print("3");
       var image = await boundary.toImage();
+      print("4");
       ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
+      print("5");
       //Uint8List pngBytes = byteData.buffer.asUint8List();
       String fp = await _writeByteToImageFile(byteData);
-      ShareExtend.share(fp, "image");
+      print(fp);
+      await ShareExtend.share(fp, "image");
+      print("7");
     } catch (e) {
+      print("8");
       print(e.toString());
+      print("9");
     }
+    print("10");
   }
 
   Future<String> _writeByteToImageFile(ByteData byteData) async {
@@ -327,7 +339,7 @@ class EventItem extends StatelessWidget {
         MediaQuery.of(context).viewInsets.bottom;
     return Container(
       color: const Color(0xFFFFFFFF),
-      width: 100,
+      width: 250,
       child: Column(
         children: <Widget>[
           Expanded(
