@@ -266,9 +266,13 @@ class _LoginState extends State<Login> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-            Image.asset('assets/logo.png'),
-            Text('Hi there, we\'re +PlusTime'),
-            Text('Helping you keeping track of your time.'),
+             Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Image.asset('assets/logo.png'),),
+            Text('Hi there, we\'re +PlusTime',
+            style: Theme.of(context).textTheme.title,
+                ),
+            Text('Helping you keeping track of your time.', style: Theme.of(context).textTheme.subtitle,),
             if (loginoplst[0].type == 0) ...[SetPinButton()]
           ])));
       // 0 - pass, 1 - fingerprint
