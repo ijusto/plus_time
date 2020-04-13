@@ -14,13 +14,14 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  LocationService locationService = LocationService();
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
           Provider(create: (_) => AppDatabase()),
           Provider(create: (_) => ProjectsInfo()),
-          StreamProvider(create: (_) => LocationService().locationStream),
+          StreamProvider(create: (_) => locationService.locationStream),
         ],
         child: MaterialApp(
           title: '+Time',
@@ -46,8 +47,9 @@ class MyApp extends StatelessWidget {
           ),
           initialRoute: '/', //'/login',
           routes: {
-            '/': (context) =>
-                InstalationPanel(), //Home(Provider.of<ProjectsInfo>(context)),
+            '/': (context) => InstalationPanel(
+                locationService:
+                    locationService), //Home(Provider.of<ProjectsInfo>(context)),
             '/add_event': (context) => AddEvent(),
             '/login': (context) => GenerateScreen(eventData: "eventData"),
             '/qrModule': (context) => QRCode(),

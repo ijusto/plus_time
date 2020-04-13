@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plus_time/data/moor_database.dart';
+import 'package:plus_time/datamodels/user_location.dart';
 import 'package:plus_time/home.dart';
 import 'package:plus_time/login.dart';
 import 'package:plus_time/services/load_calendars.dart';
@@ -7,8 +8,8 @@ import 'package:plus_time/services/locationService.dart';
 import 'package:provider/provider.dart';
 
 class InstalationPanel extends StatefulWidget {
-  InstalationPanel({Key key}) : super(key: key);
-
+  InstalationPanel({Key key, this.locationService}) : super(key: key);
+  LocationService locationService;
   @override
   _InstalationPanelState createState() => _InstalationPanelState();
 }
@@ -43,10 +44,11 @@ class _InstalationPanelState extends State<InstalationPanel> {
           new AccessGivenEntry(typeOfAccess: "calendar", granted: calperm);
       await permDao.insertAccessesGiven(calAccess);
     } else if (_buttonText[pageIndex] == "Give Location Access") {
-      //bool calperm = await locServ.requestPerm();
-      //AccessGivenEntry calAccess =
-      //    new AccessGivenEntry(typeOfAccess: "location", granted: calperm);
-      //await permDao.insertAccessesGiven(calAccess);
+      await widget.locationService.requestPerm();
+      bool calperm = widget.locationService.isPermGranted;
+      AccessGivenEntry calAccess =
+          new AccessGivenEntry(typeOfAccess: "location", granted: calperm);
+      await permDao.insertAccessesGiven(calAccess);
     } else if (_buttonText[pageIndex] == "Give Storage Access") {
     } else if (_buttonText[pageIndex] == "Give Camera Access") {}
 

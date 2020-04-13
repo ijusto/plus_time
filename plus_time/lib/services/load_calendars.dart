@@ -51,7 +51,7 @@ class ProjectsInfo {
     } catch (e) {
       print(e);
     }
-    return permissionsGranted.isSuccess;
+    return pGranted;
   }
 
   /* Calendar Logic */

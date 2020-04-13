@@ -11,16 +11,17 @@ class LocationService {
   Location location = Location();
   bool perm;
 
+  bool get isPermGranted => perm;
+
   // Continuously emit location updates
   StreamController<UserLocation> _locationController =
       StreamController<UserLocation>.broadcast();
 
   LocationService() {
     perm = false;
-    requestPerm();
   }
 
-  Future<bool> requestPerm() async {
+  Future requestPerm() async {
     if (!perm) {
       PermissionStatus granted = await location.requestPermission();
       if (granted == PermissionStatus.GRANTED) {
@@ -35,7 +36,6 @@ class LocationService {
         });
       }
     }
-    return perm;
   }
 
   Stream<UserLocation> get locationStream => _locationController.stream;
