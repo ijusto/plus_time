@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
@@ -9,20 +11,56 @@ import 'services/load_calendars.dart';
 
 /* Based on a tutorial: https://www.youtube.com/watch?v=siuJhQ9BqsU */
 
-class QRCode extends StatefulWidget {
+class QRCode extends StatelessWidget {
+  QRCode();
+
+  @override
+  Widget build(BuildContext context) {
+    ProjectsInfo projectInfo = Provider.of<ProjectsInfo>(context);
+    print("HELLO FROM QR CODE. CALENDAR IS " + projectInfo.selectedCalendar.name);
+    return Scaffold(
+      body: QRCodePage(projectInfo: projectInfo), );
+  }
+}
+
+class QRCodePage extends StatefulWidget {
+  QRCodePage({Key key, this.projectInfo}) : super(key: key);
+
+  final ProjectsInfo projectInfo;
+
   @override
   _QRCodeState createState() => _QRCodeState();
 }
 
-class _QRCodeState extends State<QRCode> {
+class _QRCodeState extends State<QRCodePage> {
   String result = "Import using the camera to scan a QR Code or export by producing a new QR Code";
+  var addEvent = false;
+  Event eventToAdd;
+  DeviceCalendarPlugin _deviceCalendarPlugin = DeviceCalendarPlugin();
 
   Future _scanQR() async {
     try {
       String qrResult = await BarcodeScanner.scan();
       setState(() {
         result = qrResult;
+        var resultParsed = jsonDecode(qrResult);
+        resultParsed["calendarId"] = widget.projectInfo.selectedCalendar.id.toString();
+        resultParsed["start"] = DateTime.parse(resultParsed["start"]).millisecondsSinceEpoch;
+        resultParsed["end"] = DateTime.parse(resultParsed["end"]).millisecondsSinceEpoch;
+        eventToAdd = Event.fromJson(resultParsed);
+        print(eventToAdd);
+        addEvent = true;
       });
+      if (addEvent && eventToAdd != null) {
+        var createEventResult =
+        await _deviceCalendarPlugin.createOrUpdateEvent(eventToAdd);
+        if (createEventResult.isSuccess) {
+          result = "Imported sucessfully event " + eventToAdd.title;
+        } else {
+            result = "Error import event " + eventToAdd.title;
+        }
+        addEvent = false;
+      }
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         setState(() {
@@ -47,10 +85,10 @@ class _QRCodeState extends State<QRCode> {
   @override
   Widget build(BuildContext context) {
       int _selectedIndex = 2;
-   
+    
     return Scaffold(
       appBar: AppBar(
-        title: Text("Import/export"),
+        title: Text("Import Event"),
       ),
       body: Center(
         child: Padding(
@@ -75,7 +113,7 @@ class _QRCodeState extends State<QRCode> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.import_export),
-            title: Text('Import/export'),
+            title: Text('Import Event'),
           ),
          
           
@@ -94,7 +132,7 @@ class _QRCodeState extends State<QRCode> {
               case 1: // Add Event
                 Navigator.pushNamed(context, '/add_event');
                 break;
-              case 2: // Import/export
+              case 2: // Import Event
                 Navigator.pushNamed(context, '/qrModule');
                 break;
               case 3: // Logout

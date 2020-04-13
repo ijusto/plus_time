@@ -278,6 +278,7 @@ class _LoginState extends State<Login> {
           child: Text(
             "Hi there, we\'re +PlusTime",
             style: Theme.of(context).textTheme.headline,
+            textAlign: TextAlign.center,
           ),
         ),
         Padding(
@@ -288,10 +289,18 @@ class _LoginState extends State<Login> {
             textAlign: TextAlign.center,
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.only(left: 10.0, right:10.0, top: 70.0, bottom: 10.0),
+          child: Text(
+            "Login using: ",
+            style: Theme.of(context).textTheme.subtitle,
+            textAlign: TextAlign.center,
+          ),
+        ),
         if (_availableBiometrics != null &&
             _availableBiometrics.length != 0) ...[
           new Padding(
-              padding: EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(10.0) ,
               child: FloatingActionButton.extended(
                   heroTag: "btn1",
                   icon: Icon(Icons.fingerprint),

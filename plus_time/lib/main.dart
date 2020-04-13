@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
                   fontSize: 16.0,
                   color: const Color(0xFF000000),
                   fontWeight: FontWeight.w200),
-              body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+              body1: TextStyle(fontSize: 20.0, fontFamily: 'Hind'),
             ),
           ),
           initialRoute: '/', //'/login',

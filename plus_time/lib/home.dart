@@ -207,7 +207,7 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.import_export),
-            title: Text('Import/export'),
+            title: Text('Import Event'),
           ),
         ],
         currentIndex: _selectedIndex,
@@ -229,7 +229,7 @@ class _HomePageState extends State<HomePage> {
               case 1: // Add Event
                 Navigator.pushNamed(context, '/add_event');
                 break;
-              case 2: // Import/export
+              case 2: // Import Event
                 Navigator.pushNamed(context, '/qrModule');
                 break;
               case 3: // Logout
