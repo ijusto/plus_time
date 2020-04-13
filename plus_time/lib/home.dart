@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:plus_time/generate.dart';
 import 'package:plus_time/map.dart';
+import 'package:plus_time/services/locationService.dart';
 import 'package:provider/provider.dart';
 import 'package:plus_time/datamodels/user_location.dart';
 import 'package:device_calendar/device_calendar.dart';
@@ -218,7 +219,11 @@ class _HomePageState extends State<HomePage> {
             switch (_selectedIndex) {
               case 0: // Home
                 //Navigator.pushNamed(context, '/home');
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Home(Provider.of<ProjectsInfo>(context))));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            Home(Provider.of<ProjectsInfo>(context))));
                 break;
               case 1: // Add Event
                 Navigator.pushNamed(context, '/add_event');

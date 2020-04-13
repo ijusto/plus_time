@@ -21,7 +21,6 @@ class MyApp extends StatelessWidget {
           Provider(create: (_) => AppDatabase()),
           Provider(create: (_) => ProjectsInfo()),
           Provider(create: (_) => LocationService()),
-          StreamProvider(create: (_) => LocationService().locationStream)
         ],
         child: MaterialApp(
           title: '+Time',

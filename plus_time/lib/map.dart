@@ -16,7 +16,7 @@ class Location {
 class MapPage extends StatefulWidget {
   MapPage({Key key, this.locations, this.recentLoc}) : super(key: key);
   final List<Location> locations;
-  Location recentLoc;
+  final Location recentLoc;
 
   @override
   _MapPageState createState() => _MapPageState();
@@ -44,7 +44,8 @@ class _MapPageState extends State<MapPage> {
         }
       }
     });
-    var userLocation = Provider.of<UserLocation>(context);
+    UserLocation userLocation = Provider.of<UserLocation>(context);
+    print("User loc: " + userLocation.latitude.toString());
     return Scaffold(
         floatingActionButton: Row(children: <Widget>[
           FloatingActionButton(
@@ -73,16 +74,19 @@ class _MapPageState extends State<MapPage> {
                 urlTemplate:
                     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                 subdomains: ['a', 'b', 'c']),
-            new PolylineLayerOptions(polylines: [
-              Polyline(
-                points: <LatLng>[
-                  LatLng(userLocation.latitude, userLocation.longitude),
-                  LatLng(widget.recentLoc.latitude, widget.recentLoc.longitude)
-                ],
-                color: Colors.black,
-                strokeWidth: 4.1,
-              )
-            ]),
+            if (widget.recentLoc != null) ...[
+              new PolylineLayerOptions(polylines: [
+                Polyline(
+                  points: <LatLng>[
+                    LatLng(userLocation.latitude, userLocation.longitude),
+                    LatLng(
+                        widget.recentLoc.latitude, widget.recentLoc.longitude)
+                  ],
+                  color: Colors.black,
+                  strokeWidth: 4.1,
+                )
+              ]),
+            ],
             new MarkerLayerOptions(
               markers: [
                 new Marker(

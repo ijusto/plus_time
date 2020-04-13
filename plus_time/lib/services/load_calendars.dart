@@ -1,6 +1,8 @@
 import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:plus_time/CalendarEventsPage.dart';
+import 'package:plus_time/services/locationService.dart';
+import 'package:provider/provider.dart';
 
 import '../generate.dart';
 import '../map.dart';
@@ -241,7 +243,11 @@ class ProjectsInfo {
             if (locations != null && locations.isNotEmpty) ...[
               Container(
                   height: 300,
-                  child: MapPage(locations: locations, recentLoc: recentLoc)),
+                  child: StreamProvider(
+                      create: (_) =>
+                          Provider.of<LocationService>(context).locationStream,
+                      child:
+                          MapPage(locations: locations, recentLoc: recentLoc))),
             ]
           ],
         )
