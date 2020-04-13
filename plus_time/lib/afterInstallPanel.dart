@@ -50,7 +50,14 @@ class _InstalationPanelState extends State<InstalationPanel> {
           new AccessGivenEntry(typeOfAccess: "location", granted: calperm);
       await permDao.insertAccessesGiven(calAccess);
     } else if (_buttonText[pageIndex] == "Give Storage Access") {
-    } else if (_buttonText[pageIndex] == "Give Camera Access") {}
+      AccessGivenEntry calAccess =
+          new AccessGivenEntry(typeOfAccess: "storage", granted: false);
+      await permDao.insertAccessesGiven(calAccess);
+    } else if (_buttonText[pageIndex] == "Give Camera Access") {
+      AccessGivenEntry calAccess =
+          new AccessGivenEntry(typeOfAccess: "camera", granted: false);
+      await permDao.insertAccessesGiven(calAccess);
+    }
 
     setState(() {
       if (pageIndex < _pages.length - 1) {
@@ -186,7 +193,15 @@ class SelectedPage extends StatelessWidget {
 class GettingStartedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Center(child: Text("GettingStartedPage"));
+    return new Center(
+        child: Column(children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Image.asset('assets/undraw_fingerprint_swrc.svg'),
+      ),
+      Text("GettingStartedPage"),
+      Padding(padding: const EdgeInsets.all(50.0)),
+    ]));
   }
 }
 
@@ -195,7 +210,10 @@ class CalendarAccessPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Center(
         child: Column(children: <Widget>[
-      Padding(padding: const EdgeInsets.all(50.0)),
+      Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Image.asset('assets/undraw_fingerprint_swrc.svg'),
+      ),
       Text("CalendarAccessPage"),
       Padding(padding: const EdgeInsets.all(50.0)),
     ]));
@@ -205,20 +223,44 @@ class CalendarAccessPage extends StatelessWidget {
 class LocationAccessPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Center(child: Text("LocationAccessPage"));
+    return new Center(
+        child: Column(children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Image.asset('assets/undraw_fingerprint_swrc.svg'),
+      ),
+      Text("LocationAccessPage"),
+      Padding(padding: const EdgeInsets.all(50.0)),
+    ]));
   }
 }
 
 class StorageAccessPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Center(child: Text("StorageAccessPage"));
+    return new Center(
+        child: Column(children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Image.asset('assets/undraw_fingerprint_swrc.svg'),
+      ),
+      Text("StorageAccessPage"),
+      Padding(padding: const EdgeInsets.all(50.0)),
+    ]));
   }
 }
 
 class CameraAccessPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Center(child: Text("CameraAccessPage"));
+    return new Center(
+        child: Column(children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Image.asset('assets/undraw_fingerprint_swrc.svg'),
+      ),
+      Text("CameraAccessPage"),
+      Padding(padding: const EdgeInsets.all(50.0)),
+    ]));
   }
 }
