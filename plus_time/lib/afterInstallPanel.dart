@@ -78,6 +78,7 @@ class _InstalationPanelState extends State<InstalationPanel> {
       List<AccessGivenEntry> perms = await permDao.getAllAccessesGivens();
       if (!(perms == null || perms.isEmpty) && firstTime) {
         firstTime = false;
+        Navigator.of(context).pop();
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Login()));
       }

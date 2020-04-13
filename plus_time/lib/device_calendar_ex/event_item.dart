@@ -2,8 +2,17 @@ import 'dart:convert';
 
 import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:plus_time/generate.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'dart:async';
+import 'dart:typed_data';
+import 'dart:ui';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_extend/share_extend.dart';
 
 import 'RecurringEventDialog.dart';
 
@@ -242,39 +251,40 @@ class EventItem extends StatelessWidget {
   }
 
   Future createAlertDialog(BuildContext context) {
+    var eventData = {};
+    eventData["allDay"] = _calendarEvent.allDay;
+    eventData["attendees"] = _calendarEvent.attendees;
+    eventData["calendarId"] = _calendarEvent.calendarId;
+    eventData["description"] = _calendarEvent.description;
+    eventData["end"] = _calendarEvent.end.toIso8601String();
+    eventData["eventId"] = _calendarEvent.eventId;
+    eventData["location"] = _calendarEvent.location;
+    eventData["recurrenceRule"] = _calendarEvent.recurrenceRule;
+    eventData["reminders"] = _calendarEvent.reminders;
+    eventData["start"] = _calendarEvent.start.toIso8601String();
+    eventData["title"] = _calendarEvent.title;
+    eventData["url"] = _calendarEvent.url;
+    String jsonEventData = json.encode(eventData);
+    print("\nEncode JSON:\n");
+    print(jsonEventData);
+
+    print("\nDecode JSON:\n");
+    print(json.decode(jsonEventData));
     return showDialog(
         context: context,
         builder: (context) {
+          GlobalKey globalKey = new GlobalKey();
           return AlertDialog(
               title: Text("Do you want to share this event?"),
+              content: _contentWidget(context, globalKey, jsonEventData),
               actions: <Widget>[
                 MaterialButton(
-                    elevation: 5.0,
-                    onPressed: () {
-                      var eventData = {};
-                      eventData["allDay"] = _calendarEvent.allDay;
-                      eventData["attendees"] = _calendarEvent.attendees;
-                      eventData["calendarId"] = _calendarEvent.calendarId;
-                      eventData["description"] = _calendarEvent.description;
-                      eventData["end"] = _calendarEvent.end.toIso8601String();
-                      eventData["eventId"] = _calendarEvent.eventId;
-                      eventData["location"] = _calendarEvent.location;
-                      eventData["recurrenceRule"] =
-                          _calendarEvent.recurrenceRule;
-                      eventData["reminders"] = _calendarEvent.reminders;
-                      eventData["start"] =
-                          _calendarEvent.start.toIso8601String();
-                      eventData["title"] = _calendarEvent.title;
-                      eventData["url"] = _calendarEvent.url;
-                      String jsonEventData = json.encode(eventData);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                GenerateScreen(eventData: jsonEventData)),
-                      );
-                    },
-                    child: Text("Yes")),
+                  elevation: 5.0,
+                  onPressed: () async {
+                    await _captureAndSharePng(globalKey);
+                  },
+                  child: Text("Yes"),
+                ),
                 MaterialButton(
                     elevation: 5.0,
                     onPressed: () {
@@ -283,5 +293,57 @@ class EventItem extends StatelessWidget {
                     child: Text("Cancel"))
               ]);
         });
+  }
+
+  //------------------------------------------------------------------------
+
+  Future<void> _captureAndSharePng(GlobalKey globalKey) async {
+    try {
+      RenderRepaintBoundary boundary =
+          globalKey.currentContext.findRenderObject();
+      var image = await boundary.toImage();
+      ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
+      //Uint8List pngBytes = byteData.buffer.asUint8List();
+      String fp = await _writeByteToImageFile(byteData);
+      ShareExtend.share(fp, "image");
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<String> _writeByteToImageFile(ByteData byteData) async {
+    Directory dir = Platform.isAndroid
+        ? await getExternalStorageDirectory()
+        : await getApplicationDocumentsDirectory();
+    File imageFile = new File(
+        "${dir.path}/flutter/${DateTime.now().millisecondsSinceEpoch}.png");
+    imageFile.createSync(recursive: true);
+    imageFile.writeAsBytesSync(byteData.buffer.asUint8List(0));
+    return imageFile.path;
+  }
+
+  _contentWidget(BuildContext context, GlobalKey globalKey, String eventData) {
+    final bodyHeight = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).viewInsets.bottom;
+    return Container(
+      color: const Color(0xFFFFFFFF),
+      width: 100,
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: Center(
+              child: RepaintBoundary(
+                key: globalKey,
+                child: QrImage(
+                  data: eventData,
+                  size: 0.5 * bodyHeight,
+                  backgroundColor: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
