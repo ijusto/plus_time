@@ -137,6 +137,7 @@ flutter:
     - assets/logo_small_white.png
     - assets/qrcode.jpg
     - assets/pin.png
+    - assets/nodata.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

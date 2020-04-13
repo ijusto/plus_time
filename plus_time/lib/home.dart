@@ -108,9 +108,32 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               if (!_isLoading && projectCards != null) ...[
-                SliverList(
-                  delegate: SliverChildListDelegate(projectCards),
-                )
+                if (projectCards.isEmpty) ...[
+                  SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                    return Center(
+                        child: Column(children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Expanded(
+                                child: Image.asset('assets/nodata.jpg'),
+                              ),
+                              Expanded(
+                                child: Image.asset('assets/hashtag.jpg'),
+                              ),
+                            ]),
+                      )
+                    ]));
+                  }, childCount: 1)),
+                ] else ...[
+                  SliverList(
+                    delegate: SliverChildListDelegate(projectCards),
+                  )
+                ]
               ],
               SliverList(
                 delegate: SliverChildBuilderDelegate(
