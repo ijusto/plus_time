@@ -241,7 +241,7 @@ class _LoginState extends State<Login> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-            Image.asset('images/logo.png'),
+            Image.asset('assets/logo.png'),
             Text('Hi there, we\'re +PlusTime'),
             Text('Helping you keeping track of your time.'),
             if (_availableBiometrics != null &&
@@ -263,7 +263,7 @@ class _LoginState extends State<Login> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-            Image.asset('images/logo.png'),
+            Image.asset('assets/logo.png'),
             Text('Hi there, we\'re +PlusTime'),
             Text('Helping you keeping track of your time.'),
             if (loginoplst[0].type == 0) ...[SetPinButton()]

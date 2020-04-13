@@ -774,10 +774,7 @@ class _AddEventState extends State<AddEventPage> {
             icon: Icon(Icons.import_export),
             title: Text('Import/export'),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
-          ),
+         
           
         ],
         currentIndex: _selectedIndex,

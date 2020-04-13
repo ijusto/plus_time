@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           title: '+Time',
+          debugShowCheckedModeBanner: false,
           theme: ThemeData(
             primarySwatch: Colors.lime,
             primaryColor: const Color(0xFFcddc39),
