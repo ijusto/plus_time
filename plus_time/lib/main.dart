@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
             canvasColor: const Color(0xFFfafafa),
             fontFamily: 'Merriweather',
             textTheme: TextTheme(
-              headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+              headline: TextStyle(fontSize: 37.0, fontWeight: FontWeight.bold),
               title: TextStyle(
                   fontSize: 27.0,
                   color: const Color(0xFF000000),
