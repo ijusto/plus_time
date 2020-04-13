@@ -17,6 +17,7 @@ class LocationService {
 
   LocationService() {
     perm = false;
+    requestPerm();
   }
 
   Future<bool> requestPerm() async {

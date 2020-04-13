@@ -24,7 +24,7 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   MapController _mapController;
-  LocationService locServ;
+  //LocationService locServ;
   AccessesGivenDao permAccess;
 
   @override
@@ -36,6 +36,7 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     permAccess = Provider.of<AppDatabase>(context).accessesGivenDao;
+    /*
     locServ = Provider.of<LocationService>(context);
     permAccess.getAllAccessesGivens().then((perms) {
       for (AccessGivenEntry perm in perms) {
@@ -43,7 +44,7 @@ class _MapPageState extends State<MapPage> {
           locServ.requestPerm();
         }
       }
-    });
+    });*/
     UserLocation userLocation = Provider.of<UserLocation>(context);
     print("User loc: " + userLocation.latitude.toString());
     return Scaffold(

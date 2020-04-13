@@ -15,7 +15,7 @@ class InstalationPanel extends StatefulWidget {
 
 class _InstalationPanelState extends State<InstalationPanel> {
   ProjectsInfo projectsInfo;
-  LocationService locServ;
+  //LocationService locServ;
   int pageIndex = 0;
   AccessesGivenDao permDao;
   bool _loading = true;
@@ -43,10 +43,10 @@ class _InstalationPanelState extends State<InstalationPanel> {
           new AccessGivenEntry(typeOfAccess: "calendar", granted: calperm);
       await permDao.insertAccessesGiven(calAccess);
     } else if (_buttonText[pageIndex] == "Give Location Access") {
-      bool calperm = await locServ.requestPerm();
-      AccessGivenEntry calAccess =
-          new AccessGivenEntry(typeOfAccess: "location", granted: calperm);
-      await permDao.insertAccessesGiven(calAccess);
+      //bool calperm = await locServ.requestPerm();
+      //AccessGivenEntry calAccess =
+      //    new AccessGivenEntry(typeOfAccess: "location", granted: calperm);
+      //await permDao.insertAccessesGiven(calAccess);
     } else if (_buttonText[pageIndex] == "Give Storage Access") {
     } else if (_buttonText[pageIndex] == "Give Camera Access") {}
 
@@ -84,7 +84,7 @@ class _InstalationPanelState extends State<InstalationPanel> {
   Widget build(BuildContext context) {
     projectsInfo = Provider.of<ProjectsInfo>(context);
     permDao = Provider.of<AppDatabase>(context).accessesGivenDao;
-    locServ = Provider.of<LocationService>(context);
+    //locServ = Provider.of<LocationService>(context);
     if (_loading) {
       return Scaffold();
     } else {

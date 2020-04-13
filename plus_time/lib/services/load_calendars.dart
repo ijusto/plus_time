@@ -243,11 +243,7 @@ class ProjectsInfo {
             if (locations != null && locations.isNotEmpty) ...[
               Container(
                   height: 300,
-                  child: StreamProvider(
-                      create: (_) =>
-                          Provider.of<LocationService>(context).locationStream,
-                      child:
-                          MapPage(locations: locations, recentLoc: recentLoc))),
+                  child: MapPage(locations: locations, recentLoc: recentLoc)),
             ]
           ],
         )
