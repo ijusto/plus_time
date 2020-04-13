@@ -96,6 +96,7 @@ class _SetPinButtonState extends State<SetPinButton> {
     }
 
     return FloatingActionButton.extended(
+        heroTag: "btn2",
         icon: Icon(Icons.keyboard),
         label: Text("Pin"),
         onPressed: () {
@@ -270,6 +271,7 @@ class _LoginState extends State<Login> {
           new Padding(
               padding: EdgeInsets.all(10.0),
               child: FloatingActionButton.extended(
+                  heroTag: "btn1",
                   icon: Icon(Icons.fingerprint),
                   label: Text("Biometrics"),
                   onPressed: _authenticate)),
