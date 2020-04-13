@@ -222,12 +222,13 @@ class ProjectsInfo {
             if (locations != null && locations.isNotEmpty) ...[
               Icon(Icons.location_on),
             ],
+            /*
             GestureDetector(
               onTap: () {
                 createAlertDialog(context);
               },
               child: Icon(Icons.share),
-            ),
+            ),*/
             GestureDetector(
               onTap: () async {
                 await Navigator.push(context,
@@ -253,7 +254,7 @@ class ProjectsInfo {
     projectCards.forEach((card) => print(card.child));
     return projectCards;
   }
-
+/*
   Future createAlertDialog(BuildContext context) {
     return showDialog(
         context: context,
@@ -280,7 +281,7 @@ class ProjectsInfo {
                     child: Text("Cancel"))
               ]);
         });
-  }
+  }*/
 
   List<DropdownMenuItem<CalendarItem>> obtainDropDownItems() {
     List<DropdownMenuItem<CalendarItem>> items =

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -250,11 +252,27 @@ class EventItem extends StatelessWidget {
                 MaterialButton(
                     elevation: 5.0,
                     onPressed: () {
+                      var eventData = {};
+                      eventData["allDay"] = _calendarEvent.allDay;
+                      eventData["attendees"] = _calendarEvent.attendees;
+                      eventData["calendarId"] = _calendarEvent.calendarId;
+                      eventData["description"] = _calendarEvent.description;
+                      eventData["end"] = _calendarEvent.end.toIso8601String();
+                      eventData["eventId"] = _calendarEvent.eventId;
+                      eventData["location"] = _calendarEvent.location;
+                      eventData["recurrenceRule"] =
+                          _calendarEvent.recurrenceRule;
+                      eventData["reminders"] = _calendarEvent.reminders;
+                      eventData["start"] =
+                          _calendarEvent.start.toIso8601String();
+                      eventData["title"] = _calendarEvent.title;
+                      eventData["url"] = _calendarEvent.url;
+                      String jsonEventData = json.encode(eventData);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                GenerateScreen(eventData: "eventData")),
+                                GenerateScreen(eventData: jsonEventData)),
                       );
                     },
                     child: Text("Yes")),
