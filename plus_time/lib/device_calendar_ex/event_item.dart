@@ -39,8 +39,7 @@ class EventItem extends StatelessWidget {
             /*
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: FlutterLogo(),
-            ),*/
+            ),
             ListTile(
                 title: Text(_calendarEvent.title ?? ''),
                 subtitle: Text(_calendarEvent.description ?? '')),

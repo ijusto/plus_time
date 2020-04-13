@@ -95,11 +95,9 @@ class _SetPinButtonState extends State<SetPinButton> {
       password = loginoplst[0].pass;
     }
 
-    return RaisedButton(
-        child: Wrap(spacing: 12, children: <Widget>[
-          Text('Pin'),
-          Icon(Icons.keyboard),
-        ]),
+    return  FloatingActionButton.extended(
+                  icon: Icon(Icons.keyboard),
+                  label: Text("Pin"),
         onPressed: () {
           Navigator.push(
               context,
@@ -241,19 +239,36 @@ class _LoginState extends State<Login> {
       }
       rt = Scaffold(
           body: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-            Image.asset('assets/undraw_fingerprint_swrc.svg'),
-            Text('Hi there, we\'re +PlusTime'),
-            Text('Helping you keeping track of your time.'),
+              child: 
+              Column(children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: 
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget> [
+                      Expanded(
+                        child: Image.asset('assets/location (1).jpg'),),
+                    ]),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text("Hi there, we\'re +PlusTime",
+                  style: Theme.of(context).textTheme.headline,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text("Helping you keeping track of your time",
+                  style: Theme.of(context).textTheme.title,
+                  textAlign: TextAlign.center,
+                  ),
+                ),     
             if (_availableBiometrics != null &&
                 _availableBiometrics.length != 0) ...[
-              RaisedButton(
-                  child: Wrap(spacing: 12, children: <Widget>[
-                    Text('Biometrics'),
-                    Icon(Icons.fingerprint),
-                  ]),
+               FloatingActionButton.extended(
+                  icon: Icon(Icons.fingerprint),
+                  label: Text("Biometrics"),
                   onPressed: _authenticate),
               SetPinButton(),
             ] else ...[
@@ -262,9 +277,12 @@ class _LoginState extends State<Login> {
           ])));
     } else if (_authorized == 'Not Authorized') {
       rt = Scaffold(
-          body: Center(
+          body: Container(
+            child: new Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Center(
               child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  
                   children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(10.0),
@@ -273,13 +291,15 @@ class _LoginState extends State<Login> {
             Text(
               'Hi there, we\'re +PlusTime',
               style: Theme.of(context).textTheme.title,
+              textAlign: TextAlign.center,
             ),
             Text(
-              'Helping you keeping track of your time.',
+              'Helping you keeping track of your time',
               style: Theme.of(context).textTheme.subtitle,
+              textAlign: TextAlign.center,
             ),
             if (loginoplst[0].type == 0) ...[SetPinButton()]
-          ])));
+          ])))));
       // 0 - pass, 1 - fingerprint
       if (loginoplst[0].type == 1) {
         _authenticate().then((_) {
