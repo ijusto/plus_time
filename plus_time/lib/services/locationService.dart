@@ -35,6 +35,7 @@ class LocationService {
           }
         });
       }
+      await getLocation();
     }
   }
 
