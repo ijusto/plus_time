@@ -26,6 +26,19 @@ class _SetPinButtonState extends State<SetPinButton> {
       StreamController<bool>.broadcast();
   List<LoginOperation> loginoplst;
 
+  bool _isLoading = true;
+  void _onLoading() {
+    setState(() {
+      _isLoading = true;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _onLoading();
+  }
+
   _onNewPassEntered(String enteredPasscode) {
     bool isValid = enteredPasscode == enteredPasscode;
     //bool isValid = widget.password == enteredPasscode;
@@ -85,9 +98,11 @@ class _SetPinButtonState extends State<SetPinButton> {
   @override
   Widget build(BuildContext context) {
     loginDao = Provider.of<AppDatabase>(context).loginOperationDao;
-
     loginDao.getAllLoginOperations().then((lst) {
       loginoplst = lst;
+      setState(() {
+        _isLoading = false;
+      });
     });
     if (loginoplst == null || loginoplst.isEmpty) {
       password = null;
@@ -95,36 +110,43 @@ class _SetPinButtonState extends State<SetPinButton> {
       password = loginoplst[0].pass;
     }
 
-    return FloatingActionButton.extended(
-        heroTag: "btn2",
-        icon: Icon(Icons.keyboard),
-        label: Text("Pin"),
-        onPressed: () {
-          Navigator.push(
-              context,
-              PageRouteBuilder(
-                  opaque: false,
-                  pageBuilder: (context, animation, secondaryAnimation) =>
-                      PasscodeScreen(
-                        title: (password == null)
-                            ? 'Set up the App Passcode'
-                            : 'Enter App Passcode',
-                        circleUIConfig: CircleUIConfig(
-                            borderColor: Colors.blue,
-                            fillColor: Colors.blue,
-                            circleSize: 30),
-                        keyboardUIConfig: KeyboardUIConfig(
-                            digitBorderWidth: 2, primaryColor: Colors.blue),
-                        passwordEnteredCallback: (password == null)
-                            ? _onNewPassEntered
-                            : _onPasscodeEntered,
-                        cancelLocalizedText: 'Cancel',
-                        deleteLocalizedText: 'Delete',
-                        shouldTriggerVerification: _verificationNotifier.stream,
-                        backgroundColor: Colors.black.withOpacity(0.8),
-                        cancelCallback: _onPasscodeCancelled,
-                      )));
-        });
+    if (_isLoading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return FloatingActionButton.extended(
+          heroTag: "btn2",
+          icon: Icon(Icons.keyboard),
+          label: Text("Pin"),
+          onPressed: () {
+            Navigator.push(
+                context,
+                PageRouteBuilder(
+                    opaque: false,
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        PasscodeScreen(
+                          title: (password == null)
+                              ? 'Set up the App Passcode'
+                              : 'Enter App Passcode',
+                          circleUIConfig: CircleUIConfig(
+                              borderColor: Colors.blue,
+                              fillColor: Colors.blue,
+                              circleSize: 30),
+                          keyboardUIConfig: KeyboardUIConfig(
+                              digitBorderWidth: 2, primaryColor: Colors.blue),
+                          passwordEnteredCallback: (password == null)
+                              ? _onNewPassEntered
+                              : _onPasscodeEntered,
+                          cancelLocalizedText: 'Cancel',
+                          deleteLocalizedText: 'Delete',
+                          shouldTriggerVerification:
+                              _verificationNotifier.stream,
+                          backgroundColor: Colors.black.withOpacity(0.8),
+                          cancelCallback: _onPasscodeCancelled,
+                        )));
+          });
+    }
   }
 }
 
@@ -247,7 +269,7 @@ class _LoginState extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Expanded(
-                  child: Image.asset('assets/location(1).jpg'),
+                  child: Image.asset('assets/calendar(3).jpg'),
                 ),
               ]),
         ),
@@ -287,10 +309,17 @@ class _LoginState extends State<Login> {
                   padding: EdgeInsets.all(10.0),
                   child: Center(
                       child: Column(children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Image.asset('assets/fingerprint.jpg'),
-                    ),
+                    if (loginoplst[0].type == 0) ...[
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Image.asset('assets/pin.png'),
+                      ),
+                    ] else ...[
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Image.asset('assets/fingerprint.jpg'),
+                      ),
+                    ],
                     Text(
                       'Hi there, we\'re +PlusTime',
                       style: Theme.of(context).textTheme.title,

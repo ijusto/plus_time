@@ -33,7 +33,7 @@ class _InstalationPanelState extends State<InstalationPanel> {
     "Get Started",
     "Give Calendar Access",
     "Give Location Access",
-    "Give Camera Access",
+    "Proceed",
     "Let's Start",
   ];
 
@@ -49,14 +49,6 @@ class _InstalationPanelState extends State<InstalationPanel> {
       AccessGivenEntry calAccess =
           new AccessGivenEntry(typeOfAccess: "location", granted: calperm);
       await permDao.insertAccessesGiven(calAccess);
-    } else if (_buttonText[pageIndex] == "Give Storage Access") {
-      AccessGivenEntry calAccess =
-          new AccessGivenEntry(typeOfAccess: "storage", granted: false);
-      await permDao.insertAccessesGiven(calAccess);
-    } else if (_buttonText[pageIndex] == "Give Camera Access") {
-      AccessGivenEntry calAccess =
-          new AccessGivenEntry(typeOfAccess: "camera", granted: false);
-      await permDao.insertAccessesGiven(calAccess);
     }
 
     setState(() {
@@ -69,24 +61,30 @@ class _InstalationPanelState extends State<InstalationPanel> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      afterInstall();
+  void _onLoading() {
+    setState(() {
+      _loading = true;
     });
   }
 
+  @override
+  void initState() {
+    super.initState();
+    _onLoading();
+  }
+
   Future afterInstall() async {
-    List<AccessGivenEntry> perms = await permDao.getAllAccessesGivens();
-    if (!(perms == null || perms.isEmpty) && firstTime) {
-      firstTime = false;
-      Navigator.of(context).pop();
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+    if (_loading) {
+      List<AccessGivenEntry> perms = await permDao.getAllAccessesGivens();
+      if (!(perms == null || perms.isEmpty) && firstTime) {
+        firstTime = false;
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Login()));
+      }
+      setState(() {
+        _loading = false;
+      });
     }
-    setState(() {
-      _loading = false;
-    });
   }
 
   @override
@@ -94,9 +92,12 @@ class _InstalationPanelState extends State<InstalationPanel> {
     projectsInfo = Provider.of<ProjectsInfo>(context);
     projectsInfo.setLocationService(widget.locationService);
     permDao = Provider.of<AppDatabase>(context).accessesGivenDao;
+    afterInstall();
     //locServ = Provider.of<LocationService>(context);
     if (_loading) {
-      return Scaffold();
+      return Center(
+        child: CircularProgressIndicator(),
+      );
     } else {
       return Scaffold(
         bottomNavigationBar: Stack(
@@ -322,7 +323,16 @@ class CameraAccessPage extends StatelessWidget {
         child: Column(children: <Widget>[
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Image.asset('assets/qrcode.jpg'),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Expanded(
+                child: Image.asset('assets/qrcode.jpg'),
+              ),
+              Expanded(
+                child: Image.asset('assets/share(2).jpg'),
+              ),
+            ]),
       ),
       Padding(
         padding: const EdgeInsets.all(10.0),
@@ -334,7 +344,7 @@ class CameraAccessPage extends StatelessWidget {
       Padding(
         padding: const EdgeInsets.all(10.0),
         child: Text(
-          "To use this app sharing features, we'll need access to your camera",
+          "To use this app sharing features, we'll need access to your camera and your device's storage.",
           style: Theme.of(context).textTheme.title,
           textAlign: TextAlign.center,
         ),
