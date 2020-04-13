@@ -110,13 +110,13 @@ class _InstalationPanelState extends State<InstalationPanel> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     FloatingActionButton.extended(
-                        icon: Icon(Icons.arrow_forward),
-                        label: Text(_buttonText[pageIndex]),
-                        onPressed: (() async {
-                          await _nextImage();
-                        }),
-                        elevation: 5.0,
-                       ),
+                      icon: Icon(Icons.arrow_forward),
+                      label: Text(_buttonText[pageIndex]),
+                      onPressed: (() async {
+                        await _nextImage();
+                      }),
+                      elevation: 5.0,
+                    ),
                   ],
                 ),
                 Padding(padding: const EdgeInsets.all(50.0)),
@@ -199,27 +199,30 @@ class GettingStartedPage extends StatelessWidget {
         child: Column(children: <Widget>[
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: 
-          Row(
+        child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget> [
-             Expanded(
-               child: Image.asset('assets/calendar (6).jpg'),),
-            Expanded(
-               child: Image.asset('assets/statistics (3).jpg'),),
-          ]),
+            children: <Widget>[
+              Expanded(
+                child: Image.asset('assets/calendar(6).jpg'),
+              ),
+              Expanded(
+                child: Image.asset('assets/statistics(3).jpg'),
+              ),
+            ]),
       ),
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Text("Welcome to +Time",
-        style: Theme.of(context).textTheme.headline,
+        child: Text(
+          "Welcome to +Time",
+          style: Theme.of(context).textTheme.headline,
         ),
       ),
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Text("Your time management app, integrated with your calendar",
-        style: Theme.of(context).textTheme.title,
-        textAlign: TextAlign.center,
+        child: Text(
+          "Your time management app, integrated with your calendar",
+          style: Theme.of(context).textTheme.title,
+          textAlign: TextAlign.center,
         ),
       ),
       Padding(padding: const EdgeInsets.all(50.0)),
@@ -234,25 +237,27 @@ class CalendarAccessPage extends StatelessWidget {
         child: Column(children: <Widget>[
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: 
-          Row(
+        child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget> [
-             Expanded(
-               child: Image.asset('assets/calendar (2).jpg'),),
-          ]),
+            children: <Widget>[
+              Expanded(
+                child: Image.asset('assets/calendar(2).jpg'),
+              ),
+            ]),
       ),
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Text("Calendar Access",
-        style: Theme.of(context).textTheme.headline,
+        child: Text(
+          "Calendar Access",
+          style: Theme.of(context).textTheme.headline,
         ),
       ),
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Text("To use this app, we'll need access to your calendar",
-        style: Theme.of(context).textTheme.title,
-        textAlign: TextAlign.center,
+        child: Text(
+          "To use this app, we'll need access to your calendar",
+          style: Theme.of(context).textTheme.title,
+          textAlign: TextAlign.center,
         ),
       ),
       Padding(padding: const EdgeInsets.all(50.0)),
@@ -267,25 +272,27 @@ class LocationAccessPage extends StatelessWidget {
         child: Column(children: <Widget>[
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: 
-          Row(
+        child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget> [
-             Expanded(
-               child: Image.asset('assets/location (1).jpg'),),
-          ]),
+            children: <Widget>[
+              Expanded(
+                child: Image.asset('assets/location(1).jpg'),
+              ),
+            ]),
       ),
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Text("Location Access",
-        style: Theme.of(context).textTheme.headline,
+        child: Text(
+          "Location Access",
+          style: Theme.of(context).textTheme.headline,
         ),
       ),
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Text("To use this app, we'll need access to your location",
-        style: Theme.of(context).textTheme.title,
-        textAlign: TextAlign.center,
+        child: Text(
+          "To use this app, we'll need access to your location",
+          style: Theme.of(context).textTheme.title,
+          textAlign: TextAlign.center,
         ),
       ),
       Padding(padding: const EdgeInsets.all(50.0)),
@@ -300,7 +307,7 @@ class CameraAccessPage extends StatelessWidget {
         child: Column(children: <Widget>[
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Image.asset('assets/undraw_fingerprint_swrc.svg'),
+        child: Image.asset('assets/qrcode.jpg'),
       ),
       Text("CameraAccessPage"),
       Padding(padding: const EdgeInsets.all(50.0)),
@@ -315,32 +322,35 @@ class HelpPage extends StatelessWidget {
         child: Column(children: <Widget>[
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: 
-          Row(
+        child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget> [
-             Expanded(
-               child: Image.asset('assets/hashtag.jpg'),),
-          ]),
+            children: <Widget>[
+              Expanded(
+                child: Image.asset('assets/hashtag.jpg'),
+              ),
+            ]),
       ),
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Text("How to use",
-        style: Theme.of(context).textTheme.headline,
+        child: Text(
+          "How to use",
+          style: Theme.of(context).textTheme.headline,
         ),
       ),
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Text("Just create an event starting with your project name to see statistics about your project",
-        style: Theme.of(context).textTheme.title,
-        textAlign: TextAlign.center,
+        child: Text(
+          "Just create an event starting with your project name to see statistics about your project",
+          style: Theme.of(context).textTheme.title,
+          textAlign: TextAlign.center,
         ),
       ),
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Text("Eg. An event named #Personal Gym with duration of 2 hours, will add 2 hours to the project #Personal",
-        style: Theme.of(context).textTheme.subtitle,
-        textAlign: TextAlign.center,
+        child: Text(
+          "Eg. An event named #Personal Gym with duration of 2 hours, will add 2 hours to the project #Personal",
+          style: Theme.of(context).textTheme.subtitle,
+          textAlign: TextAlign.center,
         ),
       ),
       Padding(padding: const EdgeInsets.all(50.0)),

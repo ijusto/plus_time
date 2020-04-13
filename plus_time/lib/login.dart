@@ -95,9 +95,9 @@ class _SetPinButtonState extends State<SetPinButton> {
       password = loginoplst[0].pass;
     }
 
-    return  FloatingActionButton.extended(
-                  icon: Icon(Icons.keyboard),
-                  label: Text("Pin"),
+    return FloatingActionButton.extended(
+        icon: Icon(Icons.keyboard),
+        label: Text("Pin"),
         onPressed: () {
           Navigator.push(
               context,
@@ -239,67 +239,68 @@ class _LoginState extends State<Login> {
       }
       rt = Scaffold(
           body: Center(
-              child: 
-              Column(children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget> [
-                      Expanded(
-                        child: Image.asset('assets/location (1).jpg'),),
-                    ]),
+              child: Column(children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Expanded(
+                  child: Image.asset('assets/location(1).jpg'),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text("Hi there, we\'re +PlusTime",
-                  style: Theme.of(context).textTheme.headline,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text("Helping you keeping track of your time",
-                  style: Theme.of(context).textTheme.title,
-                  textAlign: TextAlign.center,
-                  ),
-                ),     
-            if (_availableBiometrics != null &&
-                _availableBiometrics.length != 0) ...[
-               FloatingActionButton.extended(
+              ]),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Text(
+            "Hi there, we\'re +PlusTime",
+            style: Theme.of(context).textTheme.headline,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Text(
+            "Helping you keeping track of your time",
+            style: Theme.of(context).textTheme.title,
+            textAlign: TextAlign.center,
+          ),
+        ),
+        if (_availableBiometrics != null &&
+            _availableBiometrics.length != 0) ...[
+          new Padding(
+              padding: EdgeInsets.all(10.0),
+              child: FloatingActionButton.extended(
                   icon: Icon(Icons.fingerprint),
                   label: Text("Biometrics"),
-                  onPressed: _authenticate),
-              SetPinButton(),
-            ] else ...[
-              SetPinButton()
-            ]
-          ])));
+                  onPressed: _authenticate)),
+          new Padding(padding: EdgeInsets.all(10.0), child: SetPinButton()),
+        ] else ...[
+          new Padding(padding: EdgeInsets.all(10.0), child: SetPinButton())
+        ]
+      ])));
     } else if (_authorized == 'Not Authorized') {
       rt = Scaffold(
           body: Container(
-            child: new Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Center(
-              child: Column(
-                  
-                  children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Image.asset('assets/undraw_fingerprint_swrc.svg'),
-            ),
-            Text(
-              'Hi there, we\'re +PlusTime',
-              style: Theme.of(context).textTheme.title,
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              'Helping you keeping track of your time',
-              style: Theme.of(context).textTheme.subtitle,
-              textAlign: TextAlign.center,
-            ),
-            if (loginoplst[0].type == 0) ...[SetPinButton()]
-          ])))));
+              child: new Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Center(
+                      child: Column(children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Image.asset('assets/fingerprint.jpg'),
+                    ),
+                    Text(
+                      'Hi there, we\'re +PlusTime',
+                      style: Theme.of(context).textTheme.title,
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      'Helping you keeping track of your time',
+                      style: Theme.of(context).textTheme.subtitle,
+                      textAlign: TextAlign.center,
+                    ),
+                    if (loginoplst[0].type == 0) ...[SetPinButton()]
+                  ])))));
       // 0 - pass, 1 - fingerprint
       if (loginoplst[0].type == 1) {
         _authenticate().then((_) {
