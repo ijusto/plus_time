@@ -15,12 +15,13 @@ class ProjectsInfo {
   List<Calendar> calendars = List<Calendar>();
   List<Event> _calendarEvents = List<Event>();
   bool isLoading;
+  LocationService locationService;
 
   int _selectedCalendarIndex;
   Calendar selectedCalendar;
 
   bool pGranted = false;
-
+  void setLocationService(LocationService locServ) => locationService = locServ;
   Map<String, double> projects = Map<String, double>();
   List<Card> projectCards = List<Card>();
   Map<int, List<Location>> projectLocations = Map<int, List<Location>>();
@@ -244,7 +245,11 @@ class ProjectsInfo {
             if (locations != null && locations.isNotEmpty) ...[
               Container(
                   height: 300,
-                  child: MapPage(locations: locations, recentLoc: recentLoc)),
+                  child: MapPage(
+                    locations: locations,
+                    recentLoc: recentLoc,
+                    locationService: locationService,
+                  )),
             ]
           ],
         )

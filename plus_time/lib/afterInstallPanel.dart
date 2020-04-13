@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 class InstalationPanel extends StatefulWidget {
   InstalationPanel({Key key, this.locationService}) : super(key: key);
-  LocationService locationService;
+  final LocationService locationService;
   @override
   _InstalationPanelState createState() => _InstalationPanelState();
 }
@@ -92,6 +92,7 @@ class _InstalationPanelState extends State<InstalationPanel> {
   @override
   Widget build(BuildContext context) {
     projectsInfo = Provider.of<ProjectsInfo>(context);
+    projectsInfo.setLocationService(widget.locationService);
     permDao = Provider.of<AppDatabase>(context).accessesGivenDao;
     //locServ = Provider.of<LocationService>(context);
     if (_loading) {
