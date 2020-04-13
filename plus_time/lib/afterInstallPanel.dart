@@ -300,9 +300,27 @@ class CameraAccessPage extends StatelessWidget {
         child: Column(children: <Widget>[
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Image.asset('assets/undraw_fingerprint_swrc.svg'),
+        child: 
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget> [
+             Expanded(
+               child: Image.asset('assets/share (3).jpg'),),
+          ]),
       ),
-      Text("CameraAccessPage"),
+      Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Text("Camera Access",
+        style: Theme.of(context).textTheme.headline,
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Text("To use this app sharing features, we'll need access to your camera",
+        style: Theme.of(context).textTheme.title,
+        textAlign: TextAlign.center,
+        ),
+      ),
       Padding(padding: const EdgeInsets.all(50.0)),
     ]));
   }
