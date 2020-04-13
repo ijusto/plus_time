@@ -15,7 +15,7 @@ class ProjectsInfo {
   List<Calendar> calendars = List<Calendar>();
   List<Event> _calendarEvents = List<Event>();
   bool isLoading;
-
+  
   int _selectedCalendarIndex;
   Calendar selectedCalendar;
 
@@ -24,7 +24,8 @@ class ProjectsInfo {
   Map<String, double> projects = Map<String, double>();
   List<Card> projectCards = List<Card>();
   Map<int, List<Location>> projectLocations = Map<int, List<Location>>();
-
+  Map<String, List<Event>> projectEventsMap = Map<String, List<Event>>();
+  
   List<Card> get getProjectCards => projectCards;
 
   ProjectsInfo() {
@@ -141,6 +142,8 @@ class ProjectsInfo {
     }
   }
 
+  
+  
   Future<List<Card>> obtainProjectCards(BuildContext context) async {
     print("Going to parse");
     await _parseEventsIntoProjects();
@@ -161,11 +164,14 @@ class ProjectsInfo {
       projectIndex++;
       List<Location> locations = List<Location>();
       Location recentLoc;
+      
+      projectEventsMap[project] = new List<Event>();
       projEvents.clear();
       for (Event ev in _calendarEvents) {
         if (ev.title.split(" ")[0].startsWith("#")) {
           if (ev.title.split(" ")[0] == project) {
             projEvents.add(ev);
+            projectEventsMap[project].add(ev);
             if (ev.location != null) {
               try {
                 var addresses;
@@ -233,7 +239,7 @@ class ProjectsInfo {
               onTap: () async {
                 await Navigator.push(context,
                     MaterialPageRoute(builder: (BuildContext context) {
-                  return CalendarEventsPage(projEvents, selectedCalendar,
+                  return CalendarEventsPage(projectEventsMap[project], selectedCalendar,
                       key: Key('calendarEventsPage'));
                 }));
               },
