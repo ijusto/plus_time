@@ -36,7 +36,6 @@ class EventItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            /*
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
             ),
