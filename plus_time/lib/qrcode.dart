@@ -17,9 +17,11 @@ class QRCode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ProjectsInfo projectInfo = Provider.of<ProjectsInfo>(context);
-    print("HELLO FROM QR CODE. CALENDAR IS " + projectInfo.selectedCalendar.name);
+    print(
+        "HELLO FROM QR CODE. CALENDAR IS " + projectInfo.selectedCalendar.name);
     return Scaffold(
-      body: QRCodePage(projectInfo: projectInfo), );
+      body: QRCodePage(projectInfo: projectInfo),
+    );
   }
 }
 
@@ -33,7 +35,8 @@ class QRCodePage extends StatefulWidget {
 }
 
 class _QRCodeState extends State<QRCodePage> {
-  String result = "Import using the camera to scan a QR Code or export by producing a new QR Code";
+  String result =
+      "Import using the camera to scan a QR Code or export by producing a new QR Code";
   var addEvent = false;
   Event eventToAdd;
   DeviceCalendarPlugin _deviceCalendarPlugin = DeviceCalendarPlugin();
@@ -44,20 +47,24 @@ class _QRCodeState extends State<QRCodePage> {
       setState(() {
         result = qrResult;
         var resultParsed = jsonDecode(qrResult);
-        resultParsed["calendarId"] = widget.projectInfo.selectedCalendar.id.toString();
-        resultParsed["start"] = DateTime.parse(resultParsed["start"]).millisecondsSinceEpoch;
-        resultParsed["end"] = DateTime.parse(resultParsed["end"]).millisecondsSinceEpoch;
+        print("RESULTS PARSED: " + resultParsed.toString());
+        resultParsed["calendarId"] =
+            widget.projectInfo.selectedCalendar.id; //.toString();
+        resultParsed["start"] =
+            DateTime.parse(resultParsed["start"]).millisecondsSinceEpoch;
+        resultParsed["end"] =
+            DateTime.parse(resultParsed["end"]).millisecondsSinceEpoch;
         eventToAdd = Event.fromJson(resultParsed);
         print(eventToAdd);
         addEvent = true;
       });
       if (addEvent && eventToAdd != null) {
         var createEventResult =
-        await _deviceCalendarPlugin.createOrUpdateEvent(eventToAdd);
+            await _deviceCalendarPlugin.createOrUpdateEvent(eventToAdd);
         if (createEventResult.isSuccess) {
           result = "Imported sucessfully event " + eventToAdd.title;
         } else {
-            result = "Error import event " + eventToAdd.title;
+          result = "Error import event " + eventToAdd.title;
         }
         addEvent = false;
       }
@@ -84,8 +91,8 @@ class _QRCodeState extends State<QRCodePage> {
 
   @override
   Widget build(BuildContext context) {
-      int _selectedIndex = 2;
-    
+    int _selectedIndex = 2;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Import Event"),
@@ -94,13 +101,12 @@ class _QRCodeState extends State<QRCodePage> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-                  result,
-                  style: Theme.of(context).textTheme.title,
-                  textAlign: TextAlign.center,
-                ),
+            result,
+            style: Theme.of(context).textTheme.title,
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
-      
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -115,8 +121,6 @@ class _QRCodeState extends State<QRCodePage> {
             icon: Icon(Icons.import_export),
             title: Text('Import Event'),
           ),
-         
-          
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).primaryColor,
@@ -127,7 +131,11 @@ class _QRCodeState extends State<QRCodePage> {
             print("Selected index is $_selectedIndex");
             switch (_selectedIndex) {
               case 0: // Home
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Home(Provider.of<ProjectsInfo>(context))));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            Home(Provider.of<ProjectsInfo>(context))));
                 break;
               case 1: // Add Event
                 Navigator.pushNamed(context, '/add_event');
@@ -142,13 +150,11 @@ class _QRCodeState extends State<QRCodePage> {
           });
         },
       ),
-      
-       floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton.extended(
         icon: Icon(Icons.camera_alt),
         label: Text("Scan"),
         onPressed: _scanQR,
-        ),
-     
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }

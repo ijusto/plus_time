@@ -43,6 +43,7 @@ class _HomePageState extends State<HomePage> {
   List<String> litems2 = [
     "Statistics",
   ];
+  bool calendarChanged = false;
 
   CalendarItem selectedCalendar;
   _HomePageState(this.projectsInfo);
@@ -83,7 +84,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        automaticallyImplyLeading: false,
       ),
       body: Stack(
         children: [
@@ -207,7 +207,7 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.import_export),
-            title: Text('Import Event'),
+            title: Text('Import/export'),
           ),
         ],
         currentIndex: _selectedIndex,
@@ -229,7 +229,7 @@ class _HomePageState extends State<HomePage> {
               case 1: // Add Event
                 Navigator.pushNamed(context, '/add_event');
                 break;
-              case 2: // Import Event
+              case 2: // Import/export
                 Navigator.pushNamed(context, '/qrModule');
                 break;
               case 3: // Logout
@@ -274,8 +274,9 @@ class _HomePageState extends State<HomePage> {
                                       setState(() {
                                         print(
                                             "Selected calendar $value.calendarName on index $value.index ");
-                                        projectsInfo
-                                            .setSelectedCalendar(value.index);
+                                        projectsInfo.setSelectedCalendarIndex(
+                                            value.index);
+                                        _isLoading = true;
                                         SnackBar(
                                             content: Text(
                                                 'Changed calendar to ' +
