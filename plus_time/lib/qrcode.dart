@@ -46,14 +46,11 @@ class _QRCodeState extends State<QRCodePage> {
       String qrResult = await BarcodeScanner.scan();
       setState(() {
         result = qrResult;
-        var resultParsed = jsonDecode(qrResult);
+        Map<String, dynamic> resultParsed = jsonDecode(qrResult);
         print("RESULTS PARSED: " + resultParsed.toString());
         resultParsed["calendarId"] =
-            widget.projectInfo.selectedCalendar.id; //.toString();
-        resultParsed["start"] =
-            DateTime.parse(resultParsed["start"]).millisecondsSinceEpoch;
-        resultParsed["end"] =
-            DateTime.parse(resultParsed["end"]).millisecondsSinceEpoch;
+            widget.projectInfo.selectedCalendarIndex.toString();
+        resultParsed.remove("eventId");
         eventToAdd = Event.fromJson(resultParsed);
         print(eventToAdd);
         addEvent = true;

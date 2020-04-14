@@ -17,7 +17,7 @@ class ProjectsInfo {
   bool isLoading;
   LocationService locationService;
 
-  int _selectedCalendarIndex;
+  int selectedCalendarIndex;
   Calendar selectedCalendar;
 
   bool pGranted = false;
@@ -32,7 +32,7 @@ class ProjectsInfo {
   ProjectsInfo() {
     isLoading = true;
     _deviceCalendarPlugin = new DeviceCalendarPlugin();
-    _selectedCalendarIndex = 1;
+    selectedCalendarIndex = 1;
   }
 
   Future<bool> requestCalPerm() async {
@@ -72,7 +72,7 @@ class ProjectsInfo {
     } catch (e) {
       print(e);
     }
-    selectedCalendar = calendars[_selectedCalendarIndex];
+    selectedCalendar = calendars[selectedCalendarIndex];
     await retrieveCalendarEvents();
     return selectedCalendar;
 
@@ -108,8 +108,8 @@ class ProjectsInfo {
   }
 
   void setSelectedCalendarIndex(int index) {
-    _selectedCalendarIndex = index;
-    selectedCalendar = calendars[_selectedCalendarIndex];
+    selectedCalendarIndex = index;
+    selectedCalendar = calendars[selectedCalendarIndex];
   }
 
   /* Projects Logic */

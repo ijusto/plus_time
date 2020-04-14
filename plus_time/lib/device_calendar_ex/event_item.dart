@@ -251,19 +251,24 @@ class EventItem extends StatelessWidget {
   }
 
   Future createAlertDialog(BuildContext context) {
-    var eventData = {};
-    eventData["allDay"] = _calendarEvent.allDay;
-    eventData["attendees"] = _calendarEvent.attendees;
-    eventData["calendarId"] = _calendarEvent.calendarId;
-    eventData["description"] = _calendarEvent.description;
-    eventData["end"] = _calendarEvent.end.toIso8601String();
-    eventData["eventId"] = _calendarEvent.eventId;
-    eventData["location"] = _calendarEvent.location;
-    eventData["recurrenceRule"] = _calendarEvent.recurrenceRule;
-    eventData["reminders"] = _calendarEvent.reminders;
-    eventData["start"] = _calendarEvent.start.toIso8601String();
-    eventData["title"] = _calendarEvent.title;
-    eventData["url"] = _calendarEvent.url;
+    final Map<String, dynamic> eventData = Map<String, dynamic>();
+    eventData['eventId'] = _calendarEvent.eventId;
+    eventData['calendarId'] = _calendarEvent.calendarId;
+    eventData['title'] = _calendarEvent.title;
+    eventData['description'] = _calendarEvent.description;
+    eventData['start'] = _calendarEvent.start.millisecondsSinceEpoch;
+    eventData['end'] = _calendarEvent.end.millisecondsSinceEpoch;
+    eventData['allDay'] = _calendarEvent.allDay;
+    eventData['location'] = _calendarEvent.location;
+    if (_calendarEvent.attendees != null) {
+      eventData['attendees'] = _calendarEvent.attendees.map((a) => a.toJson()).toList();
+    }
+    if (_calendarEvent.recurrenceRule != null) {
+      eventData['recurrenceRule'] = _calendarEvent.recurrenceRule.toJson();
+    }
+    if (_calendarEvent.reminders != null) {
+      eventData['reminders'] = _calendarEvent.reminders.map((r) => r.toJson()).toList();
+    }
     String jsonEventData = json.encode(eventData);
     print("\nEncode JSON:\n");
     print(jsonEventData);
