@@ -45,14 +45,18 @@ class _MapPageState extends State<MapPage> {
 
   Future getUserLocation() async {
     permAccess = Provider.of<AppDatabase>(context).accessesGivenDao;
-    permAccess.getAllAccessesGivens().then((perms) {
+    permAccess.getAllAccessesGivens().then((perms) async {
       for (AccessGivenEntry perm in perms) {
         if (perm.typeOfAccess == "location" && !perm.granted) {
           widget.locationService.requestPerm();
+          bool calperm = widget.locationService.isPermGranted;
+          AccessGivenEntry calAccess =
+              new AccessGivenEntry(typeOfAccess: "location", granted: calperm);
+          await widget.locationService.getUserLocation();
         }
       }
     });
-    widget.locationService.getLocation();
+    //widget.locationService.getLocation();
     userLocation = Provider.of<UserLocation>(context);
     print("User loc: " + userLocation.latitude.toString());
     setState(() {
@@ -108,7 +112,7 @@ class _MapPageState extends State<MapPage> {
                         LatLng(widget.recentLoc.latitude,
                             widget.recentLoc.longitude)
                       ],
-                      color: Colors.black,
+                      color: Colors.yellow,
                       strokeWidth: 4.1,
                     )
                   ]),
@@ -120,16 +124,17 @@ class _MapPageState extends State<MapPage> {
                       height: 80.0,
                       point: new LatLng(
                           userLocation.latitude, userLocation.longitude),
-                      builder: (ctx) =>
-                          new Container(child: Icon(Icons.location_on)),
+                      builder: (ctx) => new Container(
+                          child: Icon(Icons.location_on, color: Colors.blue)),
                     ),
                     for (Location loc in widget.locations) ...[
                       new Marker(
                         width: 80.0,
                         height: 80.0,
                         point: new LatLng(loc.latitude, loc.longitude),
-                        builder: (ctx) =>
-                            new Container(child: Icon(Icons.location_on)),
+                        builder: (ctx) => new Container(
+                            child:
+                                Icon(Icons.location_on, color: Colors.green)),
                       ),
                     ],
                   ],

@@ -8,6 +8,7 @@ import 'package:passcode_screen/keyboard.dart';
 import 'package:plus_time/data/moor_database.dart';
 import 'package:plus_time/home.dart';
 import 'package:plus_time/services/load_calendars.dart';
+import 'package:plus_time/services/locationService.dart';
 import 'package:provider/provider.dart';
 
 /* Based on a tutorial: https://www.youtube.com/watch?v=S1ta90cTxBA */
@@ -151,6 +152,8 @@ class _SetPinButtonState extends State<SetPinButton> {
 }
 
 class Login extends StatefulWidget {
+  Login({Key key, this.locationService}) : super(key: key);
+  final LocationService locationService;
   @override
   _LoginState createState() => _LoginState();
 }
@@ -164,10 +167,12 @@ class _LoginState extends State<Login> {
   bool _hasBiometricsAuthent;
   bool passSetUp = false;
   LoginOperationDao loginDao;
+  AccessesGivenDao permsDao;
   final StreamController<bool> _verificationNotifier =
       StreamController<bool>.broadcast();
 
   List<LoginOperation> loginoplst;
+  List<AccessGivenEntry> permlist;
   String password;
 
   bool isAuthenticated = false;
@@ -245,9 +250,16 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     loginDao = Provider.of<AppDatabase>(context).loginOperationDao;
-
+    permsDao = Provider.of<AppDatabase>(context).accessesGivenDao;
     loginDao.getAllLoginOperations().then((lst) {
       loginoplst = lst;
+    });
+    permsDao.getAllAccessesGivens().then((perms) async {
+      for (AccessGivenEntry perm in perms) {
+        if (perm.typeOfAccess == "location" && perm.granted) {
+          widget.locationService.getUserLocation().then((_) {});
+        }
+      }
     });
 
     Widget rt = Scaffold();
@@ -290,7 +302,8 @@ class _LoginState extends State<Login> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 10.0, right:10.0, top: 70.0, bottom: 10.0),
+          padding: const EdgeInsets.only(
+              left: 10.0, right: 10.0, top: 70.0, bottom: 10.0),
           child: Text(
             "Login using: ",
             style: Theme.of(context).textTheme.subtitle,
@@ -300,7 +313,7 @@ class _LoginState extends State<Login> {
         if (_availableBiometrics != null &&
             _availableBiometrics.length != 0) ...[
           new Padding(
-              padding: EdgeInsets.all(10.0) ,
+              padding: EdgeInsets.all(10.0),
               child: FloatingActionButton.extended(
                   heroTag: "btn1",
                   icon: Icon(Icons.fingerprint),

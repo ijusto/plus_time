@@ -56,7 +56,10 @@ class _InstalationPanelState extends State<InstalationPanel> {
         pageIndex = pageIndex + 1;
       } else {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Login()));
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    Login(locationService: widget.locationService)));
       }
     });
   }
@@ -80,7 +83,10 @@ class _InstalationPanelState extends State<InstalationPanel> {
         firstTime = false;
         Navigator.of(context).pop();
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Login()));
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    Login(locationService: widget.locationService)));
       }
       setState(() {
         _loading = false;
