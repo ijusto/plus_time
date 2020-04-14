@@ -89,45 +89,76 @@ class _HomePageState extends State<HomePage> {
         children: [
           CustomScrollView(
             slivers: <Widget>[
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    return Container(
-                      child: new Padding(
-                        padding: const EdgeInsets.all(24.0),
-                        child: Center(
-                          child: Text(
-                            litems[index],
-                            style: Theme.of(context).textTheme.title,
+              if (!_isLoading && projectCards != null) ...[
+                if (projectCards.isNotEmpty) ...[
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        return Container(
+                          child: new Padding(
+                            padding: const EdgeInsets.all(24.0),
+                            child: Center(
+                              child: Text(
+                                litems[index],
+                                style: Theme.of(context).textTheme.title,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  },
-                  childCount: litems.length,
-                ),
-              ),
+                        );
+                      },
+                      childCount: litems.length,
+                    ),
+                  ),
+                ]
+              ],
               if (!_isLoading && projectCards != null) ...[
                 if (projectCards.isEmpty) ...[
                   SliverList(
                       delegate: SliverChildBuilderDelegate(
                           (BuildContext context, int index) {
                     return Center(
-                        child: Column(children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Expanded(
-                                child: Image.asset('assets/nodata.jpg'),
-                              ),
-                              Expanded(
-                                child: Image.asset('assets/hashtag.jpg'),
-                              ),
-                            ]),
-                      )
-                    ]));
+                      child: Column(children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Image.asset('assets/nodata.jpg'),
+                                  ),
+                                  Expanded(
+                                    child: Image.asset('assets/hashtag.jpg'),
+                                  )
+                                ])),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            "No projects found in this calendar.",
+                            style: Theme.of(context).textTheme.headline,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            "Just create an event starting with your project name to see statistics about your project.",
+                            style: Theme.of(context).textTheme.title,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            "Eg. An event named #Personal Gym with duration of 2 hours, will add 2 hours to the project #Personal",
+                            style: Theme.of(context).textTheme.subtitle,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ]),
+                    );
                   }, childCount: 1)),
                 ] else ...[
                   SliverList(
@@ -135,24 +166,28 @@ class _HomePageState extends State<HomePage> {
                   )
                 ]
               ],
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    return Container(
-                      child: new Padding(
-                        padding: const EdgeInsets.all(24.0),
-                        child: Center(
-                          child: Text(
-                            litems2[index],
-                            style: Theme.of(context).textTheme.title,
+              if (!_isLoading && projectCards != null) ...[
+                if (projectCards.isNotEmpty) ...[
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        return Container(
+                          child: new Padding(
+                            padding: const EdgeInsets.all(24.0),
+                            child: Center(
+                              child: Text(
+                                litems2[index],
+                                style: Theme.of(context).textTheme.title,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  },
-                  childCount: litems2.length,
-                ),
-              ),
+                        );
+                      },
+                      childCount: litems2.length,
+                    ),
+                  ),
+                ]
+              ],
               if (!_isLoading &&
                   projectCards != null &&
                   projectCards.length != 0)
@@ -190,7 +225,7 @@ class _HomePageState extends State<HomePage> {
                     childCount: litems2.length,
                   ),
                 ),
-              if (!_isLoading &&
+              /*if (!_isLoading &&
                   (projectCards == null || projectCards.length == 0))
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
@@ -209,7 +244,7 @@ class _HomePageState extends State<HomePage> {
                     },
                     childCount: litems2.length,
                   ),
-                ),
+                ),*/
             ],
           ),
           if (_isLoading)
