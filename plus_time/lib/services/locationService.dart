@@ -26,16 +26,23 @@ class LocationService {
       PermissionStatus granted = await location.requestPermission();
       if (granted == PermissionStatus.GRANTED) {
         perm = true;
-        location.onLocationChanged().listen((locationData) {
-          if (locationData != null) {
-            _locationController.add(UserLocation(
-              latitude: locationData.latitude,
-              longitude: locationData.longitude,
-            ));
-          }
-        });
       }
     }
+  }
+
+  Future getUserLocation() async {
+    UserLocation ul = await getLocation();
+    if (ul != null) {
+      _locationController.add(ul);
+    }
+    location.onLocationChanged().listen((locationData) {
+      if (locationData != null) {
+        _locationController.add(UserLocation(
+          latitude: locationData.latitude,
+          longitude: locationData.longitude,
+        ));
+      }
+    });
   }
 
   Stream<UserLocation> get locationStream => _locationController.stream;
