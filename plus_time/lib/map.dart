@@ -70,21 +70,30 @@ class _MapPageState extends State<MapPage> {
       getUserLocation();
     }
     return Scaffold(
-        floatingActionButton: Row(children: <Widget>[
-          FloatingActionButton(
-            child: Icon(Icons.zoom_in),
-            onPressed: () {
-              var newZoom = _mapController.zoom + 1;
-              _mapController.move(_mapController.center, newZoom);
-            },
-          ),
-          FloatingActionButton(
-            child: Icon(Icons.zoom_out),
-            onPressed: () {
-              var newZoom = _mapController.zoom - 1;
-              _mapController.move(_mapController.center, newZoom);
-            },
-          ),
+        floatingActionButton:
+            Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+          Container(
+              height: 40.0,
+              width: 45.0,
+              child: FittedBox(
+                  child: FloatingActionButton(
+                child: Icon(Icons.zoom_in),
+                onPressed: () {
+                  var newZoom = _mapController.zoom + 1;
+                  _mapController.move(_mapController.center, newZoom);
+                },
+              ))),
+          Container(
+              height: 40.0,
+              width: 45.0,
+              child: FittedBox(
+                  child: FloatingActionButton(
+                child: Icon(Icons.zoom_out),
+                onPressed: () {
+                  var newZoom = _mapController.zoom - 1;
+                  _mapController.move(_mapController.center, newZoom);
+                },
+              ))),
         ]),
         body: Stack(children: <Widget>[
           if (_isLoading) ...[
