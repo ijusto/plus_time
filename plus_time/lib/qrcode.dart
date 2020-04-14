@@ -49,7 +49,7 @@ class _QRCodeState extends State<QRCodePage> {
         Map<String, dynamic> resultParsed = jsonDecode(qrResult);
         print("RESULTS PARSED: " + resultParsed.toString());
         resultParsed["calendarId"] =
-            widget.projectInfo.selectedCalendarIndex.toString();
+            widget.projectInfo.selectedCalendar.id.toString();
         resultParsed.remove("eventId");
         eventToAdd = Event.fromJson(resultParsed);
         print(eventToAdd);
@@ -61,7 +61,7 @@ class _QRCodeState extends State<QRCodePage> {
         if (createEventResult.isSuccess) {
           result = "Imported sucessfully event " + eventToAdd.title;
         } else {
-          result = "Error import event " + eventToAdd.title;
+          result = "Error " + createEventResult.errorMessages.toString() +" import event " + eventToAdd.title;
         }
         addEvent = false;
       }
