@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
-import 'package:plus_time/generate.dart';
 import 'package:provider/provider.dart';
 import 'package:device_calendar/device_calendar.dart';
 import 'dart:async';
@@ -53,7 +52,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     selectedCalendar = new CalendarItem(0, "");
     _onLoading();
@@ -65,7 +63,6 @@ class _HomePageState extends State<HomePage> {
     if (_isLoading) {
       getProjects();
     }
-    print("HELLO?");
 
     return Scaffold(
       appBar: AppBar(
@@ -222,26 +219,6 @@ class _HomePageState extends State<HomePage> {
                     childCount: litems2.length,
                   ),
                 ),
-              /*if (!_isLoading &&
-                  (projectCards == null || projectCards.length == 0))
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      return Container(
-                        child: new Padding(
-                          padding: const EdgeInsets.all(24.0),
-                          child: Center(
-                            child: Text(
-                              "Statistics not available",
-                              style: Theme.of(context).textTheme.subtitle,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                    childCount: litems2.length,
-                  ),
-                ),*/
             ],
           ),
           if (_isLoading)
@@ -274,7 +251,6 @@ class _HomePageState extends State<HomePage> {
             print("Selected index is $_selectedIndex");
             switch (_selectedIndex) {
               case 0: // Home
-                //Navigator.pushNamed(context, '/home');
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -366,33 +342,5 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _isLoading = false;
     });
-  }
-
-  Future createAlertDialog(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-              title: Text("Do you want to share this event?"),
-              actions: <Widget>[
-                MaterialButton(
-                    elevation: 5.0,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                GenerateScreen(eventData: "eventData")),
-                      );
-                    },
-                    child: Text("Yes")),
-                MaterialButton(
-                    elevation: 5.0,
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text("Cancel"))
-              ]);
-        });
   }
 }

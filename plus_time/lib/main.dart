@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:plus_time/afterInstallPanel.dart';
 import 'package:plus_time/data/moor_database.dart';
 import 'package:provider/provider.dart';
-import 'generate.dart';
 import 'services/load_calendars.dart';
 import 'services/locationService.dart';
 import 'add_event.dart';
@@ -44,13 +43,11 @@ class MyApp extends StatelessWidget {
               body1: TextStyle(fontSize: 20.0, fontFamily: 'Hind'),
             ),
           ),
-          initialRoute: '/', //'/login',
+          initialRoute: '/',
           routes: {
-            '/': (context) => InstalationPanel(
-                locationService:
-                    locationService), //Home(Provider.of<ProjectsInfo>(context)),
+            '/': (context) =>
+                InstalationPanel(locationService: locationService),
             '/add_event': (context) => AddEvent(),
-            '/login': (context) => GenerateScreen(eventData: "eventData"),
             '/qrModule': (context) => QRCode(),
           },
         ));

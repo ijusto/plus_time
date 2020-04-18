@@ -14,7 +14,6 @@ class InstalationPanel extends StatefulWidget {
 
 class _InstalationPanelState extends State<InstalationPanel> {
   ProjectsInfo projectsInfo;
-  //LocationService locServ;
   int pageIndex = 0;
   AccessesGivenDao permDao;
   bool _loading = true;
@@ -98,7 +97,6 @@ class _InstalationPanelState extends State<InstalationPanel> {
     projectsInfo.setLocationService(widget.locationService);
     permDao = Provider.of<AppDatabase>(context).accessesGivenDao;
     afterInstall();
-    //locServ = Provider.of<LocationService>(context);
     if (_loading) {
       return Center(
         child: CircularProgressIndicator(),
