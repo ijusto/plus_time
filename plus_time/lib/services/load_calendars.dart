@@ -2,9 +2,7 @@ import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:plus_time/CalendarEventsPage.dart';
 import 'package:plus_time/services/locationService.dart';
-import 'package:provider/provider.dart';
 
-import '../generate.dart';
 import '../map.dart';
 import 'package:geocoder/geocoder.dart';
 

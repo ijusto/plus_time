@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:plus_time/generate.dart';
-import 'package:plus_time/map.dart';
-import 'package:plus_time/services/locationService.dart';
 import 'package:provider/provider.dart';
-import 'package:plus_time/datamodels/user_location.dart';
 import 'package:device_calendar/device_calendar.dart';
 import 'dart:async';
-import 'device_calendar_ex/event_item.dart';
 import 'services/load_calendars.dart';
 
 class Home extends StatelessWidget {

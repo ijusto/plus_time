@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:plus_time/data/moor_database.dart';
-import 'package:plus_time/datamodels/user_location.dart';
-import 'package:plus_time/home.dart';
 import 'package:plus_time/login.dart';
 import 'package:plus_time/services/load_calendars.dart';
 import 'package:plus_time/services/locationService.dart';
