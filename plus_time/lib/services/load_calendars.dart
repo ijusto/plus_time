@@ -2,10 +2,8 @@ import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:plus_time/CalendarEventsPage.dart';
 import 'package:plus_time/services/locationService.dart';
-import 'package:provider/provider.dart';
 
-import '../generate.dart';
-import '../map.dart';
+import 'map/map.dart';
 import 'package:geocoder/geocoder.dart';
 
 class ProjectsInfo {
@@ -75,20 +73,6 @@ class ProjectsInfo {
     selectedCalendar = calendars[selectedCalendarIndex];
     await retrieveCalendarEvents();
     return selectedCalendar;
-
-    /*
-    for (int calendarIndex = 0;
-        calendarIndex == calendars.length;
-        calendarIndex++) {
-      retrieveCalendarEvents(calendars[calendarIndex]).then((eventsList) {
-        for (int eventIndex = 0;
-            eventIndex == eventsList.length;
-            eventIndex++) {
-          _calendarEvents.add(eventsList[eventIndex]);
-        }
-      });
-    }
-    */
   }
 
   Future retrieveCalendarEvents(
@@ -228,13 +212,6 @@ class ProjectsInfo {
             if (locations != null && locations.isNotEmpty) ...[
               Icon(Icons.location_on),
             ],
-            /*
-            GestureDetector(
-              onTap: () {
-                createAlertDialog(context);
-              },
-              child: Icon(Icons.share),
-            ),*/
             GestureDetector(
               onTap: () async {
                 await Navigator.push(context,
@@ -265,34 +242,6 @@ class ProjectsInfo {
     projectCards.forEach((card) => print(card.child));
     return projectCards;
   }
-/*
-  Future createAlertDialog(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-              title: Text("Do you want to share this event?"),
-              actions: <Widget>[
-                MaterialButton(
-                    elevation: 5.0,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                GenerateScreen(eventData: "eventData")),
-                      );
-                    },
-                    child: Text("Yes")),
-                MaterialButton(
-                    elevation: 5.0,
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text("Cancel"))
-              ]);
-        });
-  }*/
 
   List<DropdownMenuItem<CalendarItem>> obtainDropDownItems() {
     List<DropdownMenuItem<CalendarItem>> items =

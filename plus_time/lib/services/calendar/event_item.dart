@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:plus_time/generate.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'dart:async';
 import 'dart:typed_data';
@@ -14,25 +13,16 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_extend/share_extend.dart';
 
-import 'RecurringEventDialog.dart';
-
 class EventItem extends StatelessWidget {
   final Event _calendarEvent;
   final DeviceCalendarPlugin _deviceCalendarPlugin;
   final bool _isReadOnly;
 
   final Function(Event) _onTapped;
-  final VoidCallback _onLoadingStarted;
-  final Function(bool) _onDeleteFinished;
 
   final double _eventFieldNameWidth = 75.0;
 
-  EventItem(
-      this._calendarEvent,
-      this._deviceCalendarPlugin,
-      this._onLoadingStarted,
-      this._onDeleteFinished,
-      this._onTapped,
+  EventItem(this._calendarEvent, this._deviceCalendarPlugin, this._onTapped,
       this._isReadOnly);
 
   @override
@@ -182,66 +172,6 @@ class EventItem extends StatelessWidget {
                       createAlertDialog(context);
                     },
                     icon: Icon(Icons.share)),
-                /*if (!_isReadOnly) ...[
-                  IconButton(
-                    onPressed: () {
-                      _onTapped(_calendarEvent);
-                    },
-                    icon: Icon(Icons.edit),
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      await showDialog<bool>(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (BuildContext context) {
-                            if (_calendarEvent.recurrenceRule == null) {
-                              return AlertDialog(
-                                title: Text(
-                                    'Are you sure you want to delete this event?'),
-                                actions: [
-                                  FlatButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text('Cancel'),
-                                  ),
-                                  FlatButton(
-                                    onPressed: () async {
-                                      Navigator.of(context).pop();
-                                      _onLoadingStarted();
-                                      final deleteResult =
-                                          await _deviceCalendarPlugin
-                                              .deleteEvent(
-                                                  _calendarEvent.calendarId,
-                                                  _calendarEvent.eventId);
-                                      _onDeleteFinished(
-                                          deleteResult.isSuccess &&
-                                              deleteResult.data);
-                                    },
-                                    child: Text('Delete'),
-                                  ),
-                                ],
-                              );
-                            } else {
-                              return RecurringEventDialog(
-                                  _deviceCalendarPlugin,
-                                  _calendarEvent,
-                                  _onLoadingStarted,
-                                  _onDeleteFinished);
-                            }
-                          });
-                    },
-                    icon: Icon(Icons.delete),
-                  ),
-                ] else ...[
-                  IconButton(
-                    onPressed: () {
-                      _onTapped(_calendarEvent);
-                    },
-                    icon: Icon(Icons.remove_red_eye),
-                  ),
-                ]*/
               ],
             )
           ],
@@ -261,13 +191,15 @@ class EventItem extends StatelessWidget {
     eventData['allDay'] = _calendarEvent.allDay;
     eventData['location'] = _calendarEvent.location;
     if (_calendarEvent.attendees != null) {
-      eventData['attendees'] = _calendarEvent.attendees.map((a) => a.toJson()).toList();
+      eventData['attendees'] =
+          _calendarEvent.attendees.map((a) => a.toJson()).toList();
     }
     if (_calendarEvent.recurrenceRule != null) {
       eventData['recurrenceRule'] = _calendarEvent.recurrenceRule.toJson();
     }
     if (_calendarEvent.reminders != null) {
-      eventData['reminders'] = _calendarEvent.reminders.map((r) => r.toJson()).toList();
+      eventData['reminders'] =
+          _calendarEvent.reminders.map((r) => r.toJson()).toList();
     }
     String jsonEventData = json.encode(eventData);
     print("\nEncode JSON:\n");

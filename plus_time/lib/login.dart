@@ -163,8 +163,6 @@ class _LoginState extends State<Login> {
   bool _canCheckBiometrics;
   List<BiometricType> _availableBiometrics;
   String _authorized = 'Not Authorized';
-  bool _isAuthenticating = false;
-  bool _hasBiometricsAuthent;
   bool passSetUp = false;
   LoginOperationDao loginDao;
   AccessesGivenDao permsDao;
@@ -210,18 +208,10 @@ class _LoginState extends State<Login> {
   Future<void> _authenticate() async {
     bool authenticated = false;
     try {
-      //setState(() {
-      //  _isAuthenticating = true;
-      //  _authorized = 'Authenticating';
-      //});
       authenticated = await auth.authenticateWithBiometrics(
           localizedReason: 'Scan your fingerprint to authenticate',
           useErrorDialogs: true,
           stickyAuth: true);
-      //setState(() {
-      //  _isAuthenticating = false;
-      //  _authorized = 'Authenticating';
-      //});
     } on PlatformException catch (e) {
       print(e);
     }
@@ -264,7 +254,6 @@ class _LoginState extends State<Login> {
 
     Widget rt = Scaffold();
     if (loginoplst == null || loginoplst.isEmpty) {
-      _hasBiometricsAuthent = false;
       if (_canCheckBiometrics == null) {
         _checkBiometrics().then((_) {
           if (_canCheckBiometrics) {
