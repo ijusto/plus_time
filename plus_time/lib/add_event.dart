@@ -5,10 +5,10 @@ import 'package:intl/intl.dart';
 import 'package:collection/collection.dart';
 import 'package:provider/provider.dart';
 
-import 'device_calendar_ex/RecurringEventDialog.dart';
-import 'device_calendar_ex/event_attendee.dart';
-import 'device_calendar_ex/event_reminders.dart';
-import 'device_calendar_ex/date_time_picker.dart';
+import 'services/calendar/RecurringEventDialog.dart';
+import 'services/calendar/event_attendee.dart';
+import 'services/calendar/event_reminders.dart';
+import 'services/calendar/date_time_picker.dart';
 import 'home.dart';
 import 'services/load_calendars.dart';
 

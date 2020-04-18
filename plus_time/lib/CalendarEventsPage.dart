@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/material.dart';
-import 'device_calendar_ex/event_item.dart';
+import 'services/calendar/event_item.dart';
 
 import 'CalendarEventPage.dart';
 

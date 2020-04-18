@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:plus_time/CalendarEventsPage.dart';
 import 'package:plus_time/services/locationService.dart';
 
-import '../map.dart';
+import 'map/map.dart';
 import 'package:geocoder/geocoder.dart';
 
 class ProjectsInfo {
