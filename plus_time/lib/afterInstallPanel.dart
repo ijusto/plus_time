@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:plus_time/data/moor_database.dart';
-import 'package:plus_time/datamodels/user_location.dart';
-import 'package:plus_time/home.dart';
 import 'package:plus_time/login.dart';
 import 'package:plus_time/services/load_calendars.dart';
 import 'package:plus_time/services/locationService.dart';
@@ -94,73 +92,6 @@ class _InstalationPanelState extends State<InstalationPanel> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    projectsInfo = Provider.of<ProjectsInfo>(context);
-    projectsInfo.setLocationService(widget.locationService);
-    permDao = Provider.of<AppDatabase>(context).accessesGivenDao;
-    afterInstall();
-    //locServ = Provider.of<LocationService>(context);
-    if (_loading) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    } else {
-      return Scaffold(
-        bottomNavigationBar: Stack(
-          children: [
-            new Container(
-              height: 50.0,
-              color: Colors.transparent,
-            ),
-            Positioned(
-              left: 0.0,
-              right: 0.0,
-              top: 0.0,
-              bottom: 0.0,
-              child: SelectedPage(
-                  numberOfDots: _pages.length, pageIndex: pageIndex),
-            ),
-          ],
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Center(
-              child: Column(
-                children: <Widget>[
-                  _pages[pageIndex],
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      FloatingActionButton.extended(
-                        icon: Icon(Icons.arrow_forward),
-                        label: Text(_buttonText[pageIndex]),
-                        onPressed: (() async {
-                          await _nextImage();
-                        }),
-                        elevation: 5.0,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-  }
-}
-
-/* Based on tutorial https://www.youtube.com/watch?v=sC9qhNPvW1M */
-
-class SelectedPage extends StatelessWidget {
-  final int numberOfDots;
-  final int pageIndex;
-
-  SelectedPage({this.numberOfDots, this.pageIndex});
-
   Widget _inactivePage() {
     return new Container(
       child: new Padding(
@@ -198,7 +129,7 @@ class SelectedPage extends StatelessWidget {
   List<Widget> _buildDots() {
     List<Widget> dots = [];
 
-    for (int dotIndex = 0; dotIndex < numberOfDots; dotIndex++) {
+    for (int dotIndex = 0; dotIndex < _pages.length; dotIndex++) {
       dots.add(dotIndex == pageIndex ? _activePage() : _inactivePage());
     }
 
@@ -207,11 +138,66 @@ class SelectedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Center(
-        child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: _buildDots(),
-    ));
+    projectsInfo = Provider.of<ProjectsInfo>(context);
+    projectsInfo.setLocationService(widget.locationService);
+    permDao = Provider.of<AppDatabase>(context).accessesGivenDao;
+    afterInstall();
+    //locServ = Provider.of<LocationService>(context);
+    if (_loading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return Scaffold(
+        bottomNavigationBar: Stack(
+          children: [
+            new Container(
+              height: 120.0,
+              color: Colors.transparent,
+            ),
+            Positioned(
+              left: 0.0,
+              right: 0.0,
+              top: 0.0,
+              bottom: -0.0,
+              child: new Center(
+                  child: Column(children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    FloatingActionButton.extended(
+                      icon: Icon(Icons.arrow_forward),
+                      label: Text(_buttonText[pageIndex]),
+                      onPressed: (() async {
+                        await _nextImage();
+                      }),
+                      elevation: 5.0,
+                    ),
+                  ],
+                ),
+                Padding(padding: const EdgeInsets.all(10.0)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: _buildDots(),
+                ),
+              ])),
+            ),
+          ],
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Center(
+              child: Column(
+                children: <Widget>[
+                  _pages[pageIndex],
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }
 
