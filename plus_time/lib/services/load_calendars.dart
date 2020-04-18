@@ -113,7 +113,7 @@ class ProjectsInfo {
           /* Compute duration */
           Duration duration = calendarEvent.end.difference(calendarEvent.start);
           double durationHours = duration.inHours.toDouble();
-          ;
+          
 
           /* Update project info */
           if (projects.containsKey(projectName)) {
@@ -179,7 +179,7 @@ class ProjectsInfo {
                 if (loc.latitude != null && loc.longitude != null)
                   locations.add(loc);
               } catch (e) {
-                print(e); // TODO: handle this later
+                print(e); 
               }
             }
           }

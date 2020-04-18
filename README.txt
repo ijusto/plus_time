@@ -8,9 +8,9 @@ Inês Justo - 84804
 Pedro Teixeira - 84715
 
 ## Notes on running
-During development, the team using Visual Studio Code to debug the application. 
+During development, the team used Visual Studio Code to debug the application. 
 
-Running flutter run on the root of the application folder should be enough to 
+Running flutter run on the root of the application folder should be enough to run the application.
 
 ## Notes on changes after demo
 After the demo we changed the source code for 2 purposes:
